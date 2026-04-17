@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REMEHBS — Réseau Mère Enfant des Hauts-Bassins</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #1d1e20; background: #fff; line-height: 1.6; overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ===== TOKENS ===== */
+    :root {
+      --purple:    #673de6;
+      --purple-d:  #5025d1;
+      --purple-l:  #8c85ff;
+      --purple-xs: #f0eeff;
+      --blue:      #357df9;
+      --red:       #fc5185;
+      --green:     #00b96b;
+      --orange:    #f59e0b;
+      --dark:      #1d1e20;
+      --grey:      #6b7280;
+      --grey-l:    #f2f3f6;
+      --white:     #ffffff;
+      --radius:    12px;
+      --shadow:    0 4px 24px rgba(103,61,230,.13);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.07);
+      --transition: .22s ease;
+    }
+
+    /* ===== UTILS ===== */
+    .container  { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+    .section    { padding: 96px 0; }
+    .section-sm { padding: 64px 0; }
+    .bg-grey    { background: var(--grey-l); }
+    .bg-dark    { background: #0f0624; }
+    .text-center { text-align: center; }
+    .text-center .section-sub { margin-left: auto; margin-right: auto; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--purple-xs); color: var(--purple);
+      font-size: .75rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .badge svg { width: 13px; height: 13px; }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+      font-weight: 800; line-height: 1.2; margin-bottom: 14px;
+    }
+    .section-sub {
+      font-size: 1rem; color: var(--grey); max-width: 560px; margin-bottom: 52px;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 100px; font-size: .9375rem;
+      font-weight: 600; cursor: pointer; border: 2px solid transparent;
+      transition: all var(--transition); font-family: inherit;
+    }
+    .btn svg { width: 16px; height: 16px; }
+    .btn-primary { background: var(--purple); color: #fff; }
+    .btn-primary:hover { background: var(--purple-d); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .btn-outline { background: transparent; border-color: var(--purple); color: var(--purple); }
+    .btn-outline:hover { background: var(--purple); color: #fff; }
+    .btn-white  { background: #fff; color: var(--purple); }
+    .btn-white:hover { background: var(--purple-xs); }
+    .btn-green  { background: var(--green); color: #fff; }
+    .btn-green:hover { background: #009a5a; }
+    .btn-ghost-white { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.3); }
+    .btn-ghost-white:hover { background: rgba(255,255,255,.22); }
+    .btn-lg { padding: 15px 34px; font-size: 1rem; }
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* ===== ICON BOX ===== */
+    .icon-box {
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 14px; flex-shrink: 0;
+    }
+    .icon-box svg { width: 22px; height: 22px; }
+    .icon-box-sm { width: 40px; height: 40px; border-radius: 10px; }
+    .icon-box-sm svg { width: 18px; height: 18px; }
+    .icon-box-md { width: 52px; height: 52px; }
+    .icon-box-lg { width: 64px; height: 64px; border-radius: 18px; }
+    .icon-box-lg svg { width: 28px; height: 28px; }
+    .icon-box-xl { width: 80px; height: 80px; border-radius: 22px; }
+    .icon-box-xl svg { width: 36px; height: 36px; }
+
+    .ib-purple { background: var(--purple-xs); color: var(--purple); }
+    .ib-blue   { background: #e8f2ff;           color: var(--blue); }
+    .ib-green  { background: #e6f9f0;           color: var(--green); }
+    .ib-red    { background: #fff0f5;           color: var(--red); }
+    .ib-orange { background: #fff5e6;           color: var(--orange); }
+    .ib-white  { background: rgba(255,255,255,.18); color: #fff; }
+    .ib-solid-purple { background: var(--purple); color: #fff; }
+    .ib-solid-green  { background: var(--green);  color: #fff; }
+    .ib-solid-blue   { background: var(--blue);   color: #fff; }
+    .ib-grad { background: linear-gradient(135deg, var(--purple), var(--blue)); color: #fff; }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      background: var(--purple-d); padding: 9px 0;
+      font-size: .8125rem; color: rgba(255,255,255,.8);
+    }
+    .topbar .container {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .topbar-left, .topbar-right { display: flex; align-items: center; gap: 20px; }
+    .topbar-item { display: flex; align-items: center; gap: 6px; }
+    .topbar-item svg { width: 13px; height: 13px; }
+    .topbar-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 27px; height: 27px; border-radius: 50%;
+      background: rgba(255,255,255,.14); color: #fff; transition: background var(--transition);
+    }
+    .topbar-social a svg { width: 13px; height: 13px; }
+    .topbar-social a:hover { background: rgba(255,255,255,.28); }
+
+    /* ===== HEADER ===== */
+    header {
+      position: sticky; top: 0; z-index: 900;
+      background: #fff; border-bottom: 1px solid rgba(103,61,230,.09);
+      box-shadow: var(--shadow-sm);
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px;
+    }
+
+    /* Logo */
+    .logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .logo-mark {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark svg { width: 24px; height: 24px; color: #fff; }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-text strong { font-size: 1.125rem; font-weight: 800; color: var(--purple); }
+    .logo-text span   { font-size: .6875rem; color: var(--grey); letter-spacing: .02em; }
+
+    /* Nav links */
+    .nav-links { display: flex; align-items: center; gap: 2px; }
+    .nav-links a {
+      display: flex; align-items: center; gap: 5px;
+      padding: 8px 13px; border-radius: 8px;
+      font-size: .875rem; font-weight: 500; color: var(--dark);
+      transition: all var(--transition);
+    }
+    .nav-links a svg { width: 14px; height: 14px; }
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--purple-xs); color: var(--purple);
+    }
+
+    /* Nav right */
+    .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .lang-toggle {
+      display: flex; border: 1.5px solid var(--grey-l); border-radius: 100px; overflow: hidden;
+    }
+    .lang-toggle button {
+      padding: 5px 13px; font-size: .8rem; font-weight: 600;
+      background: none; border: none; cursor: pointer; color: var(--grey);
+      transition: all var(--transition); font-family: inherit;
+    }
+    .lang-toggle button.active { background: var(--purple); color: #fff; }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 6px; }
+    .hamburger svg { width: 24px; height: 24px; color: var(--dark); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 90vh;
+      background: linear-gradient(140deg, #140840 0%, #2c1278 45%, #173b82 100%);
+      display: flex; align-items: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 65% at 72% 55%, rgba(103,61,230,.4) 0%, transparent 68%),
+        radial-gradient(ellipse 38% 42% at 18% 22%, rgba(53,125,249,.28) 0%, transparent 58%),
+        radial-gradient(ellipse 30% 30% at 85% 10%, rgba(140,133,255,.2) 0%, transparent 55%);
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center; padding: 80px 0; position: relative; z-index: 1;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.1); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.9);
+      font-size: .8125rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+      padding: 8px 18px; border-radius: 100px; margin-bottom: 26px;
+    }
+    .hero-eyebrow svg { width: 14px; height: 14px; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.75rem);
+      font-weight: 800; color: #fff; line-height: 1.14; margin-bottom: 22px;
+    }
+    .hero h1 em { font-style: normal; color: var(--purple-l); }
+    .hero-desc { font-size: 1.0625rem; color: rgba(255,255,255,.78); max-width: 480px; margin-bottom: 38px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-stats {
+      display: flex; gap: 36px; margin-top: 52px; padding-top: 36px;
+      border-top: 1px solid rgba(255,255,255,.12);
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1; }
+    .stat-lbl { font-size: .8125rem; color: rgba(255,255,255,.6); margin-top: 4px; }
+
+    /* Hero right — floating cards */
+    .hero-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+    .glass-card {
+      background: rgba(255,255,255,.08); backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.14); border-radius: 20px;
+      padding: 26px 28px; color: #fff; width: 100%; max-width: 380px;
+    }
+    .glass-card-sm {
+      background: rgba(255,255,255,.06); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+      padding: 16px 20px; display: flex; align-items: center; gap: 14px;
+      color: #fff; max-width: 340px; width: 100%;
+    }
+    .glass-card-sm svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--purple-l); }
+    .glass-card-sm .gc-text strong { font-size: .9rem; font-weight: 700; display: block; }
+    .glass-card-sm .gc-text span   { font-size: .8125rem; opacity: .7; }
+    .glass-card .gc-icon { margin-bottom: 14px; }
+    .glass-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .glass-card p  { font-size: .875rem; opacity: .72; }
+
+    /* ===== ANNONCE ===== */
+    .annonce {
+      background: linear-gradient(90deg, var(--purple) 0%, var(--blue) 100%);
+      padding: 16px 0;
+    }
+    .annonce-inner {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    .annonce-inner svg { width: 20px; height: 20px; color: #fff; flex-shrink: 0; }
+    .annonce-inner p { font-size: .9375rem; color: #fff; font-weight: 500; flex: 1; }
+    .annonce-inner strong { font-weight: 700; }
+
+    /* ===== ABOUT ===== */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-visual { position: relative; }
+    .about-img-bg {
+      width: 100%; aspect-ratio: 4/3; border-radius: 24px;
+      background: linear-gradient(135deg, var(--purple-xs), #dde8ff);
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .about-img-bg svg { width: 110px; height: 110px; color: var(--purple-l); opacity: .35; }
+    .about-float {
+      position: absolute; bottom: -20px; right: -20px;
+      background: #fff; border-radius: 16px; padding: 16px 20px;
+      box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px;
+      max-width: 220px;
+    }
+    .about-float strong { font-size: .9375rem; font-weight: 700; display: block; color: var(--dark); }
+    .about-float span   { font-size: .8125rem; color: var(--grey); }
+
+    .about-text .badge { margin-bottom: 14px; }
+    .tl-list { margin-top: 32px; display: flex; flex-direction: column; gap: 20px; }
+    .tl-item { display: flex; gap: 16px; align-items: flex-start; }
+    .tl-dot {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: var(--purple-xs); display: flex; align-items: center; justify-content: center;
+    }
+    .tl-dot svg { width: 16px; height: 16px; color: var(--purple); }
+    .tl-body strong { font-size: .9375rem; font-weight: 600; display: block; color: var(--dark); margin-bottom: 2px; }
+    .tl-body span   { font-size: .875rem; color: var(--grey); }
+
+    /* ===== MISSIONS ===== */
+    .missions-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(262px, 1fr)); gap: 24px;
+    }
+    .mission-card {
+      background: #fff; border-radius: var(--radius); padding: 32px 28px;
+      box-shadow: var(--shadow-sm); border: 1.5px solid transparent;
+      transition: all var(--transition);
+    }
+    .mission-card:hover { border-color: var(--purple-l); transform: translateY(-4px); box-shadow: var(--shadow); }
+    .mission-card h3 { font-size: 1.0625rem; font-weight: 700; margin: 18px 0 10px; color: var(--dark); }
+    .mission-card p  { font-size: .875rem; color: var(--grey); line-height: 1.7; }
+
+    /* ===== EVENTS ===== */
+    .events-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; }
+
+    .countdown-card {
+      background: linear-gradient(145deg, var(--purple-d), var(--purple));
+      border-radius: 24px; padding: 38px 34px; color: #fff;
+    }
+    .countdown-card .badge { background: rgba(255,255,255,.14); color: rgba(255,255,255,.9); }
+    .countdown-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4375rem; font-weight: 700; margin-bottom: 6px;
+    }
+    .countdown-card > p { font-size: .875rem; opacity: .76; margin-bottom: 30px; }
+    .cd-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 30px; }
+    .cd-box { background: rgba(255,255,255,.12); border-radius: 10px; padding: 14px 6px; text-align: center; }
+    .cd-num { font-size: 1.875rem; font-weight: 800; display: block; line-height: 1; }
+    .cd-lbl { font-size: .6875rem; opacity: .68; text-transform: uppercase; letter-spacing: .05em; margin-top: 4px; display: block; }
+    .event-meta-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 26px; }
+    .event-meta-item { display: flex; align-items: center; gap: 10px; font-size: .875rem; opacity: .88; }
+    .event-meta-item svg { width: 15px; height: 15px; flex-shrink: 0; opacity: .65; }
+
+    .tl-events { display: flex; flex-direction: column; }
+    .tl-evt { display: flex; gap: 18px; padding-bottom: 28px; }
+    .tl-evt:last-child { padding-bottom: 0; }
+    .tl-evt-spine { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .tl-evt-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2.5px solid var(--purple); background: #fff; margin-top: 3px; flex-shrink: 0;
+    }
+    .tl-evt-dot.done { background: var(--purple); }
+    .tl-evt-dot.highlight { background: var(--orange); border-color: var(--orange); }
+    .tl-evt-line {
+      width: 2px; flex: 1; margin-top: 6px;
+      background: linear-gradient(to bottom, rgba(103,61,230,.25), rgba(103,61,230,.05));
+    }
+    .tl-evt:last-child .tl-evt-line { display: none; }
+    .tl-evt-card {
+      flex: 1; background: #fff; border-radius: var(--radius);
+      border: 1.5px solid var(--grey-l); padding: 18px 22px;
+      transition: border-color var(--transition);
+    }
+    .tl-evt-card:hover { border-color: var(--purple-l); }
+    .tl-evt-date {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .8125rem; font-weight: 600; color: var(--purple); margin-bottom: 4px;
+    }
+    .tl-evt-date svg { width: 13px; height: 13px; }
+    .tl-evt-card h4 { font-size: .9375rem; font-weight: 700; margin-bottom: 4px; color: var(--dark); }
+    .tl-evt-card p  { font-size: .8125rem; color: var(--grey); }
+    .evt-status {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: .75rem; font-weight: 600; padding: 3px 10px; border-radius: 100px; margin-top: 8px;
+    }
+    .evt-status svg { width: 11px; height: 11px; }
+    .s-done   { background: #e6f9f0; color: var(--green); }
+    .s-open   { background: var(--purple-xs); color: var(--purple); }
+    .s-soon   { background: #fff5e6; color: var(--orange); }
+    .s-main   { background: linear-gradient(90deg,var(--purple-xs),#e8f2ff); color: var(--purple-d); }
+
+    /* ===== TEAM ===== */
+    .team-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 24px;
+    }
+    .team-card {
+      background: #fff; border-radius: 20px; overflow: hidden;
+      box-shadow: var(--shadow-sm); transition: all var(--transition); text-align: center;
+    }
+    .team-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .team-avatar {
+      height: 176px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--purple-xs), #dde8ff);
+    }
+    .team-avatar svg { width: 70px; height: 70px; color: var(--purple-l); opacity: .55; }
+    .team-body { padding: 20px 16px; }
+    .team-body h3    { font-size: .9375rem; font-weight: 700; margin-bottom: 4px; color: var(--dark); }
+    .team-body .role { font-size: .8125rem; color: var(--purple); font-weight: 600; margin-bottom: 6px; }
+    .team-body p     { font-size: .8rem; color: var(--grey); }
+    .team-socials { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+    .team-socials a {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--grey-l);
+      display: flex; align-items: center; justify-content: center; transition: all var(--transition);
+    }
+    .team-socials a svg { width: 14px; height: 14px; color: var(--grey); }
+    .team-socials a:hover { background: var(--purple); }
+    .team-socials a:hover svg { color: #fff; }
+
+    /* ===== PLANS ===== */
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 28px; }
+    .plan-card {
+      background: #fff; border-radius: 20px; padding: 36px 32px;
+      box-shadow: var(--shadow-sm); border: 2px solid var(--grey-l);
+      transition: all var(--transition); position: relative; overflow: hidden;
+    }
+    .plan-card.featured {
+      border-color: var(--purple);
+      background: linear-gradient(160deg, #faf8ff 0%, #fff 100%);
+    }
+    .plan-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .plan-top-badge {
+      position: absolute; top: 20px; right: 20px;
+      background: var(--purple); color: #fff;
+      font-size: .75rem; font-weight: 700; padding: 4px 12px; border-radius: 100px;
+    }
+    .plan-card h3 { font-size: 1.125rem; font-weight: 700; margin: 18px 0 4px; color: var(--dark); }
+    .plan-desc { font-size: .875rem; color: var(--grey); margin-bottom: 22px; }
+    .plan-price { margin-bottom: 26px; }
+    .plan-price .amount   { font-size: 2.375rem; font-weight: 800; color: var(--dark); }
+    .plan-price .currency { font-size: 1rem; font-weight: 600; color: var(--grey); vertical-align: super; margin-right: 2px; }
+    .plan-price .period   { font-size: .875rem; color: var(--grey); }
+    .plan-features { display: flex; flex-direction: column; gap: 11px; margin-bottom: 28px; }
+    .pf {
+      display: flex; align-items: center; gap: 10px; font-size: .875rem; color: var(--dark);
+    }
+    .pf svg { width: 16px; height: 16px; color: var(--green); flex-shrink: 0; }
+    .pf.off svg { color: #d1d5db; }
+    .pf.off span { color: #9ca3af; }
+
+    /* ===== FORM STEPS ===== */
+    .form-steps {
+      display: flex; border-radius: 14px; overflow: hidden;
+      border: 1.5px solid var(--grey-l); margin-bottom: 44px;
+    }
+    .form-step {
+      flex: 1; padding: 15px 10px; text-align: center;
+      background: var(--grey-l); display: flex; flex-direction: column;
+      align-items: center; gap: 5px;
+    }
+    .form-step.active { background: var(--purple); color: #fff; }
+    .form-step.done   { background: var(--purple-xs); color: var(--purple); }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,.2); display: flex; align-items: center;
+      justify-content: center; font-weight: 700; font-size: .875rem;
+    }
+    .form-step.done .step-num { background: var(--purple); color: #fff; }
+    .step-lbl { font-size: .8rem; font-weight: 600; }
+
+    /* ===== FORM FIELDS ===== */
+    .form-wrap { max-width: 860px; margin: 0 auto; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .fg { display: flex; flex-direction: column; gap: 6px; }
+    .fg.full { grid-column: 1 / -1; }
+    .fg label {
+      font-size: .875rem; font-weight: 600; color: var(--dark);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .fg label svg { width: 14px; height: 14px; color: var(--purple); }
+    .fg input, .fg select, .fg textarea {
+      padding: 12px 16px; border-radius: 10px;
+      border: 1.5px solid var(--grey-l); font-size: .9375rem;
+      font-family: inherit; color: var(--dark); background: #fff;
+      transition: border-color var(--transition); outline: none;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus {
+      border-color: var(--purple); box-shadow: 0 0 0 3px rgba(103,61,230,.1);
+    }
+    .fg textarea { resize: vertical; min-height: 100px; }
+
+    /* Payment methods */
+    .pay-methods { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 8px; }
+    .pay-method {
+      border: 2px solid var(--grey-l); border-radius: 12px; padding: 18px 14px;
+      text-align: center; cursor: pointer; transition: all var(--transition); background: #fff;
+    }
+    .pay-method:hover { border-color: var(--purple); }
+    .pay-method.sel   { border-color: var(--purple); background: var(--purple-xs); }
+    .pay-method svg   { width: 30px; height: 30px; margin: 0 auto 10px; }
+    .pay-name { font-size: .875rem; font-weight: 700; color: var(--dark); }
+    .pay-sub  { font-size: .75rem; color: var(--grey); margin-top: 2px; }
+
+    .form-actions { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+
+    /* ===== COTISATIONS ===== */
+    .cotis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    .cotis-panel {
+      background: #fff; border-radius: 20px; padding: 34px 30px; box-shadow: var(--shadow-sm);
+    }
+    .cotis-panel-title {
+      font-size: 1.125rem; font-weight: 700; color: var(--dark);
+      display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    }
+    .cotis-panel-title svg { width: 20px; height: 20px; color: var(--purple); }
+    .cotis-panel > p { font-size: .875rem; color: var(--grey); margin-bottom: 26px; }
+
+    .member-row {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--grey-l); border-radius: 12px; padding: 14px 16px; margin-bottom: 22px;
+    }
+    .m-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .m-avatar svg { width: 22px; height: 22px; color: #fff; }
+    .m-info strong { font-size: .9375rem; font-weight: 700; display: block; color: var(--dark); }
+    .m-info span   { font-size: .8125rem; color: var(--grey); }
+    .m-status {
+      margin-left: auto; display: flex; align-items: center; gap: 5px;
+      font-size: .8rem; font-weight: 700; padding: 5px 12px; border-radius: 100px;
+    }
+    .m-status svg  { width: 13px; height: 13px; }
+    .m-ok     { background: #e6f9f0; color: var(--green); }
+    .m-due    { background: #fff0f5; color: var(--red); }
+
+    .cotis-history { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .cotis-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 14px; background: var(--grey-l); border-radius: 10px;
+    }
+    .cr-left { display: flex; align-items: center; gap: 10px; }
+    .cr-left svg { width: 16px; height: 16px; color: var(--grey); }
+    .cr-year { font-size: .875rem; font-weight: 600; color: var(--dark); }
+    .cr-type { font-size: .75rem; color: var(--grey); }
+    .cr-right { display: flex; align-items: center; gap: 10px; }
+    .cr-amount { font-size: .9375rem; font-weight: 700; color: var(--dark); }
+    .cr-badge  { font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 100px; }
+    .cb-ok  { background: #e6f9f0; color: var(--green); }
+    .cb-due { background: #fff0f5; color: var(--red); }
+
+    /* Amount chips */
+    .amount-chips { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 18px; }
+    .chip {
+      padding: 8px 18px; border-radius: 100px; border: 1.5px solid var(--grey-l);
+      font-size: .875rem; font-weight: 600; cursor: pointer; background: #fff;
+      color: var(--dark); transition: all var(--transition);
+    }
+    .chip:hover, .chip.sel { border-color: var(--purple); background: var(--purple); color: #fff; }
+
+    .secure-note {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-size: .8rem; color: var(--grey); margin-top: 12px;
+    }
+    .secure-note svg { width: 13px; height: 13px; }
+
+    /* ===== TESTIMONIALS ===== */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 22px; }
+    .testi-card {
+      background: rgba(255,255,255,.07); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.11); border-radius: 20px;
+      padding: 30px 26px; color: #fff;
+    }
+    .stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .stars svg { width: 15px; height: 15px; fill: var(--orange); color: var(--orange); }
+    .testi-card p { font-size: .9375rem; line-height: 1.72; opacity: .82; margin-bottom: 22px; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .t-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-l), var(--blue));
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .t-avatar svg { width: 18px; height: 18px; color: #fff; }
+    .testi-author strong { font-size: .9375rem; font-weight: 700; display: block; }
+    .testi-author span   { font-size: .8rem; opacity: .62; }
+
+    /* ===== CONTACT ===== */
+    .contact-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 60px; align-items: start; }
+    .contact-cards { display: flex; flex-direction: column; gap: 16px; }
+    .contact-card {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--grey-l); border-radius: 14px; padding: 18px 20px;
+    }
+    .contact-card strong { font-size: .9375rem; font-weight: 700; display: block; color: var(--dark); margin-bottom: 3px; }
+    .contact-card span   { font-size: .875rem; color: var(--grey); line-height: 1.65; }
+    .contact-form-box {
+      background: var(--grey-l); border-radius: 22px; padding: 38px;
+    }
+    .contact-form-box h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 5px; color: var(--dark); }
+    .contact-form-box > p { font-size: .875rem; color: var(--grey); margin-bottom: 26px; }
+    .cform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+    /* ===== FOOTER ===== */
+    footer { background: #0f0624; padding: 80px 0 0; }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+      padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .footer-brand p { font-size: .9rem; color: rgba(255,255,255,.62); line-height: 1.75; margin: 18px 0 22px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .footer-socials a {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
+    }
+    .footer-socials a svg { width: 15px; height: 15px; color: rgba(255,255,255,.65); }
+    .footer-socials a:hover { background: var(--purple); }
+    .footer-socials a:hover svg { color: #fff; }
+    .footer-col h4 { font-size: .9375rem; font-weight: 700; color: #fff; margin-bottom: 18px; }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a {
+      font-size: .875rem; color: rgba(255,255,255,.6);
+      display: flex; align-items: center; gap: 7px;
+      transition: color var(--transition);
+    }
+    .footer-links a svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .footer-links a:hover { color: var(--purple-l); }
+    .footer-bottom {
+      padding: 22px 0; display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      font-size: .8125rem; color: rgba(255,255,255,.4);
+    }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { color: rgba(255,255,255,.4); }
+    .footer-bottom-links a:hover { color: var(--purple-l); }
+
+    /* ===== DIVIDER ===== */
+    hr.divider {
+      border: none; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--grey-l), transparent);
+    }
+
+    /* ===== SCROLL TOP ===== */
+    .scroll-top {
+      position: fixed; bottom: 26px; right: 26px; z-index: 990;
+      width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer;
+      background: var(--purple); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow); transition: all var(--transition);
+    }
+    .scroll-top svg { width: 20px; height: 20px; }
+    .scroll-top:hover { background: var(--purple-d); transform: translateY(-2px); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 960px) {
+      .hero-grid, .about-grid, .events-grid,
+      .contact-grid, .cotis-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-right { display: none; }
+      .nav-links  { display: none; }
+      .hamburger  { display: flex; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 620px) {
+      .section { padding: 60px 0; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .form-grid, .cform-grid { grid-template-columns: 1fr; }
+      .pay-methods { grid-template-columns: 1fr; }
+      .cd-grid { grid-template-columns: repeat(2,1fr); }
+      .topbar-left { display: none; }
+      .plans-grid, .team-grid, .missions-grid, .testi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ TOPBAR ══════════════ -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <span class="topbar-item"><i data-lucide="mail"></i> secretariat@remehbs-bf.org</span>
+      <span class="topbar-item"><i data-lucide="phone"></i> +226 70 24 48 27</span>
+      <span class="topbar-item"><i data-lucide="map-pin"></i> Bobo-Dioulasso, Burkina Faso</span>
+    </div>
+    <div class="topbar-right topbar-social" style="display:flex;align-items:center;gap:8px;">
+      <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+      <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+      <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+      <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header id="top">
+  <div class="container">
+    <nav>
+      <a href="#accueil" class="logo">
+        <div class="logo-mark"><i data-lucide="heart-pulse"></i></div>
+        <div class="logo-text">
+          <strong>REMEHBS</strong>
+          <span>Réseau Mère Enfant des Hauts-Bassins</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#accueil" class="active"><i data-lucide="home"></i> Accueil</a></li>
+        <li><a href="#about"><i data-lucide="info"></i> Le Réseau</a></li>
+        <li><a href="#missions"><i data-lucide="target"></i> Missions</a></li>
+        <li><a href="#evenements"><i data-lucide="calendar-days"></i> Journées 2025</a></li>
+        <li><a href="#adhesion"><i data-lucide="user-plus"></i> Adhésion</a></li>
+        <li><a href="#contact"><i data-lucide="message-square"></i> Contact</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <div class="lang-toggle">
+          <button class="active" type="button">FR</button>
+          <button type="button">EN</button>
+        </div>
+        <a href="#adhesion" class="btn btn-primary" style="padding:10px 20px;font-size:.875rem;">
+          <i data-lucide="user-plus"></i> Adhérer
+        </a>
+        <button class="hamburger" type="button" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero" id="accueil">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- Left -->
+      <div>
+        <div class="hero-eyebrow">
+          <i data-lucide="award"></i> 20 ans au service de la santé maternelle
+        </div>
+        <h1>Santé des <em>Mères</em><br>et des <em>Enfants</em><br>au cœur de nos priorités</h1>
+        <p class="hero-desc">Le REMEHBS fédère depuis 2005 les professionnels de santé périnatale des Hauts-Bassins pour réduire la mortalité maternelle, périnatale et infantile au Burkina Faso.</p>
+        <div class="hero-actions">
+          <a href="#adhesion" class="btn btn-white btn-lg">
+            <i data-lucide="user-plus"></i> Rejoindre le réseau
+          </a>
+          <a href="#evenements" class="btn btn-ghost-white btn-lg">
+            <i data-lucide="calendar-days"></i> Journées 2025
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><span class="stat-num">20+</span><span class="stat-lbl">Années d'existence</span></div>
+          <div class="stat-item"><span class="stat-num">500+</span><span class="stat-lbl">Membres actifs</span></div>
+          <div class="stat-item"><span class="stat-num">7</span><span class="stat-lbl">Journées scientifiques</span></div>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="hero-right">
+        <div class="glass-card">
+          <div class="gc-icon">
+            <div class="icon-box icon-box-md ib-white" style="background:rgba(255,255,255,.18);">
+              <i data-lucide="calendar-check" style="width:24px;height:24px;color:#fff;"></i>
+            </div>
+          </div>
+          <h3>7èmes Journées Scientifiques 2025</h3>
+          <p>Congrès principal · 23–25 juillet 2025 · Bobo-Dioulasso</p>
+        </div>
+        <div class="glass-card-sm">
+          <i data-lucide="users"></i>
+          <div class="gc-text">
+            <strong>Adhésion en ligne</strong>
+            <span>Rejoignez le réseau en 5 minutes</span>
+          </div>
+        </div>
+        <div class="glass-card-sm">
+          <i data-lucide="shield-check"></i>
+          <div class="gc-text">
+            <strong>Réseau apolitique &amp; aconfessionnel</strong>
+            <span>Fondé sur l'excellence médicale</span>
+          </div>
+        </div>
+        <div class="glass-card-sm">
+          <i data-lucide="file-text"></i>
+          <div class="gc-text">
+            <strong>Appel à communications ouvert</strong>
+            <span>Soumettez avant le 30 juin 2025</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ BANDE ANNONCE ══════════════ -->
+<div class="annonce">
+  <div class="container">
+    <div class="annonce-inner">
+      <i data-lucide="megaphone"></i>
+      <p><strong>Appel à communications :</strong> Soumettez vos résumés scientifiques avant le 30 juin 2025 — Congrès 23–25 juillet, Bobo-Dioulasso</p>
+      <a href="#evenements" class="btn btn-white" style="padding:8px 20px;font-size:.8rem;flex-shrink:0;">
+        <i data-lucide="arrow-right"></i> En savoir plus
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ À PROPOS ══════════════ -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-img-bg">
+          <i data-lucide="activity"></i>
+        </div>
+        <div class="about-float">
+          <div class="icon-box icon-box-sm ib-solid-green"><i data-lucide="shield-check"></i></div>
+          <div>
+            <strong>Fondé en 2005</strong>
+            <span>20 ans d'impact médical</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-text">
+        <span class="badge"><i data-lucide="info"></i> Le Réseau</span>
+        <h2 class="section-title">Un réseau périnatal de référence au Burkina Faso</h2>
+        <p style="color:var(--grey);line-height:1.75;">Le REMEHBS est une association apolitique et aconfessionnelle dont l'objet est l'amélioration de la santé maternelle, périnatale et infantile dans la région des Hauts-Bassins. Il fédère professionnels de santé, chercheurs et décideurs autour d'une vision commune.</p>
+        <div class="tl-list">
+          <div class="tl-item">
+            <div class="tl-dot"><i data-lucide="flag"></i></div>
+            <div class="tl-body">
+              <strong>Création du réseau — 2005</strong>
+              <span>Fondé par Pr. Blami DAO à Bobo-Dioulasso</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"><i data-lucide="book-open"></i></div>
+            <div class="tl-body">
+              <strong>1ères Journées Scientifiques — 2009</strong>
+              <span>Lancement des congrès périnataux régionaux</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"><i data-lucide="trending-up"></i></div>
+            <div class="tl-body">
+              <strong>Expansion nationale — 2017</strong>
+              <span>Partenariats avec la Direction Régionale de la Santé</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"><i data-lucide="star"></i></div>
+            <div class="tl-body">
+              <strong>20ème anniversaire — 2025</strong>
+              <span>7èmes Journées Scientifiques de Périnatalité</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ══════════════ MISSIONS ══════════════ -->
+<section class="section bg-grey" id="missions">
+  <div class="container">
+    <div class="text-center">
+      <span class="badge"><i data-lucide="target"></i> Nos Missions</span>
+      <h2 class="section-title">Ce que nous portons chaque jour</h2>
+      <p class="section-sub">Quatre axes stratégiques pour réduire la mortalité maternelle, périnatale et infantile dans les Hauts-Bassins.</p>
+    </div>
+    <div class="missions-grid">
+      <div class="mission-card">
+        <div class="icon-box icon-box-lg ib-purple"><i data-lucide="graduation-cap"></i></div>
+        <h3>Renforcement des compétences</h3>
+        <p>Formations continues pour les professionnels de santé sur les meilleures pratiques obstétricales et néonatales.</p>
+      </div>
+      <div class="mission-card">
+        <div class="icon-box icon-box-lg ib-blue"><i data-lucide="stethoscope"></i></div>
+        <h3>Soins de qualité</h3>
+        <p>Harmonisation des protocoles de soins périnataux et promotion de pratiques fondées sur les preuves scientifiques.</p>
+      </div>
+      <div class="mission-card">
+        <div class="icon-box icon-box-lg ib-green"><i data-lucide="microscope"></i></div>
+        <h3>Recherche scientifique</h3>
+        <p>Organisation de journées scientifiques biannuelles favorisant le partage des connaissances et la collaboration.</p>
+      </div>
+      <div class="mission-card">
+        <div class="icon-box icon-box-lg ib-red"><i data-lucide="users"></i></div>
+        <h3>Consultation d'experts</h3>
+        <p>Réseau de consultants spécialisés mobilisables pour accompagner les structures dans l'amélioration de leur offre de soins.</p>
+      </div>
+      <div class="mission-card">
+        <div class="icon-box icon-box-lg ib-orange"><i data-lucide="activity"></i></div>
+        <h3>Surveillance épidémiologique</h3>
+        <p>Suivi des indicateurs clés de mortalité maternelle et périnatale pour orienter les politiques de santé régionales.</p>
+      </div>
+      <div class="mission-card">
+        <div class="icon-box icon-box-lg ib-purple"><i data-lucide="handshake"></i></div>
+        <h3>Plaidoyer &amp; Partenariats</h3>
+        <p>Collaboration avec le Ministère de la Santé, les ONG et partenaires techniques pour mobiliser les ressources nécessaires.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ JOURNÉES 2025 ══════════════ -->
+<section class="section" id="evenements">
+  <div class="container">
+    <div class="text-center">
+      <span class="badge"><i data-lucide="calendar-days"></i> Journées 2025</span>
+      <h2 class="section-title">7èmes Journées Scientifiques de Périnatalité</h2>
+      <p class="section-sub">Congrès international · 23–25 juillet 2025 · Bobo-Dioulasso, Burkina Faso</p>
+    </div>
+    <div class="events-grid">
+
+      <!-- Countdown -->
+      <div class="countdown-card">
+        <span class="badge"><i data-lucide="clock"></i> Compte à rebours</span>
+        <h3>Congrès Principal 2025</h3>
+        <p>23 – 25 juillet 2025 · Trypano, Bobo-Dioulasso</p>
+        <div class="cd-grid">
+          <div class="cd-box"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Jours</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Heures</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Minutes</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Secondes</span></div>
+        </div>
+        <div class="event-meta-list">
+          <div class="event-meta-item"><i data-lucide="map-pin"></i> Direction Régionale de la Santé (TRYPANO)</div>
+          <div class="event-meta-item"><i data-lucide="globe"></i> Congrès international, langue française</div>
+          <div class="event-meta-item"><i data-lucide="file-text"></i> Soumissions uniquement en ligne</div>
+          <div class="event-meta-item"><i data-lucide="users"></i> Ouvert aux membres et non-membres</div>
+        </div>
+        <a href="#" class="btn btn-white btn-full">
+          <i data-lucide="external-link"></i> Plateforme de soumission
+        </a>
+      </div>
+
+      <!-- Timeline -->
+      <div class="tl-events">
+        <div class="tl-evt">
+          <div class="tl-evt-spine">
+            <div class="tl-evt-dot done"></div>
+            <div class="tl-evt-line"></div>
+          </div>
+          <div class="tl-evt-card">
+            <div class="tl-evt-date"><i data-lucide="calendar"></i> Septembre 2024</div>
+            <h4>1er Appel à communications</h4>
+            <p>Ouverture des soumissions de résumés scientifiques</p>
+            <span class="evt-status s-done"><i data-lucide="check-circle"></i> Terminé</span>
+          </div>
+        </div>
+        <div class="tl-evt">
+          <div class="tl-evt-spine">
+            <div class="tl-evt-dot done"></div>
+            <div class="tl-evt-line"></div>
+          </div>
+          <div class="tl-evt-card">
+            <div class="tl-evt-date"><i data-lucide="calendar"></i> 31 mars 2025</div>
+            <h4>Clôture du 2e appel à communications</h4>
+            <p>Date limite de soumission des résumés — 2e appel</p>
+            <span class="evt-status s-done"><i data-lucide="check-circle"></i> Terminé</span>
+          </div>
+        </div>
+        <div class="tl-evt">
+          <div class="tl-evt-spine">
+            <div class="tl-evt-dot highlight"></div>
+            <div class="tl-evt-line"></div>
+          </div>
+          <div class="tl-evt-card">
+            <div class="tl-evt-date"><i data-lucide="calendar"></i> 1 avril – 30 juin 2025</div>
+            <h4>Soumission finale &amp; Inscriptions</h4>
+            <p>Dépôt des communications et inscription en ligne au congrès</p>
+            <span class="evt-status s-open"><i data-lucide="circle-dot"></i> Ouvert actuellement</span>
+          </div>
+        </div>
+        <div class="tl-evt">
+          <div class="tl-evt-spine">
+            <div class="tl-evt-dot"></div>
+            <div class="tl-evt-line"></div>
+          </div>
+          <div class="tl-evt-card">
+            <div class="tl-evt-date"><i data-lucide="calendar"></i> 15 – 22 juillet 2025</div>
+            <h4>Sessions de compétences (Pré-congrès)</h4>
+            <p>Ateliers pratiques et formations techniques spécialisées</p>
+            <span class="evt-status s-soon"><i data-lucide="clock"></i> À venir</span>
+          </div>
+        </div>
+        <div class="tl-evt">
+          <div class="tl-evt-spine">
+            <div class="tl-evt-dot"></div>
+            <div class="tl-evt-line"></div>
+          </div>
+          <div class="tl-evt-card">
+            <div class="tl-evt-date"><i data-lucide="calendar"></i> 23 – 25 juillet 2025</div>
+            <h4>Congrès principal — 7èmes JSP</h4>
+            <p>Plénières, communications libres, tables rondes et cérémonie d'ouverture</p>
+            <span class="evt-status s-main"><i data-lucide="star"></i> Événement principal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ ÉQUIPE ══════════════ -->
+<section class="section bg-grey" id="equipe">
+  <div class="container">
+    <div class="text-center">
+      <span class="badge"><i data-lucide="users"></i> Leadership</span>
+      <h2 class="section-title">Notre équipe dirigeante</h2>
+      <p class="section-sub">Des professionnels de santé engagés au service de la santé maternelle et périnatale depuis 20 ans.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar"><i data-lucide="user-circle"></i></div>
+        <div class="team-body">
+          <h3>Pr. Ziemlé Clément MEDA</h3>
+          <div class="role">Président depuis 2021</div>
+          <p>Professeur, expert en santé publique et périnatalité, CHU Sanou Souro</p>
+          <div class="team-socials">
+            <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+            <a href="#" aria-label="E-mail"><i data-lucide="mail"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#e8f2ff,#d0e4ff);">
+          <i data-lucide="user-circle" style="color:var(--blue);opacity:.45;"></i>
+        </div>
+        <div class="team-body">
+          <h3>Dr. H. Habib Ouattara</h3>
+          <div class="role">Président d'honneur (2010–2017)</div>
+          <p>Gynécologue-obstétricien, pionnier du réseau périnatal des Hauts-Bassins</p>
+          <div class="team-socials">
+            <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+            <a href="#" aria-label="E-mail"><i data-lucide="mail"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#e6f9f0,#ccf2e0);">
+          <i data-lucide="user-circle" style="color:var(--green);opacity:.45;"></i>
+        </div>
+        <div class="team-body">
+          <h3>Pr. Der Adolphe Somé</h3>
+          <div class="role">Président d'honneur (2017–2021)</div>
+          <p>Professeur de pédiatrie et néonatologie, Université Nazi Boni</p>
+          <div class="team-socials">
+            <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+            <a href="#" aria-label="E-mail"><i data-lucide="mail"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#fff0f5,#ffd6e5);">
+          <i data-lucide="user-circle" style="color:var(--red);opacity:.45;"></i>
+        </div>
+        <div class="team-body">
+          <h3>Secrétariat Général</h3>
+          <div class="role">Administration &amp; Coordination</div>
+          <p>Gestion administrative, coordination des membres et suivi des activités</p>
+          <div class="team-socials">
+            <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+            <a href="#" aria-label="E-mail"><i data-lucide="mail"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ ADHÉSION — PLANS ══════════════ -->
+<section class="section" id="adhesion">
+  <div class="container">
+    <div class="text-center">
+      <span class="badge"><i data-lucide="user-plus"></i> Adhésion</span>
+      <h2 class="section-title">Rejoignez le REMEHBS</h2>
+      <p class="section-sub">Choisissez la catégorie correspondant à votre profil et contribuez à l'amélioration de la santé maternelle.</p>
+    </div>
+    <div class="plans-grid">
+
+      <!-- Étudiant -->
+      <div class="plan-card">
+        <div class="icon-box icon-box-lg ib-blue"><i data-lucide="book-open"></i></div>
+        <h3>Étudiant / Stagiaire</h3>
+        <p class="plan-desc">Pour les étudiants en sciences de la santé et stagiaires en formation initiale</p>
+        <div class="plan-price">
+          <span class="currency">FCFA</span><span class="amount">2 000</span>
+          <span class="period"> / an</span>
+        </div>
+        <ul class="plan-features">
+          <li class="pf"><i data-lucide="check"></i><span>Accès aux journées scientifiques</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Documentation &amp; ressources pédagogiques</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Réductions sur les formations</span></li>
+          <li class="pf off"><i data-lucide="x"></i><span>Droit de vote en assemblée générale</span></li>
+          <li class="pf off"><i data-lucide="x"></i><span>Accès aux commissions thématiques</span></li>
+        </ul>
+        <a href="#form-adhesion" class="btn btn-outline btn-full">
+          <i data-lucide="arrow-right"></i> Choisir ce plan
+        </a>
+      </div>
+
+      <!-- Professionnel (featured) -->
+      <div class="plan-card featured">
+        <div class="plan-top-badge">Populaire</div>
+        <div class="icon-box icon-box-lg ib-purple"><i data-lucide="stethoscope"></i></div>
+        <h3>Professionnel de Santé</h3>
+        <p class="plan-desc">Pour les médecins, sages-femmes, infirmiers et autres professionnels diplômés</p>
+        <div class="plan-price">
+          <span class="currency">FCFA</span><span class="amount">5 000</span>
+          <span class="period"> / an</span>
+        </div>
+        <ul class="plan-features">
+          <li class="pf"><i data-lucide="check"></i><span>Accès aux journées scientifiques</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Documentation &amp; ressources avancées</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Tarif préférentiel formations &amp; congrès</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Droit de vote en assemblée générale</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Accès aux commissions thématiques</span></li>
+        </ul>
+        <a href="#form-adhesion" class="btn btn-primary btn-full">
+          <i data-lucide="arrow-right"></i> Choisir ce plan
+        </a>
+      </div>
+
+      <!-- Institution -->
+      <div class="plan-card">
+        <div class="icon-box icon-box-lg ib-green"><i data-lucide="building-2"></i></div>
+        <h3>Institution / Structure</h3>
+        <p class="plan-desc">Pour les hôpitaux, cliniques, ONG et structures sanitaires</p>
+        <div class="plan-price">
+          <span class="currency">FCFA</span><span class="amount">25 000</span>
+          <span class="period"> / an</span>
+        </div>
+        <ul class="plan-features">
+          <li class="pf"><i data-lucide="check"></i><span>Accès pour 5 membres de la structure</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Visibilité dans l'annuaire du réseau</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Partenariat et co-organisation d'événements</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>Rapport annuel d'activités REMEHBS</span></li>
+          <li class="pf"><i data-lucide="check"></i><span>1 stand lors des journées scientifiques</span></li>
+        </ul>
+        <a href="#form-adhesion" class="btn btn-outline btn-full">
+          <i data-lucide="arrow-right"></i> Choisir ce plan
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FORMULAIRE ADHÉSION ══════════════ -->
+<section class="section bg-grey" id="form-adhesion">
+  <div class="container">
+    <div class="form-wrap">
+      <div class="text-center">
+        <span class="badge"><i data-lucide="file-text"></i> Formulaire</span>
+        <h2 class="section-title">Dossier d'adhésion en ligne</h2>
+        <p class="section-sub">Remplissez le formulaire ci-dessous. Votre demande sera traitée sous 48h ouvrables.</p>
+      </div>
+
+      <!-- Étapes -->
+      <div class="form-steps">
+        <div class="form-step active">
+          <div class="step-num">1</div>
+          <span class="step-lbl">Informations</span>
+        </div>
+        <div class="form-step">
+          <div class="step-num">2</div>
+          <span class="step-lbl">Catégorie</span>
+        </div>
+        <div class="form-step">
+          <div class="step-num">3</div>
+          <span class="step-lbl">Paiement</span>
+        </div>
+        <div class="form-step">
+          <div class="step-num">4</div>
+          <span class="step-lbl">Confirmation</span>
+        </div>
+      </div>
+
+      <form>
+        <div class="form-grid">
+          <div class="fg">
+            <label><i data-lucide="user"></i> Nom</label>
+            <input type="text" placeholder="Votre nom de famille" />
+          </div>
+          <div class="fg">
+            <label><i data-lucide="user"></i> Prénom(s)</label>
+            <input type="text" placeholder="Votre prénom" />
+          </div>
+          <div class="fg">
+            <label><i data-lucide="mail"></i> Adresse e-mail</label>
+            <input type="email" placeholder="vous@exemple.com" />
+          </div>
+          <div class="fg">
+            <label><i data-lucide="phone"></i> Téléphone</label>
+            <input type="tel" placeholder="+226 XX XX XX XX" />
+          </div>
+          <div class="fg">
+            <label><i data-lucide="briefcase"></i> Profession</label>
+            <select>
+              <option value="">Sélectionnez votre profession</option>
+              <option>Médecin gynécologue-obstétricien</option>
+              <option>Médecin pédiatre / néonatologue</option>
+              <option>Sage-femme / Maïeuticien</option>
+              <option>Infirmier(e) diplômé(e)</option>
+              <option>Anesthésiste-réanimateur</option>
+              <option>Étudiant en médecine</option>
+              <option>Chercheur en santé publique</option>
+              <option>Institution / Structure de santé</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label><i data-lucide="map-pin"></i> Structure / Établissement</label>
+            <input type="text" placeholder="CHU, Clinique, ONG..." />
+          </div>
+          <div class="fg full">
+            <label><i data-lucide="map"></i> Adresse complète</label>
+            <input type="text" placeholder="Quartier, Ville, Province" />
+          </div>
+          <div class="fg full">
+            <label><i data-lucide="credit-card"></i> Moyen de paiement</label>
+            <div class="pay-methods">
+              <div class="pay-method sel" onclick="selPay(this)">
+                <i data-lucide="smartphone" style="color:#ff6900;"></i>
+                <div class="pay-name">Orange Money</div>
+                <div class="pay-sub">Paiement mobile</div>
+              </div>
+              <div class="pay-method" onclick="selPay(this)">
+                <i data-lucide="smartphone" style="color:#0072ff;"></i>
+                <div class="pay-name">Moov Money</div>
+                <div class="pay-sub">Paiement mobile</div>
+              </div>
+              <div class="pay-method" onclick="selPay(this)">
+                <i data-lucide="landmark" style="color:#1a1a2e;"></i>
+                <div class="pay-name">Virement bancaire</div>
+                <div class="pay-sub">BICIA-B / Coris Bank</div>
+              </div>
+            </div>
+          </div>
+          <div class="fg full">
+            <label><i data-lucide="message-square"></i> Informations complémentaires</label>
+            <textarea placeholder="Motivations, spécialité, questions éventuelles..."></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-lg">
+            <i data-lucide="send"></i> Soumettre ma demande
+          </button>
+          <button type="reset" class="btn btn-outline">
+            <i data-lucide="rotate-ccw"></i> Réinitialiser
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ COTISATIONS ══════════════ -->
+<section class="section" id="cotisations">
+  <div class="container">
+    <div class="text-center">
+      <span class="badge"><i data-lucide="banknote"></i> Cotisations</span>
+      <h2 class="section-title">Espace membres — Cotisations</h2>
+      <p class="section-sub">Consultez votre historique et réglez votre cotisation annuelle en quelques clics, en toute sécurité.</p>
+    </div>
+    <div class="cotis-grid">
+
+      <!-- Panneau membre -->
+      <div class="cotis-panel">
+        <div class="cotis-panel-title"><i data-lucide="user-circle"></i> Mon espace membre</div>
+        <p>Tableau de bord de votre adhésion au REMEHBS</p>
+        <div class="member-row">
+          <div class="m-avatar"><i data-lucide="user"></i></div>
+          <div class="m-info">
+            <strong>Dr. A. Traoré</strong>
+            <span>Professionnel de Santé · N° RMB-2025-0147</span>
+          </div>
+          <div class="m-status m-ok"><i data-lucide="shield-check"></i> Actif 2025</div>
+        </div>
+        <p style="font-size:.9375rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--dark);">
+          <i data-lucide="clock" style="width:16px;height:16px;color:var(--purple);"></i> Historique des cotisations
+        </p>
+        <div class="cotis-history">
+          <div class="cotis-row">
+            <div class="cr-left"><i data-lucide="receipt"></i><div><div class="cr-year">2025</div><div class="cr-type">Professionnel</div></div></div>
+            <div class="cr-right"><span class="cr-amount">5 000 FCFA</span><span class="cr-badge cb-ok">Payé</span></div>
+          </div>
+          <div class="cotis-row">
+            <div class="cr-left"><i data-lucide="receipt"></i><div><div class="cr-year">2024</div><div class="cr-type">Professionnel</div></div></div>
+            <div class="cr-right"><span class="cr-amount">5 000 FCFA</span><span class="cr-badge cb-ok">Payé</span></div>
+          </div>
+          <div class="cotis-row">
+            <div class="cr-left"><i data-lucide="receipt"></i><div><div class="cr-year">2023</div><div class="cr-type">Professionnel</div></div></div>
+            <div class="cr-right"><span class="cr-amount">5 000 FCFA</span><span class="cr-badge cb-due">Impayé</span></div>
+          </div>
+        </div>
+        <a href="#" class="btn btn-outline btn-full" style="margin-top:18px;">
+          <i data-lucide="download"></i> Télécharger attestation 2025
+        </a>
+      </div>
+
+      <!-- Paiement rapide -->
+      <div class="cotis-panel">
+        <div class="cotis-panel-title"><i data-lucide="credit-card"></i> Payer ma cotisation</div>
+        <p>Réglez votre cotisation annuelle rapidement et en sécurité</p>
+        <div class="fg" style="margin-bottom:16px;">
+          <label><i data-lucide="user"></i> N° de membre ou e-mail</label>
+          <input type="text" placeholder="RMB-2025-XXXX ou email" />
+        </div>
+        <div class="fg" style="margin-bottom:16px;">
+          <label><i data-lucide="calendar"></i> Année de cotisation</label>
+          <select>
+            <option>2025 — Cotisation courante</option>
+            <option>2024 — Arriéré</option>
+            <option>2023 — Arriéré</option>
+          </select>
+        </div>
+        <label style="font-size:.875rem;font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:6px;color:var(--dark);">
+          <i data-lucide="banknote" style="width:14px;height:14px;color:var(--purple);"></i> Montant
+        </label>
+        <div class="amount-chips">
+          <div class="chip" onclick="selChip(this)">2 000 FCFA</div>
+          <div class="chip sel" onclick="selChip(this)">5 000 FCFA</div>
+          <div class="chip" onclick="selChip(this)">25 000 FCFA</div>
+        </div>
+        <div class="fg" style="margin-bottom:16px;">
+          <label><i data-lucide="credit-card"></i> Mode de paiement</label>
+          <select>
+            <option>Orange Money</option>
+            <option>Moov Money</option>
+            <option>Virement bancaire (BICIA-B / Coris Bank)</option>
+          </select>
+        </div>
+        <div class="fg" style="margin-bottom:22px;">
+          <label><i data-lucide="hash"></i> Numéro de transaction / Référence</label>
+          <input type="text" placeholder="Ex : ORM-20250417-XXXX" />
+        </div>
+        <button class="btn btn-green btn-full btn-lg">
+          <i data-lucide="check-circle"></i> Valider le paiement
+        </button>
+        <p class="secure-note"><i data-lucide="shield"></i> Paiement sécurisé — Reçu envoyé par e-mail &amp; SMS</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TÉMOIGNAGES ══════════════ -->
+<section class="section bg-dark">
+  <div class="container">
+    <div class="text-center">
+      <span class="badge" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.88);">
+        <i data-lucide="message-circle"></i> Témoignages
+      </span>
+      <h2 class="section-title" style="color:#fff;">Ce que disent nos membres</h2>
+      <p class="section-sub" style="color:rgba(255,255,255,.6);">La voix de ceux qui font vivre le REMEHBS au quotidien.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">
+          <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
+          <i data-lucide="star"></i><i data-lucide="star"></i>
+        </div>
+        <p>« Le REMEHBS a transformé ma pratique obstétricale. Les journées scientifiques m'ont permis de mettre à jour mes connaissances et de tisser des liens précieux avec des confrères de toute la région. »</p>
+        <div class="testi-author">
+          <div class="t-avatar"><i data-lucide="user"></i></div>
+          <div>
+            <strong>Dr. Aminata Koné</strong>
+            <span>Gynécologue-Obstétricienne · CHU de Bobo</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">
+          <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
+          <i data-lucide="star"></i><i data-lucide="star"></i>
+        </div>
+        <p>« En tant que sage-femme, les formations organisées par le réseau m'ont donné les outils pour mieux prendre en charge les urgences obstétricales. Un réseau vraiment indispensable. »</p>
+        <div class="testi-author">
+          <div class="t-avatar" style="background:linear-gradient(135deg,var(--red),#ff8fa3);"><i data-lucide="user"></i></div>
+          <div>
+            <strong>Mme Rasmata Ouédraogo</strong>
+            <span>Sage-femme · CSPS de Dindéresso</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">
+          <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
+          <i data-lucide="star"></i><i data-lucide="star"></i>
+        </div>
+        <p>« Le modèle du réseau périnatal REMEHBS est exemplaire. Sa capacité à réunir professionnels, chercheurs et décideurs autour de la santé maternelle devrait inspirer toutes les régions du Burkina. »</p>
+        <div class="testi-author">
+          <div class="t-avatar" style="background:linear-gradient(135deg,var(--green),#34d399);"><i data-lucide="user"></i></div>
+          <div>
+            <strong>Pr. Idrissa Compaoré</strong>
+            <span>Pédiatre · Université Nazi Boni</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CONTACT ══════════════ -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <span class="badge"><i data-lucide="message-square"></i> Contact</span>
+        <h2 class="section-title">Nous contacter</h2>
+        <p style="color:var(--grey);margin-bottom:32px;line-height:1.75;">Notre secrétariat est disponible pour répondre à toutes vos questions sur l'adhésion, les événements ou les partenariats.</p>
+        <div class="contact-cards">
+          <div class="contact-card">
+            <div class="icon-box icon-box-sm ib-purple"><i data-lucide="mail"></i></div>
+            <div><strong>E-mail</strong><span>secretariat@remehbs-bf.org</span></div>
+          </div>
+          <div class="contact-card">
+            <div class="icon-box icon-box-sm ib-blue"><i data-lucide="phone"></i></div>
+            <div><strong>Téléphone</strong><span>+226 70 24 48 27 · +226 78 69 44 67<br />+226 70 34 00 00 · +226 76 56 26 67</span></div>
+          </div>
+          <div class="contact-card">
+            <div class="icon-box icon-box-sm ib-green"><i data-lucide="map-pin"></i></div>
+            <div><strong>Adresse</strong><span>Direction Régionale de la Santé des Hauts-Bassins (TRYPANO), Bobo-Dioulasso, Burkina Faso</span></div>
+          </div>
+          <div class="contact-card">
+            <div class="icon-box icon-box-sm ib-orange"><i data-lucide="clock"></i></div>
+            <div><strong>Horaires du secrétariat</strong><span>Lundi – Vendredi : 8h00 – 17h00<br />Samedi : 8h00 – 12h00</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-box">
+        <h3>Envoyer un message</h3>
+        <p>Réponse garantie sous 48 heures ouvrables</p>
+        <form>
+          <div class="cform-grid">
+            <div class="fg">
+              <label><i data-lucide="user"></i> Nom</label>
+              <input type="text" placeholder="Votre nom" />
+            </div>
+            <div class="fg">
+              <label><i data-lucide="user"></i> Prénom</label>
+              <input type="text" placeholder="Votre prénom" />
+            </div>
+          </div>
+          <div class="fg" style="margin-bottom:14px;">
+            <label><i data-lucide="mail"></i> E-mail</label>
+            <input type="email" placeholder="vous@exemple.com" />
+          </div>
+          <div class="fg" style="margin-bottom:14px;">
+            <label><i data-lucide="tag"></i> Objet</label>
+            <select>
+              <option>Adhésion &amp; inscription</option>
+              <option>Journées Scientifiques 2025</option>
+              <option>Partenariat / Collaboration</option>
+              <option>Paiement de cotisation</option>
+              <option>Autre demande</option>
+            </select>
+          </div>
+          <div class="fg" style="margin-bottom:24px;">
+            <label><i data-lucide="message-square"></i> Message</label>
+            <textarea placeholder="Décrivez votre demande en détail..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full btn-lg">
+            <i data-lucide="send"></i> Envoyer le message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:0;">
+          <div class="logo-mark"><i data-lucide="heart-pulse"></i></div>
+        </div>
+        <p>Le REMEHBS œuvre depuis 2005 à l'amélioration de la santé maternelle, périnatale et infantile dans la région des Hauts-Bassins, Burkina Faso.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+          <a href="#" aria-label="TikTok"><i data-lucide="video"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="#accueil"><i data-lucide="chevron-right"></i> Accueil</a></li>
+          <li><a href="#about"><i data-lucide="chevron-right"></i> Le Réseau</a></li>
+          <li><a href="#missions"><i data-lucide="chevron-right"></i> Nos Missions</a></li>
+          <li><a href="#evenements"><i data-lucide="chevron-right"></i> Journées 2025</a></li>
+          <li><a href="#equipe"><i data-lucide="chevron-right"></i> Notre Équipe</a></li>
+          <li><a href="#contact"><i data-lucide="chevron-right"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Membres</h4>
+        <ul class="footer-links">
+          <li><a href="#adhesion"><i data-lucide="chevron-right"></i> Adhérer au réseau</a></li>
+          <li><a href="#cotisations"><i data-lucide="chevron-right"></i> Payer ma cotisation</a></li>
+          <li><a href="#"><i data-lucide="chevron-right"></i> Espace membre</a></li>
+          <li><a href="#"><i data-lucide="chevron-right"></i> Attestation d'adhésion</a></li>
+          <li><a href="#"><i data-lucide="chevron-right"></i> Annuaire des membres</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ressources</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i data-lucide="chevron-right"></i> Programme JSP 2025</a></li>
+          <li><a href="#"><i data-lucide="chevron-right"></i> Guide communication</a></li>
+          <li><a href="#"><i data-lucide="chevron-right"></i> Rédiger un résumé</a></li>
+          <li><a href="#"><i data-lucide="chevron-right"></i> Journées précédentes</a></li>
+          <li><a href="#"><i data-lucide="chevron-right"></i> Publications</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 REMEHBS — Réseau Mère Enfant des Hauts-Bassins. Tous droits réservés.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Mentions légales</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Plan du site</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ SCROLL TOP ══════════════ -->
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Retour en haut">
+  <i data-lucide="arrow-up"></i>
+</button>
+
+<!-- ══════════════ SCRIPTS ══════════════ -->
+<script>
+  /* 1 — Initialiser Lucide */
+  lucide.createIcons();
+
+  /* 2 — Compte à rebours vers le 23 juillet 2025 */
+  function tick() {
+    const target = new Date('2025-07-23T08:00:00').getTime();
+    const now    = Date.now();
+    const diff   = target - now;
+    if (diff <= 0) return;
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('cd-d').textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById('cd-h').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* 3 — Sélection mode de paiement */
+  function selPay(el) {
+    document.querySelectorAll('.pay-method').forEach(e => e.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+
+  /* 4 — Sélection montant */
+  function selChip(el) {
+    document.querySelectorAll('.chip').forEach(e => e.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+
+  /* 5 — Header shadow on scroll */
+  const hdr = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    hdr.style.boxShadow = window.scrollY > 12
+      ? '0 4px 28px rgba(103,61,230,.18)'
+      : '0 2px 8px rgba(0,0,0,.07)';
+  });
+
+  /* 6 — Smooth active link */
+  const sections = document.querySelectorAll('section[id], div[id="top"]');
+  const navLinks  = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>

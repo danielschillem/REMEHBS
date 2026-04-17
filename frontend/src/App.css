@@ -1,0 +1,94 @@
+/* REMEHBS — App styles & Responsive */
+
+/* ── Tablet (≤960px) ── */
+@media (max-width: 960px) {
+  /* Hero : stack + hide right column */
+  .grid-hero {
+    grid-template-columns: 1fr !important;
+  }
+  .hero-right {
+    display: none !important;
+  }
+
+  /* About, Events : 2-col → 1-col */
+  .grid-about,
+  .grid-events {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Event timeline 4-col → 2-col */
+  .grid-timeline {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Contact form grid */
+  .grid-contact {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Footer 4-col → 2-col */
+  .grid-footer {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Espace membre 2-col → 1-col */
+  .grid-membre {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Adhésion form 2-col → 1-col */
+  .grid-form {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Catégorie cards 3-col → 1-col */
+  .grid-categories {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hero stats row */
+  .flex-stats {
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+  }
+
+  /* Nav links hide on tablet */
+  .nav-links {
+    display: none !important;
+  }
+}
+
+/* ── Mobile (≤620px) ── */
+@media (max-width: 620px) {
+  .container {
+    padding: 0 16px !important;
+  }
+
+  /* Footer → single col */
+  .grid-footer {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Timeline → single col */
+  .grid-timeline {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Recap grid → single col */
+  .grid-recap {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Step indicators smaller */
+  .step-bar {
+    font-size: 0.7rem !important;
+  }
+  .step-bar > div {
+    padding: 10px 4px !important;
+  }
+
+  /* Topbar hide on mobile */
+  .topbar {
+    display: none !important;
+  }
+}
