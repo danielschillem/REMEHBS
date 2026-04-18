@@ -27,6 +27,16 @@ def envoyer_email_confirmation_adhesion(self, member_id: int):
     if not ok:
         raise self.retry(exc=Exception("Échec envoi email adhésion"))
 
+    # Notification in-app
+    from members.models import Notification
+    Notification.objects.create(
+        member=member,
+        type=Notification.Type.ADHESION,
+        titre="Demande d'adhésion enregistrée",
+        message=f"Votre demande d'adhésion ({member.numero_membre}) a bien été enregistrée. Elle sera traitée sous 48h.",
+        lien="/espace-membre",
+    )
+
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=60)
 def envoyer_email_confirmation_paiement(self, member_id: int, montant: int, annee: int, reference: str):
@@ -47,6 +57,16 @@ def envoyer_email_confirmation_paiement(self, member_id: int, montant: int, anne
     ok = send_email(to=[member.email], subject=subject, html=html)
     if not ok:
         raise self.retry(exc=Exception("Échec envoi email paiement"))
+
+    # Notification in-app
+    from members.models import Notification
+    Notification.objects.create(
+        member=member,
+        type=Notification.Type.COTISATION,
+        titre=f"Cotisation {annee} payée",
+        message=f"Votre cotisation {annee} de {montant:,} FCFA a été confirmée (Réf: {reference}).",
+        lien="/espace-membre",
+    )
 
 
 @shared_task

@@ -6,6 +6,18 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
+try:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+except ImportError:
+    sentry_sdk = None
+    DjangoIntegration = None
+
+try:
+    import dj_database_url
+    HAS_DJ_DATABASE_URL = True
+except ImportError:
+    HAS_DJ_DATABASE_URL = False
 
 load_dotenv()
 
@@ -47,6 +59,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -77,28 +90,30 @@ TEMPLATES = [
 WSGI_APPLICATION = "remehbs_api.wsgi.application"
 
 # ── Base de données ────────────────────────────
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///db.sqlite3")
-
-if DATABASE_URL.startswith("postgresql"):
-    import re
-    m = re.match(r"postgresql://(.+):(.+)@(.+):(\d+)/(.+)", DATABASE_URL)
+if HAS_DJ_DATABASE_URL:
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": m.group(5),
-            "USER": m.group(1),
-            "PASSWORD": m.group(2),
-            "HOST": m.group(3),
-            "PORT": m.group(4),
-        }
+        "default": dj_database_url.config(
+            default="sqlite:///" + str(BASE_DIR / "db.sqlite3"),
+            conn_max_age=600,
+        )
     }
 else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+    DATABASE_URL = os.getenv("DATABASE_URL", "")
+    if DATABASE_URL.startswith("postgresql"):
+        import re
+        m = re.match(r"postgresql://(.+):(.+)@(.+):(\d+)/(.+)", DATABASE_URL)
+        if m:
+            DATABASES = {
+                "default": {
+                    "ENGINE": "django.db.backends.postgresql",
+                    "NAME": m.group(5), "USER": m.group(1),
+                    "PASSWORD": m.group(2), "HOST": m.group(3), "PORT": m.group(4),
+                }
+            }
+        else:
+            DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
+    else:
+        DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
 
 # ── Auth & JWT ────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
@@ -132,6 +147,20 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.ScopedRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "120/hour",
+        "user": "600/hour",
+        "auth_login": "15/min",
+        "auth_password_reset": "6/hour",
+        "adhesion_submit": "10/hour",
+        "payment_init": "30/hour",
+        "payment_webhook": "180/min",
+    },
 }
 
 # ── Swagger / OpenAPI ─────────────────────────
@@ -143,12 +172,11 @@ SPECTACULAR_SETTINGS = {
 }
 
 # ── CORS ──────────────────────────────────────
+_cors_extra = os.getenv("CORS_ALLOWED_ORIGINS", "")
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://remehbs-bf.org",
-    "https://www.remehbs-bf.org",
-]
+] + [o.strip() for o in _cors_extra.split(",") if o.strip()]
 CORS_ALLOW_CREDENTIALS = True
 
 # ── Internationalisation ──────────────────────
@@ -160,6 +188,14 @@ USE_TZ = True
 # ── Fichiers statiques & médias ───────────────
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 MEDIA_URL  = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -170,6 +206,10 @@ CINETPAY_API_KEY    = os.getenv("CINETPAY_API_KEY", "")
 CINETPAY_SITE_ID    = os.getenv("CINETPAY_SITE_ID", "")
 CINETPAY_SECRET_KEY = os.getenv("CINETPAY_SECRET_KEY", "")
 CINETPAY_BASE_URL   = os.getenv("CINETPAY_BASE_URL", "https://api-checkout.cinetpay.com/v2")
+
+# ── Upload limits ───────────────────────────
+MAX_PROFILE_PHOTO_SIZE = int(os.getenv("MAX_PROFILE_PHOTO_SIZE", 5 * 1024 * 1024))
+MAX_ABSTRACT_FILE_SIZE = int(os.getenv("MAX_ABSTRACT_FILE_SIZE", 10 * 1024 * 1024))
 
 # ── Resend (emails) ───────────────────────────
 RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
@@ -191,6 +231,17 @@ CELERY_BEAT_SCHEDULE     = {
         "schedule": 86400.0,   # toutes les 24 h
     },
 }
+
+# ── Monitoring (Sentry) ─────────────────────
+SENTRY_DSN = os.getenv("SENTRY_DSN", "").strip()
+if SENTRY_DSN and sentry_sdk and DjangoIntegration:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=os.getenv("SENTRY_ENVIRONMENT", "production"),
+        traces_sample_rate=float(os.getenv("SENTRY_TRACES_SAMPLE_RATE", "0.1")),
+        integrations=[DjangoIntegration()],
+        send_default_pii=False,
+    )
 
 # ── Sécurité Production ───────────────────────
 if not DEBUG:

@@ -1,6 +1,11 @@
 import api from "./client";
-import type { Member, Cotisation } from "./members";
-import type { EventSummary, EventDetail } from "./events";
+import type { Member, Cotisation, PaginatedResponse } from "./members";
+import type {
+  EventSummary,
+  EventDetail,
+  EventRegistration,
+  AbstractItem,
+} from "./events";
 
 /* ── Stats ── */
 export interface DashboardStats {
@@ -17,7 +22,7 @@ export const adminApi = {
 
   /* Membres */
   membres: (params?: Record<string, string>) =>
-    api.get<Member[]>("/members/list/", { params }),
+    api.get<PaginatedResponse<Member>>("/members/list/", { params }),
 
   membre: (id: number) => api.get<Member>(`/members/list/${id}/`),
 
@@ -34,7 +39,7 @@ export const adminApi = {
 
   /* Cotisations */
   cotisations: (params?: Record<string, string>) =>
-    api.get<Cotisation[]>("/members/cotisations/", { params }),
+    api.get<PaginatedResponse<Cotisation>>("/members/cotisations/", { params }),
 
   marquerPayeCotisation: (
     id: number,
@@ -46,7 +51,8 @@ export const adminApi = {
     ),
 
   /* Événements */
-  evenements: () => api.get<EventSummary[]>("/events/admin/"),
+  evenements: (params?: Record<string, string>) =>
+    api.get<PaginatedResponse<EventSummary>>("/events/admin/", { params }),
 
   evenement: (id: number) => api.get<EventDetail>(`/events/admin/${id}/`),
 
@@ -57,4 +63,32 @@ export const adminApi = {
     api.patch<EventDetail>(`/events/admin/${id}/`, data),
 
   supprimerEvenement: (id: number) => api.delete(`/events/admin/${id}/`),
+
+  inscriptionsEvenements: (params?: Record<string, string>) =>
+    api.get<PaginatedResponse<EventRegistration>>(
+      "/events/admin-inscriptions/",
+      { params },
+    ),
+
+  confirmerInscriptionEvenement: (id: number) =>
+    api.post<{ message: string }>(
+      `/events/admin-inscriptions/${id}/confirmer/`,
+    ),
+
+  annulerInscriptionEvenement: (id: number) =>
+    api.post<{ message: string }>(`/events/admin-inscriptions/${id}/annuler/`),
+
+  abstractsEvenements: (params?: Record<string, string>) =>
+    api.get<PaginatedResponse<AbstractItem>>("/events/admin-abstracts/", {
+      params,
+    }),
+
+  majStatutAbstract: (
+    id: number,
+    data: { statut: string; commentaire_comite?: string },
+  ) =>
+    api.post<{ message: string }>(
+      `/events/admin-abstracts/${id}/statut/`,
+      data,
+    ),
 };

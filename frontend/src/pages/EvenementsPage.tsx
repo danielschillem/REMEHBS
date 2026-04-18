@@ -1,18 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { eventsApi, type EventSummary } from "../api/events";
-import { CalendarDays, MapPin, Users, ArrowRight } from "lucide-react";
+import {
+  CalendarDays,
+  MapPin,
+  Users,
+  ArrowRight,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 export default function EvenementsPage() {
   const [events, setEvents] = useState<EventSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [error, setError] = useState("");
+  const pageSize = 20;
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const fetchEvents = useCallback(() => {
+    setLoading(true);
+    setError("");
+    const params: Record<string, string> = { page: String(page) };
+    if (debouncedSearch) params.search = debouncedSearch;
     eventsApi
-      .list()
-      .then((r) => setEvents(r.data))
+      .list(params)
+      .then((r) => {
+        setEvents(r.data.results);
+        setTotalCount(r.data.count);
+      })
+      .catch(() => setError("Impossible de charger les événements."))
       .finally(() => setLoading(false));
-  }, []);
+  }, [page, debouncedSearch]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   const fmt = (iso: string) =>
     new Date(iso).toLocaleDateString("fr-FR", {
@@ -54,9 +88,42 @@ export default function EvenementsPage() {
           </p>
         </div>
 
+        {/* Barre de recherche */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            background: "#fff",
+            borderRadius: 12,
+            padding: "10px 16px",
+            marginBottom: 28,
+            boxShadow: "0 1px 4px rgba(0,0,0,.06)",
+          }}
+        >
+          <Search size={18} color="#6b7280" />
+          <input
+            type="text"
+            placeholder="Rechercher un événement…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              flex: 1,
+              border: "none",
+              outline: "none",
+              fontSize: ".9rem",
+              background: "transparent",
+            }}
+          />
+        </div>
+
         {loading ? (
           <div style={{ textAlign: "center", padding: 40, color: "#6b7280" }}>
             Chargement…
+          </div>
+        ) : error ? (
+          <div style={{ textAlign: "center", padding: 40, color: "#ef4444" }}>
+            {error}
           </div>
         ) : events.length === 0 ? (
           <div style={{ textAlign: "center", padding: 40, color: "#6b7280" }}>
@@ -205,7 +272,55 @@ export default function EvenementsPage() {
             })}
           </div>
         )}
+
+        {/* Pagination */}
+        {!loading && !error && (() => {
+          const totalPages = Math.ceil(totalCount / pageSize);
+          return totalPages > 1 ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                marginTop: 32,
+              }}
+            >
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
+                style={paginationBtn}
+              >
+                <ChevronLeft size={16} /> Précédent
+              </button>
+              <span style={{ fontSize: ".875rem", color: "#6b7280" }}>
+                Page {page} / {totalPages}
+              </span>
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                style={paginationBtn}
+              >
+                Suivant <ChevronRight size={16} />
+              </button>
+            </div>
+          ) : null;
+        })()}
       </div>
     </div>
   );
 }
+
+const paginationBtn: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 4,
+  padding: "8px 16px",
+  borderRadius: 100,
+  border: "1.5px solid #e5e7eb",
+  background: "#fff",
+  cursor: "pointer",
+  fontWeight: 600,
+  fontSize: ".8rem",
+  color: "#1B1464",
+};

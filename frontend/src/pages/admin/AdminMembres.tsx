@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { adminApi } from "../../api/admin";
 import type { Member } from "../../api/members";
 import {
@@ -8,6 +8,8 @@ import {
   Pause,
   Play,
   ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -22,22 +24,41 @@ export default function AdminMembres() {
   const [membres, setMembres] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [filtreStatut, setFiltreStatut] = useState("");
   const [actionLoading, setActionLoading] = useState<number | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const pageSize = 20;
 
-  const loadMembres = () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const loadMembres = useCallback(() => {
     setLoading(true);
-    const params: Record<string, string> = {};
-    if (search) params.search = search;
+    const params: Record<string, string> = { page: String(page) };
+    if (debouncedSearch) params.search = debouncedSearch;
     if (filtreStatut) params.statut = filtreStatut;
     adminApi
       .membres(params)
-      .then((r) => setMembres(r.data))
+      .then((r) => {
+        setMembres(r.data.results);
+        setTotalCount(r.data.count);
+      })
       .finally(() => setLoading(false));
-  };
+  }, [page, debouncedSearch, filtreStatut]);
 
   useEffect(() => {
     loadMembres();
+  }, [loadMembres]);
+
+  useEffect(() => {
+    setPage(1);
   }, [filtreStatut]);
 
   const doAction = async (fn: () => Promise<unknown>, id: number) => {
@@ -52,16 +73,7 @@ export default function AdminMembres() {
     }
   };
 
-  const filtered = membres.filter((m) => {
-    if (!search) return true;
-    const q = search.toLowerCase();
-    return (
-      m.nom.toLowerCase().includes(q) ||
-      m.prenom.toLowerCase().includes(q) ||
-      m.email.toLowerCase().includes(q) ||
-      m.specialite.toLowerCase().includes(q)
-    );
-  });
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
     <div
@@ -126,7 +138,6 @@ export default function AdminMembres() {
               placeholder="Rechercher nom, email, spécialité…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && loadMembres()}
               style={{
                 border: "none",
                 outline: "none",
@@ -168,7 +179,7 @@ export default function AdminMembres() {
             <div style={{ padding: 40, textAlign: "center", color: "#6b7280" }}>
               Chargement…
             </div>
-          ) : filtered.length === 0 ? (
+          ) : membres.length === 0 ? (
             <div style={{ padding: 40, textAlign: "center", color: "#6b7280" }}>
               Aucun membre trouvé.
             </div>
@@ -195,7 +206,7 @@ export default function AdminMembres() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((m) => {
+                {membres.map((m) => {
                   const s = STATUT_COLORS[m.statut] ?? STATUT_COLORS.inactif;
                   return (
                     <tr
@@ -281,6 +292,37 @@ export default function AdminMembres() {
             </table>
           )}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              marginTop: 24,
+            }}
+          >
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page <= 1}
+              style={paginationBtnStyle}
+            >
+              <ChevronLeft size={16} /> Précédent
+            </button>
+            <span style={{ fontSize: ".875rem", color: "#6b7280" }}>
+              Page {page} / {totalPages} — {totalCount} membres
+            </span>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page >= totalPages}
+              style={paginationBtnStyle}
+            >
+              Suivant <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -297,6 +339,20 @@ const th: React.CSSProperties = {
 
 const td: React.CSSProperties = {
   padding: "10px 14px",
+};
+
+const paginationBtnStyle: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 4,
+  padding: "8px 16px",
+  borderRadius: 100,
+  border: "1.5px solid #e5e7eb",
+  background: "#fff",
+  cursor: "pointer",
+  fontWeight: 600,
+  fontSize: ".8rem",
+  color: "#1B1464",
 };
 
 function ActionBtn({

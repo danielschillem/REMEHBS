@@ -1,7 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { adminApi } from "../../api/admin";
 import type { Cotisation } from "../../api/members";
-import { CreditCard, ArrowLeft, Search, CheckCircle } from "lucide-react";
+import {
+  CreditCard,
+  ArrowLeft,
+  Search,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const STATUT_COLORS: Record<string, { bg: string; color: string }> = {
@@ -16,7 +23,11 @@ export default function AdminCotisations() {
   const [loading, setLoading] = useState(true);
   const [filtreStatut, setFiltreStatut] = useState("");
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [actionLoading, setActionLoading] = useState<number | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const pageSize = 20;
 
   /* Modal paiement */
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,19 +35,34 @@ export default function AdminCotisations() {
   const [modePaiement, setModePaiement] = useState("virement");
   const [reference, setReference] = useState("");
 
-  const loadCotisations = () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const loadCotisations = useCallback(() => {
     setLoading(true);
-    const params: Record<string, string> = {};
+    const params: Record<string, string> = { page: String(page) };
     if (filtreStatut) params.statut = filtreStatut;
-    if (search) params.search = search;
+    if (debouncedSearch) params.search = debouncedSearch;
     adminApi
       .cotisations(params)
-      .then((r) => setCotisations(r.data))
+      .then((r) => {
+        setCotisations(r.data.results);
+        setTotalCount(r.data.count);
+      })
       .finally(() => setLoading(false));
-  };
+  }, [page, debouncedSearch, filtreStatut]);
 
   useEffect(() => {
     loadCotisations();
+  }, [loadCotisations]);
+
+  useEffect(() => {
+    setPage(1);
   }, [filtreStatut]);
 
   const openMarquerPaye = (id: number) => {
@@ -63,14 +89,7 @@ export default function AdminCotisations() {
     }
   };
 
-  const filtered = cotisations.filter((c) => {
-    if (!search) return true;
-    const q = search.toLowerCase();
-    return (
-      (c.membre_nom ?? "").toLowerCase().includes(q) ||
-      c.annee.toString().includes(q)
-    );
-  });
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
     <div
@@ -135,7 +154,6 @@ export default function AdminCotisations() {
               placeholder="Rechercher membre, année…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && loadCotisations()}
               style={{
                 border: "none",
                 outline: "none",
@@ -177,7 +195,7 @@ export default function AdminCotisations() {
             <div style={{ padding: 40, textAlign: "center", color: "#6b7280" }}>
               Chargement…
             </div>
-          ) : filtered.length === 0 ? (
+          ) : cotisations.length === 0 ? (
             <div style={{ padding: 40, textAlign: "center", color: "#6b7280" }}>
               Aucune cotisation trouvée.
             </div>
@@ -204,7 +222,7 @@ export default function AdminCotisations() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((c) => {
+                {cotisations.map((c) => {
                   const s = STATUT_COLORS[c.statut] ?? STATUT_COLORS.en_attente;
                   return (
                     <tr
@@ -262,6 +280,37 @@ export default function AdminCotisations() {
             </table>
           )}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              marginTop: 24,
+            }}
+          >
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page <= 1}
+              style={paginationBtnStyle}
+            >
+              <ChevronLeft size={16} /> Précédent
+            </button>
+            <span style={{ fontSize: ".875rem", color: "#6b7280" }}>
+              Page {page} / {totalPages} — {totalCount} cotisations
+            </span>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page >= totalPages}
+              style={paginationBtnStyle}
+            >
+              Suivant <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
 
         {/* Modal marquer payé */}
         {modalOpen && (
@@ -393,4 +442,18 @@ const th: React.CSSProperties = {
 
 const td: React.CSSProperties = {
   padding: "10px 14px",
+};
+
+const paginationBtnStyle: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 4,
+  padding: "8px 16px",
+  borderRadius: 100,
+  border: "1.5px solid #e5e7eb",
+  background: "#fff",
+  cursor: "pointer",
+  fontWeight: 600,
+  fontSize: ".8rem",
+  color: "#1B1464",
 };

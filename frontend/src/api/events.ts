@@ -1,4 +1,5 @@
 import api from "./client";
+import type { PaginatedResponse } from "./members";
 
 export interface EventSummary {
   id: number;
@@ -30,6 +31,8 @@ export interface EventRegistration {
   titre_communication: string;
   statut: string;
   created_at: string;
+  type_participation_display?: string;
+  statut_display?: string;
 }
 
 export interface RegistrationData {
@@ -68,11 +71,15 @@ export interface AbstractItem {
   fichier: string | null;
   mots_cles: string;
   statut: string;
+  statut_display?: string;
+  commentaire_comite?: string;
+  type_soumission_display?: string;
   created_at: string;
 }
 
 export const eventsApi = {
-  list: () => api.get<EventSummary[]>("/events/"),
+  list: (params?: Record<string, string>) =>
+    api.get<PaginatedResponse<EventSummary>>("/events/", { params }),
 
   detail: (id: number) => api.get<EventDetail>(`/events/${id}/`),
 
@@ -96,4 +103,44 @@ export const eventsApi = {
       { headers: { "Content-Type": "multipart/form-data" } },
     );
   },
+};
+
+/* ── Espace scientifique ── */
+export interface Publication {
+  id: number;
+  titre: string;
+  auteur: string;
+  type_presentation: "communication" | "poster" | "conference";
+  type_presentation_display: string;
+  theme: string;
+  theme_display: string;
+  fichier_url: string | null;
+  date_soumission: string | null;
+  congres: string;
+  ordre: number;
+}
+
+export const THEMES: { value: string; label: string }[] = [
+  { value: "", label: "Tous les thèmes" },
+  { value: "communication_libre", label: "Communication libre" },
+  {
+    value: "disponibilite_accessibilite",
+    label: "Disponibilité et accessibilité",
+  },
+  { value: "ethique_qualite", label: "Éthique et qualité des soins" },
+  { value: "gestion_structures", label: "Gestion des structures" },
+  { value: "numerique_sante", label: "Numérique et santé" },
+  { value: "nutrition", label: "Nutrition maternelle et infantile" },
+  { value: "planification_familiale", label: "Planification familiale" },
+  { value: "sante_mentale", label: "Santé mentale" },
+  { value: "soins_nouveau_ne", label: "Soins au nouveau-né" },
+  { value: "soins_obstetricaux_sonu", label: "SONU" },
+  { value: "vaccination", label: "Vaccination" },
+];
+
+export const publicationsApi = {
+  list: (params?: Record<string, string>) =>
+    api.get<Publication[]>("/events/publications/", {
+      params,
+    }),
 };

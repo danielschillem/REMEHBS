@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils import timezone
-from .models import Member, Cotisation
+from .models import Member, Cotisation, Notification
 
 
 class CotisationInline(admin.TabularInline):
@@ -14,9 +14,9 @@ class CotisationInline(admin.TabularInline):
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display    = ["numero_membre", "nom_complet_display", "categorie",
+    list_display    = ["numero_membre", "nom_complet_display", "categorie", "role",
                        "statut_badge", "est_a_jour_display", "structure", "created_at"]
-    list_filter     = ["categorie", "statut", "ville", "created_at"]
+    list_filter     = ["categorie", "role", "statut", "ville", "created_at"]
     search_fields   = ["nom", "prenom", "email", "numero_membre", "structure", "telephone"]
     readonly_fields = ["numero_membre", "created_at", "updated_at"]
     ordering        = ["-created_at"]
@@ -25,7 +25,7 @@ class MemberAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ("Identification", {
-            "fields": ("numero_membre", "user", "statut", "date_adhesion")
+            "fields": ("numero_membre", "user", "role", "statut", "date_adhesion")
         }),
         ("Identité", {
             "fields": (("nom", "prenom"), "email", "telephone", "date_naissance")
@@ -123,3 +123,12 @@ class CotisationAdmin(admin.ModelAdmin):
             paid_at=timezone.now()
         )
         self.message_user(request, f"{updated} cotisation(s) marquée(s) comme payée(s).")
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display  = ["member", "type", "titre", "lue", "created_at"]
+    list_filter   = ["type", "lue", "created_at"]
+    search_fields = ["titre", "message", "member__nom", "member__prenom"]
+    ordering      = ["-created_at"]
+    readonly_fields = ["created_at"]

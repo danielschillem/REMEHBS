@@ -3,11 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo-remehbs.png" />
+    <link rel="apple-touch-icon" href="/logo-remehbs.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#1B1464" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="REMEHBS — Réseau Mère Enfant des Hauts-Bassins, Bobo-Dioulasso, Burkina Faso"
+    />
     <title>REMEHBS — Réseau Mère Enfant des Hauts-Bassins</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js").catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>

@@ -33,8 +33,6 @@ import {
   MessageSquare,
   Send,
   Tag,
-  RotateCcw,
-  ChevronRight,
   ArrowUp,
   Building2,
   Check,
@@ -64,7 +62,6 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 /* ── Styles helpers ─────────────────── */
 const section: React.CSSProperties = { padding: "96px 0" };
-const sectionSm: React.CSSProperties = { padding: "64px 0" };
 const sectionTitle: React.CSSProperties = {
   fontFamily: "'Playfair Display',serif",
   fontSize: "clamp(1.9rem,3.5vw,2.75rem)",

@@ -131,3 +131,72 @@ def rappel_cotisation(
 {FOOTER}
 """
     return subject, html
+
+
+def confirmation_inscription_evenement(
+    participant_nom: str,
+    event_titre: str,
+    date_debut: str,
+    lieu: str,
+) -> tuple[str, str]:
+    """Retourne (subject, html) pour confirmation d'inscription événement."""
+    subject = f"REMEHBS — Inscription confirmée: {event_titre}"
+    html = f"""
+{HEADER}
+    <h2 style="margin:0 0 12px;font-size:18px;color:#1B1464">Inscription enregistrée</h2>
+    <p style="line-height:1.6">
+      Bonjour <strong>{participant_nom}</strong>,<br>
+      Votre inscription à l'événement suivant a bien été enregistrée.
+    </p>
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:13px">
+      <tr>
+        <td style="padding:8px 12px;background:#FFF0F5;border-radius:8px 0 0 0;font-weight:600;color:#374151">Événement</td>
+        <td style="padding:8px 12px;background:#FFF0F5;border-radius:0 8px 0 0;color:#1B1464;font-weight:700">{event_titre}</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;background:#f9fafb;font-weight:600;color:#374151">Date</td>
+        <td style="padding:8px 12px;background:#f9fafb;color:#374151">{date_debut}</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;background:#FFF0F5;border-radius:0 0 0 8px;font-weight:600;color:#374151">Lieu</td>
+        <td style="padding:8px 12px;background:#FFF0F5;border-radius:0 0 8px 0;color:#374151">{lieu}</td>
+      </tr>
+    </table>
+    <p style="line-height:1.6;color:#6b7280;font-size:13px">
+      Nous vous contacterons si des informations complémentaires sont nécessaires.
+    </p>
+{FOOTER}
+"""
+    return subject, html
+
+
+def confirmation_soumission_abstract(
+    auteur_nom: str,
+    event_titre: str,
+    abstract_titre: str,
+) -> tuple[str, str]:
+    """Retourne (subject, html) pour confirmation soumission abstract."""
+    subject = f"REMEHBS — Résumé soumis: {event_titre}"
+    html = f"""
+{HEADER}
+    <h2 style="margin:0 0 12px;font-size:18px;color:#1B1464">Résumé bien reçu</h2>
+    <p style="line-height:1.6">
+      Bonjour <strong>{auteur_nom}</strong>,<br>
+      Votre résumé a bien été soumis au comité scientifique.
+    </p>
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:13px">
+      <tr>
+        <td style="padding:8px 12px;background:#FFF0F5;border-radius:8px 0 0 0;font-weight:600;color:#374151">Événement</td>
+        <td style="padding:8px 12px;background:#FFF0F5;border-radius:0 8px 0 0;color:#1B1464;font-weight:700">{event_titre}</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;background:#f9fafb;border-radius:0 0 0 8px;font-weight:600;color:#374151">Titre</td>
+        <td style="padding:8px 12px;background:#f9fafb;border-radius:0 0 8px 0;color:#374151">{abstract_titre}</td>
+      </tr>
+    </table>
+    <p style="line-height:1.6;color:#6b7280;font-size:13px">
+      Le statut sera mis à jour après évaluation (accepté, refusé ou révision).
+    </p>
+{FOOTER}
+"""
+    return subject, html

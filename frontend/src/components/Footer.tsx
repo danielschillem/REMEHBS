@@ -28,6 +28,7 @@ export default function Footer() {
               <img
                 src="/logo-remehbs.png"
                 alt="REMEHBS"
+                loading="lazy"
                 style={{
                   width: 56,
                   height: 56,
@@ -142,7 +143,7 @@ export default function Footer() {
                 ["/espace-membre", "Espace membre"],
                 ["/#adhesion", "Payer ma cotisation"],
                 ["/#", "Attestation d'adhésion"],
-                ["/#", "Annuaire des membres"],
+                ["/espace-scientifique", "Espace Scientifique"],
               ].map(([to, label]) => (
                 <li key={label}>
                   <Link

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Member, Cotisation
+from django.conf import settings
+from .models import Member, Cotisation, Notification
 
 
 class CotisationSerializer(serializers.ModelSerializer):
@@ -26,15 +27,17 @@ class MemberSerializer(serializers.ModelSerializer):
     montant_adhesion = serializers.IntegerField(read_only=True)
     statut_display   = serializers.CharField(source="get_statut_display", read_only=True)
     categorie_display = serializers.CharField(source="get_categorie_display", read_only=True)
+    role_display      = serializers.CharField(source="get_role_display", read_only=True)
     is_staff         = serializers.SerializerMethodField()
 
     class Meta:
         model  = Member
         fields = [
             "id", "numero_membre", "nom", "prenom", "nom_complet",
-            "email", "telephone", "date_naissance",
+            "email", "telephone", "date_naissance", "photo",
             "profession", "specialite", "structure", "ville", "province",
             "categorie", "categorie_display", "statut", "statut_display",
+            "role", "role_display",
             "date_adhesion", "message", "montant_adhesion",
             "est_a_jour", "cotisations", "created_at", "updated_at",
             "is_staff",
@@ -43,6 +46,23 @@ class MemberSerializer(serializers.ModelSerializer):
 
     def get_is_staff(self, obj):
         return obj.user.is_staff if obj.user else False
+
+    def validate_photo(self, value):
+        if not value:
+            return value
+
+        max_size = getattr(settings, "MAX_PROFILE_PHOTO_SIZE", 5 * 1024 * 1024)
+        if value.size > max_size:
+            raise serializers.ValidationError(
+                f"La photo dépasse la taille maximale autorisée ({max_size // (1024 * 1024)} Mo)."
+            )
+
+        allowed_ext = {".jpg", ".jpeg", ".png", ".webp"}
+        file_name = (value.name or "").lower()
+        if not any(file_name.endswith(ext) for ext in allowed_ext):
+            raise serializers.ValidationError("Format de photo non pris en charge.")
+
+        return value
 
 
 class MemberPublicSerializer(serializers.ModelSerializer):
@@ -93,3 +113,12 @@ class AdhesionSerializer(serializers.ModelSerializer):
 
         member = Member.objects.create(user=user, **validated_data)
         return member
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    type_display = serializers.CharField(source="get_type_display", read_only=True)
+
+    class Meta:
+        model  = Notification
+        fields = ["id", "type", "type_display", "titre", "message", "lue", "lien", "created_at"]
+        read_only_fields = ["id", "type", "type_display", "titre", "message", "lien", "created_at"]

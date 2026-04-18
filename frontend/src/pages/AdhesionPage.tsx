@@ -56,7 +56,6 @@ export default function AdhesionPage() {
 
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
-  /* ── Validation par étape ── */
   const canGoStep2 = form.nom && form.prenom && form.email && form.profession;
   const canGoStep3 =
     form.categorie && (!form.password || form.password === form.password2);
@@ -605,16 +604,21 @@ export default function AdhesionPage() {
                   </div>
                 )}
                 <div
-                  style={{ marginTop: 14, color: "#6b7280", fontSize: ".8rem" }}
+                  style={{
+                    marginTop: 14,
+                    color: "#6b7280",
+                    fontSize: ".8rem",
+                    display: "flex",
+                    gap: 8,
+                    alignItems: "center",
+                  }}
                 >
-                  {form.password
-                    ? "✓ Un compte sera créé avec votre e-mail."
-                    : "Aucun mot de passe fourni — votre compte pourra être activé ultérieurement."}
+                  <CheckCircle size={16} color="#00b96b" />
+                  <span>Un compte sera créé avec votre e-mail.</span>
                 </div>
               </div>
             )}
 
-            {/* ── Boutons navigation ── */}
             <div
               style={{
                 marginTop: 28,

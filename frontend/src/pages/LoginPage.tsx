@@ -50,6 +50,7 @@ export default function LoginPage() {
           <img
             src="/logo-remehbs.png"
             alt="REMEHBS"
+            loading="lazy"
             style={{
               width: 64,
               height: 64,

@@ -6,9 +6,17 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.conf import settings
+from rest_framework.throttling import ScopedRateThrottle
+from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+class LoginView(TokenObtainPairView):
+    """POST /api/auth/login/ — Génère un couple access/refresh JWT"""
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "auth_login"
 
 
 # ── Logout (blacklist refresh token) ──────────
@@ -41,6 +49,8 @@ class PasswordResetRequestView(generics.GenericAPIView):
     """POST /api/auth/password-reset/ — Envoie un lien de réinitialisation"""
     serializer_class = PasswordResetRequestSerializer
     permission_classes = [permissions.AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "auth_password_reset"
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)

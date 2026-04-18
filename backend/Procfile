@@ -1,0 +1,3 @@
+web: gunicorn remehbs_api.wsgi:application --bind 0.0.0.0:$PORT --workers 3
+worker: celery -A remehbs_api worker --loglevel=info
+beat: celery -A remehbs_api beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler

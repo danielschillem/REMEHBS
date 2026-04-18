@@ -5,7 +5,7 @@ import EspaceMembrePage from "./pages/EspaceMembrePage";
 import LoginPage from "./pages/LoginPage";
 import MotDePasseOubliePage from "./pages/MotDePasseOubliePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
-import AnnuairePage from "./pages/AnnuairePage";
+import EspaceScientifiquePage from "./pages/EspaceScientifiquePage";
 import EvenementsPage from "./pages/EvenementsPage";
 import EvenementDetailPage from "./pages/EvenementDetailPage";
 import SoumissionAbstractPage from "./pages/SoumissionAbstractPage";
@@ -26,7 +26,10 @@ export default function App() {
         <Route path="/connexion" element={<LoginPage />} />
         <Route path="/mot-de-passe-oublie" element={<MotDePasseOubliePage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/annuaire" element={<AnnuairePage />} />
+        <Route
+          path="/espace-scientifique"
+          element={<EspaceScientifiquePage />}
+        />
         <Route path="/evenements" element={<EvenementsPage />} />
         <Route path="/evenements/:id" element={<EvenementDetailPage />} />
         <Route
@@ -37,7 +40,7 @@ export default function App() {
         <Route
           path="/admin"
           element={
-            <AdminGuard>
+            <AdminGuard allowedRoles={["bureau"]}>
               <AdminDashboard />
             </AdminGuard>
           }
@@ -45,7 +48,7 @@ export default function App() {
         <Route
           path="/admin/membres"
           element={
-            <AdminGuard>
+            <AdminGuard allowedRoles={["bureau"]}>
               <AdminMembres />
             </AdminGuard>
           }
@@ -53,7 +56,7 @@ export default function App() {
         <Route
           path="/admin/cotisations"
           element={
-            <AdminGuard>
+            <AdminGuard allowedRoles={["bureau", "tresorier"]}>
               <AdminCotisations />
             </AdminGuard>
           }
@@ -61,7 +64,7 @@ export default function App() {
         <Route
           path="/admin/evenements"
           element={
-            <AdminGuard>
+            <AdminGuard allowedRoles={["bureau", "comite_scientifique"]}>
               <AdminEvenements />
             </AdminGuard>
           }

@@ -1,30 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { adhesionApi, type MemberPublic } from "../api/members";
-import { Users, Search } from "lucide-react";
+import { Users, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function AnnuairePage() {
   const [members, setMembers] = useState<MemberPublic[]>([]);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [error, setError] = useState("");
+  const pageSize = 20;
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const fetchMembers = useCallback(() => {
+    setLoading(true);
+    setError("");
+    const params: Record<string, string> = { page: String(page) };
+    if (debouncedSearch) params.search = debouncedSearch;
+    adhesionApi
+      .annuaire(params)
+      .then((r) => {
+        setMembers(r.data.results);
+        setTotalCount(r.data.count);
+      })
+      .catch(() => setError("Impossible de charger l'annuaire."))
+      .finally(() => setLoading(false));
+  }, [page, debouncedSearch]);
 
   useEffect(() => {
-    adhesionApi
-      .annuaire()
-      .then((r) => {
-        setMembers(r.data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+    fetchMembers();
+  }, [fetchMembers]);
 
-  const filtered = members.filter((m) => {
-    const q = search.toLowerCase();
-    return (
-      m.nom_complet.toLowerCase().includes(q) ||
-      m.profession.toLowerCase().includes(q) ||
-      (m.structure || "").toLowerCase().includes(q)
-    );
-  });
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
     <div
@@ -87,125 +103,179 @@ export default function AnnuairePage() {
           <div style={{ textAlign: "center", padding: 40, color: "#6b7280" }}>
             Chargement…
           </div>
-        ) : filtered.length === 0 ? (
+        ) : error ? (
+          <div style={{ textAlign: "center", padding: 40, color: "#ef4444" }}>
+            {error}
+          </div>
+        ) : members.length === 0 ? (
           <div style={{ textAlign: "center", padding: 40, color: "#6b7280" }}>
             Aucun membre trouvé.
           </div>
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 16,
-            }}
-          >
-            {filtered.map((m) => (
-              <div
-                key={m.numero_membre}
-                style={{
-                  background: "#fff",
-                  borderRadius: 16,
-                  padding: "20px",
-                  boxShadow: "0 1px 4px rgba(0,0,0,.06)",
-                }}
-              >
+          <>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                gap: 16,
+              }}
+            >
+              {members.map((m) => (
                 <div
+                  key={m.numero_membre}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    marginBottom: 12,
+                    background: "#fff",
+                    borderRadius: 16,
+                    padding: "20px",
+                    boxShadow: "0 1px 4px rgba(0,0,0,.06)",
                   }}
                 >
                   <div
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: "50%",
-                      background: "linear-gradient(135deg,#1B1464,#D4849A)",
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: ".85rem",
+                      gap: 12,
+                      marginBottom: 12,
                     }}
                   >
-                    {m.nom_complet.charAt(0)}
+                    <div
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "50%",
+                        background: "linear-gradient(135deg,#1B1464,#D4849A)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fff",
+                        fontWeight: 700,
+                        fontSize: ".85rem",
+                      }}
+                    >
+                      {m.nom_complet.charAt(0)}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: ".95rem" }}>
+                        {m.nom_complet}
+                      </div>
+                      <div style={{ fontSize: ".75rem", color: "#6b7280" }}>
+                        {m.numero_membre}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div style={{ fontWeight: 700, fontSize: ".95rem" }}>
-                      {m.nom_complet}
-                    </div>
-                    <div style={{ fontSize: ".75rem", color: "#6b7280" }}>
-                      {m.numero_membre}
-                    </div>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 6,
-                    fontSize: ".8rem",
-                  }}
-                >
-                  {m.profession && (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <span style={{ color: "#6b7280" }}>Profession</span>
-                      <span style={{ fontWeight: 500 }}>{m.profession}</span>
-                    </div>
-                  )}
-                  {m.specialite && (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <span style={{ color: "#6b7280" }}>Spécialité</span>
-                      <span style={{ fontWeight: 500 }}>{m.specialite}</span>
-                    </div>
-                  )}
-                  {m.structure && (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <span style={{ color: "#6b7280" }}>Structure</span>
-                      <span style={{ fontWeight: 500 }}>{m.structure}</span>
-                    </div>
-                  )}
                   <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 6,
+                      fontSize: ".8rem",
+                    }}
                   >
-                    <span style={{ color: "#6b7280" }}>Catégorie</span>
-                    <span
+                    {m.profession && (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span style={{ color: "#6b7280" }}>Profession</span>
+                        <span style={{ fontWeight: 500 }}>{m.profession}</span>
+                      </div>
+                    )}
+                    {m.specialite && (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span style={{ color: "#6b7280" }}>Spécialité</span>
+                        <span style={{ fontWeight: 500 }}>{m.specialite}</span>
+                      </div>
+                    )}
+                    {m.structure && (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span style={{ color: "#6b7280" }}>Structure</span>
+                        <span style={{ fontWeight: 500 }}>{m.structure}</span>
+                      </div>
+                    )}
+                    <div
                       style={{
-                        background: "#1B146422",
-                        color: "#1B1464",
-                        padding: "2px 8px",
-                        borderRadius: 100,
-                        fontWeight: 600,
-                        fontSize: ".7rem",
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
                     >
-                      {m.categorie_display}
-                    </span>
+                      <span style={{ color: "#6b7280" }}>Catégorie</span>
+                      <span
+                        style={{
+                          background: "#1B146422",
+                          color: "#1B1464",
+                          padding: "2px 8px",
+                          borderRadius: 100,
+                          fontWeight: 600,
+                          fontSize: ".7rem",
+                        }}
+                      >
+                        {m.categorie_display}
+                      </span>
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 8,
+                  marginTop: 32,
+                }}
+              >
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page <= 1}
+                  style={paginationBtn}
+                >
+                  <ChevronLeft size={16} /> Précédent
+                </button>
+                <span style={{ fontSize: ".875rem", color: "#6b7280" }}>
+                  Page {page} / {totalPages} — {totalCount} membres
+                </span>
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page >= totalPages}
+                  style={paginationBtn}
+                >
+                  Suivant <ChevronRight size={16} />
+                </button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </div>
     </div>
   );
 }
+
+const paginationBtn: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 4,
+  padding: "8px 16px",
+  borderRadius: 100,
+  border: "1.5px solid #e5e7eb",
+  background: "#fff",
+  cursor: "pointer",
+  fontWeight: 600,
+  fontSize: ".8rem",
+  color: "#1B1464",
+};

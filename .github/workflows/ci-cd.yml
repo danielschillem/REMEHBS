@@ -1,0 +1,150 @@
+# ══════════════════════════════════════════════
+#  REMEHBS — CI/CD Pipeline
+#  Test + Deploy (Render backend, Netlify frontend)
+# ══════════════════════════════════════════════
+
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.13"
+  NODE_VERSION: "22"
+
+jobs:
+  # ── Backend Tests ───────────────────────────
+  backend-test:
+    name: Backend — Lint & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      SECRET_KEY: ci-test-secret-key-not-for-production
+      DEBUG: "True"
+      DATABASE_URL: sqlite:///db.sqlite3
+      REDIS_URL: redis://localhost:6379/0
+      RESEND_API_KEY: ""
+      FRONTEND_URL: http://localhost:5173
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Django system check
+        run: python manage.py check --deploy 2>&1 || true
+
+      - name: Run migrations
+        run: python manage.py migrate --noinput
+
+      - name: Collect static files
+        run: python manage.py collectstatic --noinput
+
+      - name: Run tests
+        run: python manage.py test --verbosity=2
+
+  # ── Frontend Tests ──────────────────────────
+  frontend-test:
+    name: Frontend — Lint & Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Build production
+        run: npm run build
+        env:
+          VITE_API_URL: https://remehbs-api.onrender.com/api
+
+  # ── Deploy Backend (Render) ─────────────────
+  deploy-backend:
+    name: Deploy Backend → Render
+    runs-on: ubuntu-latest
+    needs: [backend-test, frontend-test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          curl -s -X POST \
+            "https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_DEPLOY_KEY }}" \
+            -o /dev/null -w "%{http_code}"
+
+  # ── Deploy Frontend (Netlify) ───────────────
+  deploy-frontend:
+    name: Deploy Frontend → Netlify
+    runs-on: ubuntu-latest
+    needs: [backend-test, frontend-test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production
+        run: npm run build
+        env:
+          VITE_API_URL: https://remehbs-api.onrender.com/api
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3
+        with:
+          publish-dir: frontend/dist
+          production-deploy: true
+          deploy-message: "Deploy from GitHub Actions — ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

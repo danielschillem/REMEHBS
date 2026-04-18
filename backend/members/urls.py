@@ -12,5 +12,8 @@ urlpatterns = [
     path("mes-cotisations/", views.MesCotisationsView.as_view(), name="mes-cotisations"),
     path("annuaire/",        views.AnnuaireView.as_view(),       name="annuaire"),
     path("attestation/",     views.AttestationView.as_view(),    name="attestation"),
+    path("notifications/",           views.NotificationListView.as_view(),     name="notifications"),
+    path("notifications/count/",     views.NotificationCountView.as_view(),    name="notifications-count"),
+    path("notifications/marquer-lues/", views.NotificationMarkReadView.as_view(), name="notifications-mark-read"),
     path("",                 include(router.urls)),
 ]

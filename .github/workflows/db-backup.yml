@@ -1,0 +1,41 @@
+name: Database Backup
+
+on:
+  schedule:
+    - cron: "30 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Backup Database
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Dump database (PostgreSQL or SQLite fallback)
+        env:
+          DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}
+        run: |
+          mkdir -p backups
+          timestamp=$(date +"%Y%m%d_%H%M%S")
+          if [ -n "$DATABASE_URL" ]; then
+            pg_dump "$DATABASE_URL" --format=custom --no-owner --no-privileges > "backups/remehbs_${timestamp}.dump"
+          else
+            if [ -f "backend/db.sqlite3" ]; then
+              gzip -c backend/db.sqlite3 > "backups/db_${timestamp}.sqlite3.gz"
+            else
+              echo "No database source found (set BACKUP_DATABASE_URL secret for production backups)."
+              touch backups/no-database-found.txt
+            fi
+          fi
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sqlite-backup-${{ github.run_id }}
+          path: backups/*
+          retention-days: 14

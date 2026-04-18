@@ -12,8 +12,11 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  role: Member["role"] | "membre";
+  canAccessAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -52,6 +55,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    try {
+      const profile = await adhesionApi.monProfil();
+      setUser(profile.data);
+    } catch {
+      /* ignore */
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -59,8 +71,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         login,
         logout,
+        refreshUser,
         isAuthenticated: !!user,
         isAdmin: !!user?.is_staff,
+        role: user?.role ?? "membre",
+        canAccessAdmin:
+          !!user?.is_staff ||
+          ["bureau", "tresorier", "comite_scientifique"].includes(
+            user?.role ?? "membre",
+          ),
       }}
     >
       {children}

@@ -1,0 +1,120 @@
+# ══════════════════════════════════════════════
+#  REMEHBS — Render Blueprint
+#  https://render.com/docs/blueprint-spec
+# ══════════════════════════════════════════════
+
+databases:
+  - name: remehbs-db
+    plan: free
+    databaseName: remehbs
+    user: remehbs
+
+services:
+  # ── Backend API (Django + Gunicorn) ─────────
+  - type: web
+    name: remehbs-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+      python manage.py migrate --noinput
+    startCommand: gunicorn remehbs_api.wsgi:application --bind 0.0.0.0:$PORT --workers 3
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: remehbs-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: remehbs-redis
+          type: redis
+          property: connectionString
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://remehbs-bf.org,https://www.remehbs-bf.org"
+      - key: FRONTEND_URL
+        value: "https://remehbs-bf.org"
+      - key: PYTHON_VERSION
+        value: "3.13.3"
+      - key: CINETPAY_API_KEY
+        sync: false
+      - key: CINETPAY_SITE_ID
+        sync: false
+      - key: CINETPAY_SECRET_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: "noreply@remehbs-bf.org"
+
+  # ── Celery Worker ──────────────────────────
+  - type: worker
+    name: remehbs-worker
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A remehbs_api worker --loglevel=info --concurrency=2
+    envVars:
+      - key: SECRET_KEY
+        fromService:
+          name: remehbs-api
+          type: web
+          envVarKey: SECRET_KEY
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: remehbs-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: remehbs-redis
+          type: redis
+          property: connectionString
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: "noreply@remehbs-bf.org"
+      - key: FRONTEND_URL
+        value: "https://remehbs-bf.org"
+
+  # ── Celery Beat (scheduler) ────────────────
+  - type: worker
+    name: remehbs-beat
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A remehbs_api beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    envVars:
+      - key: SECRET_KEY
+        fromService:
+          name: remehbs-api
+          type: web
+          envVarKey: SECRET_KEY
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: remehbs-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: remehbs-redis
+          type: redis
+          property: connectionString
+
+  # ── Redis ──────────────────────────────────
+  - type: redis
+    name: remehbs-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []

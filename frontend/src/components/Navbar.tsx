@@ -13,13 +13,14 @@ import {
   MessageCircle,
   Link2,
   Camera,
-  Users,
   Shield,
+  BookOpen,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import NotificationBell from "./NotificationBell";
 
 export default function Navbar() {
-  const { isAdmin } = useAuth();
+  const { canAccessAdmin } = useAuth();
 
   return (
     <>
@@ -115,6 +116,7 @@ export default function Navbar() {
             <img
               src="/logo-remehbs.png"
               alt="REMEHBS"
+              loading="lazy"
               style={{
                 width: 48,
                 height: 48,
@@ -160,7 +162,11 @@ export default function Navbar() {
               ["/#about", "Le Réseau", <Info key="i" size={14} />],
               ["/#missions", "Missions", <Target key="t" size={14} />],
               ["/evenements", "Événements", <CalendarDays key="c" size={14} />],
-              ["/annuaire", "Annuaire", <Users key="an" size={14} />],
+              [
+                "/espace-scientifique",
+                "Espace Scientifique",
+                <BookOpen key="es" size={14} />,
+              ],
               ["/adhesion", "Adhésion", <UserPlus key="u" size={14} />],
               ["/#contact", "Contact", <MessageSquare key="m" size={14} />],
             ].map(([to, label, icon]) => (
@@ -192,6 +198,7 @@ export default function Navbar() {
               flexShrink: 0,
             }}
           >
+            <NotificationBell />
             <Link
               to="/adhesion"
               style={{
@@ -209,7 +216,7 @@ export default function Navbar() {
             >
               <UserPlus size={16} /> Adhérer
             </Link>
-            {isAdmin && (
+            {canAccessAdmin && (
               <Link
                 to="/admin"
                 style={{

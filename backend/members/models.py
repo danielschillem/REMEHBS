@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
+from io import BytesIO
 
 
 class Member(models.Model):
@@ -16,6 +18,12 @@ class Member(models.Model):
         SUSPENDU   = "suspendu",   "Suspendu"
         RADIE      = "radie",      "Radié"
 
+    class Role(models.TextChoices):
+        MEMBRE = "membre", "Membre"
+        BUREAU = "bureau", "Bureau"
+        TRESORIER = "tresorier", "Trésorier"
+        COMITE_SCIENTIFIQUE = "comite_scientifique", "Comité scientifique"
+
     user            = models.OneToOneField(User, on_delete=models.SET_NULL,
                                            null=True, blank=True, related_name="member_profile")
     numero_membre   = models.CharField(max_length=20, unique=True, editable=False)
@@ -26,6 +34,8 @@ class Member(models.Model):
     email           = models.EmailField(unique=True, verbose_name="E-mail")
     telephone       = models.CharField(max_length=20, blank=True, verbose_name="Téléphone")
     date_naissance  = models.DateField(null=True, blank=True, verbose_name="Date de naissance")
+    photo           = models.ImageField(upload_to="members/photos/%Y/", blank=True,
+                                         verbose_name="Photo de profil")
 
     # Profil professionnel
     profession      = models.CharField(max_length=150, verbose_name="Profession")
@@ -39,6 +49,8 @@ class Member(models.Model):
                                         default=Categorie.PROFESSIONNEL, verbose_name="Catégorie")
     statut          = models.CharField(max_length=20, choices=Statut.choices,
                                         default=Statut.EN_ATTENTE, verbose_name="Statut")
+    role            = models.CharField(max_length=30, choices=Role.choices,
+                                       default=Role.MEMBRE, verbose_name="Rôle")
     date_adhesion   = models.DateField(null=True, blank=True, verbose_name="Date d'adhésion")
     message         = models.TextField(blank=True, verbose_name="Message / Motivations")
 
@@ -59,6 +71,18 @@ class Member(models.Model):
             year  = timezone.now().year
             count = Member.objects.filter(created_at__year=year).count() + 1
             self.numero_membre = f"RMB-{year}-{count:04d}"
+        # Convertir la photo en WebP pour optimiser la taille
+        if self.photo and not self.photo.name.endswith(".webp"):
+            try:
+                from PIL import Image
+                img = Image.open(self.photo)
+                img.thumbnail((800, 800), Image.LANCZOS)
+                buf = BytesIO()
+                img.save(buf, format="WEBP", quality=80)
+                new_name = self.photo.name.rsplit(".", 1)[0] + ".webp"
+                self.photo = ContentFile(buf.getvalue(), name=new_name)
+            except Exception:
+                pass  # garder l'image originale si la conversion échoue
         super().save(*args, **kwargs)
 
     @property
@@ -122,3 +146,30 @@ class Cotisation(models.Model):
 
     def __str__(self):
         return f"{self.member.numero_membre} — {self.annee} — {self.get_statut_display()}"
+
+
+class Notification(models.Model):
+    """Notification in-app pour un membre"""
+
+    class Type(models.TextChoices):
+        COTISATION  = "cotisation",  "Cotisation"
+        EVENEMENT   = "evenement",   "Événement"
+        ADHESION    = "adhesion",    "Adhésion"
+        SYSTEME     = "systeme",     "Système"
+
+    member     = models.ForeignKey(Member, on_delete=models.CASCADE,
+                                    related_name="notifications", verbose_name="Membre")
+    type       = models.CharField(max_length=20, choices=Type.choices, default=Type.SYSTEME)
+    titre      = models.CharField(max_length=200, verbose_name="Titre")
+    message    = models.TextField(verbose_name="Message")
+    lue        = models.BooleanField(default=False, verbose_name="Lue")
+    lien       = models.CharField(max_length=300, blank=True, verbose_name="Lien")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name        = "Notification"
+        verbose_name_plural = "Notifications"
+        ordering            = ["-created_at"]
+
+    def __str__(self):
+        return f"{'[Lue]' if self.lue else '[Nouveau]'} {self.titre}"

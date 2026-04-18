@@ -3,10 +3,12 @@ import { useAuth } from "../context/AuthContext";
 
 export default function AdminGuard({
   children,
+  allowedRoles,
 }: {
   children: React.ReactNode;
+  allowedRoles?: Array<"bureau" | "tresorier" | "comite_scientifique">;
 }) {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+  const { isAuthenticated, isAdmin, loading, user, canAccessAdmin } = useAuth();
 
   if (loading)
     return (
@@ -16,7 +18,16 @@ export default function AdminGuard({
     );
 
   if (!isAuthenticated) return <Navigate to="/connexion" replace />;
-  if (!isAdmin) return <Navigate to="/espace-membre" replace />;
+  if (!canAccessAdmin) return <Navigate to="/espace-membre" replace />;
+
+  const currentRole = user?.role ?? "membre";
+  if (
+    !isAdmin &&
+    allowedRoles &&
+    (currentRole === "membre" || !allowedRoles.includes(currentRole))
+  ) {
+    return <Navigate to="/admin" replace />;
+  }
 
   return <>{children}</>;
 }
