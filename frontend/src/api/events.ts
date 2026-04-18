@@ -117,6 +117,8 @@ export interface Publication {
   fichier_url: string | null;
   date_soumission: string | null;
   congres: string;
+  annee_congres: number;
+  annee_congres_display: string;
   ordre: number;
 }
 
@@ -136,6 +138,15 @@ export const THEMES: { value: string; label: string }[] = [
   { value: "soins_nouveau_ne", label: "Soins au nouveau-né" },
   { value: "soins_obstetricaux_sonu", label: "SONU" },
   { value: "vaccination", label: "Vaccination" },
+];
+
+export const ANNEES_CONGRES: { value: string; label: string }[] = [
+  { value: "", label: "Toutes les éditions" },
+  { value: "2025", label: "8èmes JSP 2025" },
+  { value: "2023", label: "7èmes JSP 2023" },
+  { value: "2021", label: "Édition spéciale 2021" },
+  { value: "2019", label: "6èmes JSP 2019" },
+  { value: "2017", label: "5èmes JSP 2017" },
 ];
 
 export const publicationsApi = {

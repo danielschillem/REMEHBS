@@ -1,4 +1,4 @@
-const CACHE_NAME = "remehbs-v1";
+const CACHE_NAME = "remehbs-v2";
 const STATIC_ASSETS = ["/", "/index.html", "/logo-remehbs.png"];
 
 // Install — pre-cache shell

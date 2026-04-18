@@ -296,35 +296,12 @@ export default function HomePage() {
                 alignItems: "flex-end",
               }}
             >
-              <div
-                style={{
-                  background: "rgba(255,255,255,.08)",
-                  backdropFilter: "blur(18px)",
-                  border: "1px solid rgba(255,255,255,.14)",
-                  borderRadius: 20,
-                  padding: "26px 28px",
-                  color: "#fff",
-                  width: "100%",
-                  maxWidth: 380,
-                }}
-              >
-                <div style={{ marginBottom: 14 }}>
-                  <div
-                    style={{ ...iconBox(52, "rgba(255,255,255,.18)", "#fff") }}
-                  >
-                    <CalendarDays size={24} />
-                  </div>
-                </div>
-                <h3
-                  style={{ fontSize: "1rem", fontWeight: 700, marginBottom: 6 }}
-                >
-                  7èmes Journées Scientifiques 2025
-                </h3>
-                <p style={{ fontSize: ".875rem", opacity: 0.72 }}>
-                  Congrès principal · 23–25 juillet 2025 · Bobo-Dioulasso
-                </p>
-              </div>
               {[
+                {
+                  icon: <CalendarDays size={20} />,
+                  title: "7èmes Journées Scientifiques 2025",
+                  sub: "Congrès principal · 23–25 juillet 2025 · Bobo-Dioulasso",
+                },
                 {
                   icon: <Users size={20} />,
                   title: "Adhésion en ligne",
@@ -353,7 +330,7 @@ export default function HomePage() {
                     alignItems: "center",
                     gap: 14,
                     color: "#fff",
-                    maxWidth: 340,
+                    maxWidth: 380,
                     width: "100%",
                   }}
                 >

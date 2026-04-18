@@ -78,3 +78,7 @@ coverage.xml
 *.tmp
 *.swp
 *~
+
+# ── Generated submissions exports ───────────
+*.pdf
+soumissions_approuvees_fichiers_*/

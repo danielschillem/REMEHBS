@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Event, EventRegistration, Abstract
+from .models import Event, EventRegistration, Abstract, CommunicationScientifique
 
 
 class EventRegistrationInline(admin.TabularInline):
@@ -53,3 +53,12 @@ class AbstractAdmin(admin.ModelAdmin):
     list_display  = ["titre", "auteur_nom", "event", "type_soumission", "statut", "created_at"]
     list_filter   = ["statut", "type_soumission", "event"]
     search_fields = ["titre", "auteur_nom", "auteur_email", "mots_cles"]
+
+
+@admin.register(CommunicationScientifique)
+class CommunicationScientifiqueAdmin(admin.ModelAdmin):
+    list_display  = ["titre", "auteur", "annee_congres", "type_presentation", "theme", "ordre"]
+    list_filter   = ["annee_congres", "type_presentation", "theme"]
+    search_fields = ["titre", "auteur"]
+    list_editable = ["annee_congres", "ordre"]
+    ordering      = ["-annee_congres", "theme", "ordre"]

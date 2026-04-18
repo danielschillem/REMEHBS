@@ -31,7 +31,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       adhesionApi
         .monProfil()
         .then((r) => setUser(r.data))
-        .catch(() => localStorage.clear())
+        .catch(() => {
+          localStorage.clear();
+          setUser(null);
+        })
         .finally(() => setLoading(false));
     } else {
       setLoading(false);

@@ -1,6 +1,8 @@
 from rest_framework import generics, permissions, status, serializers
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -13,8 +15,34 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """Serializer JWT qui accepte email + password (au lieu de username)."""
+
+    username_field = "email"
+
+    def validate(self, attrs):
+        email = attrs.get("email", "")
+        password = attrs.get("password", "")
+
+        # Tente l'auth via le backend EmailBackend (défini dans settings)
+        user = authenticate(request=self.context.get("request"), username=email, password=password)
+        if not user:
+            raise serializers.ValidationError(
+                {"detail": "Email ou mot de passe incorrect."},
+                code="authorization",
+            )
+
+        # Génère les tokens
+        refresh = self.get_token(user)
+        return {
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+        }
+
+
 class LoginView(TokenObtainPairView):
-    """POST /api/auth/login/ — Génère un couple access/refresh JWT"""
+    """POST /api/auth/login/ — Génère un couple access/refresh JWT (login par email)"""
+    serializer_class = EmailTokenObtainPairSerializer
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "auth_login"
 

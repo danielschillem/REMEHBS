@@ -109,11 +109,16 @@ class CommunicationScientifiqueSerializer(serializers.ModelSerializer):
     theme_display = serializers.CharField(source="get_theme_display", read_only=True)
     fichier_url = serializers.SerializerMethodField()
 
+    annee_congres_display = serializers.CharField(
+        source="get_annee_congres_display", read_only=True
+    )
+
     class Meta:
         model = CommunicationScientifique
         fields = [
             "id", "titre", "auteur", "type_presentation", "type_presentation_display",
-            "theme", "theme_display", "fichier_url", "date_soumission", "congres", "ordre",
+            "theme", "theme_display", "fichier_url", "date_soumission", "congres",
+            "annee_congres", "annee_congres_display", "ordre",
         ]
 
     def get_fichier_url(self, obj):

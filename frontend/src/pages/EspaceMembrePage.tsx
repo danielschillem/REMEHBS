@@ -43,7 +43,10 @@ export default function EspaceMembrePage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      adhesionApi.mesCotisations().then((r) => setCotisations(r.data));
+      adhesionApi
+        .mesCotisations()
+        .then((r) => setCotisations(r.data))
+        .catch(() => {});
     }
   }, [isAuthenticated]);
 

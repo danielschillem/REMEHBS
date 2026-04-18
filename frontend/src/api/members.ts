@@ -110,7 +110,7 @@ export const paymentApi = {
 export const authApi = {
   login: (email: string, password: string) =>
     api.post<{ access: string; refresh: string }>("/auth/login/", {
-      username: email,
+      email,
       password,
     }),
 

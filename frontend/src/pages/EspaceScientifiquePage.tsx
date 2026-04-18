@@ -12,7 +12,12 @@ import {
   List,
   Eye,
 } from "lucide-react";
-import { publicationsApi, THEMES, type Publication } from "../api/events";
+import {
+  publicationsApi,
+  THEMES,
+  ANNEES_CONGRES,
+  type Publication,
+} from "../api/events";
 
 const TYPE_LABELS: Record<
   string,
@@ -340,6 +345,7 @@ export default function EspaceScientifiquePage() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [theme, setTheme] = useState("");
   const [typePresentation, setTypePresentation] = useState("");
+  const [annee, setAnnee] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("ordre");
   const [selectedPub, setSelectedPub] = useState<Publication | null>(null);
@@ -357,13 +363,14 @@ export default function EspaceScientifiquePage() {
     if (debouncedSearch) params.search = debouncedSearch;
     if (theme) params.theme = theme;
     if (typePresentation) params.type_presentation = typePresentation;
+    if (annee) params.annee = annee;
 
     publicationsApi
       .list(params)
       .then((r) => setPublications(r.data))
       .catch(() => setError("Impossible de charger les communications."))
       .finally(() => setLoading(false));
-  }, [debouncedSearch, theme, typePresentation]);
+  }, [debouncedSearch, theme, typePresentation, annee]);
 
   useEffect(() => {
     fetchPublications();
@@ -396,16 +403,26 @@ export default function EspaceScientifiquePage() {
       sorted.sort((a, b) => a.ordre - b.ordre);
   }
 
-  const grouped = theme
-    ? { [theme]: sorted }
+  const grouped = annee
+    ? { [annee]: sorted }
     : sorted.reduce<Record<string, Publication[]>>((acc, p) => {
-        if (!acc[p.theme]) acc[p.theme] = [];
-        acc[p.theme].push(p);
+        const key = String(p.annee_congres);
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(p);
         return acc;
       }, {});
 
+  // Trier les années décroissant
+  const sortedYearKeys = Object.keys(grouped).sort(
+    (a, b) => Number(b) - Number(a),
+  );
+
+  const anneeLabels = Object.fromEntries(
+    ANNEES_CONGRES.map((a) => [a.value, a.label]),
+  );
   const themeLabels = Object.fromEntries(THEMES.map((t) => [t.value, t.label]));
   const activeFilters = [
+    annee ? ANNEES_CONGRES.find((a) => a.value === annee)?.label : null,
     theme ? THEMES.find((t) => t.value === theme)?.label : null,
     typePresentation ? TYPE_LABELS[typePresentation]?.label : null,
   ].filter(Boolean);
@@ -515,6 +532,47 @@ export default function EspaceScientifiquePage() {
                     <X size={16} />
                   </button>
                 )}
+              </div>
+            </div>
+
+            {/* Édition / Année */}
+            <div style={{ marginBottom: 24 }}>
+              <h3
+                style={{
+                  fontSize: ".8rem",
+                  fontWeight: 700,
+                  color: "#1d1e20",
+                  margin: "0 0 12px",
+                  textTransform: "uppercase",
+                  letterSpacing: ".05em",
+                }}
+              >
+                Édition du congrès
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                {ANNEES_CONGRES.filter((a) => a.value).map((a) => (
+                  <button
+                    key={a.value}
+                    onClick={() => setAnnee(annee === a.value ? "" : a.value)}
+                    style={{
+                      background: annee === a.value ? "#f0f2ff" : "transparent",
+                      border:
+                        annee === a.value
+                          ? "1px solid #1B1464"
+                          : "1px solid #e5e7eb",
+                      padding: "10px 12px",
+                      borderRadius: 8,
+                      textAlign: "left",
+                      cursor: "pointer",
+                      fontSize: ".85rem",
+                      fontWeight: annee === a.value ? 700 : 500,
+                      color: annee === a.value ? "#1B1464" : "#1d1e20",
+                      transition: "all 0.2s",
+                    }}
+                  >
+                    {a.label}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -829,72 +887,75 @@ export default function EspaceScientifiquePage() {
               <div
                 style={{ display: "flex", flexDirection: "column", gap: 32 }}
               >
-                {Object.entries(grouped).map(([themeKey, items]) => (
-                  <div key={themeKey}>
-                    {!theme && (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 10,
-                          marginBottom: 16,
-                          paddingBottom: 12,
-                          borderBottom: "2px solid #e5e7eb",
-                        }}
-                      >
+                {sortedYearKeys.map((yearKey) => {
+                  const items = grouped[yearKey];
+                  return (
+                    <div key={yearKey}>
+                      {!annee && (
                         <div
                           style={{
-                            width: 4,
-                            height: 24,
-                            borderRadius: 2,
-                            background:
-                              "linear-gradient(180deg,#1B1464,#D4849A)",
-                          }}
-                        />
-                        <h2
-                          style={{
-                            fontSize: ".95rem",
-                            fontWeight: 800,
-                            margin: 0,
-                            color: "#1B1464",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            marginBottom: 16,
+                            paddingBottom: 12,
+                            borderBottom: "2px solid #e5e7eb",
                           }}
                         >
-                          {themeLabels[themeKey] || themeKey}
-                        </h2>
-                        <span
-                          style={{
-                            fontSize: ".75rem",
-                            color: "#6b7280",
-                            background: "#f2f3f6",
-                            borderRadius: 100,
-                            padding: "3px 12px",
-                            fontWeight: 700,
-                            marginLeft: "auto",
-                          }}
-                        >
-                          {items.length} communication
-                          {items.length !== 1 ? "s" : ""}
-                        </span>
+                          <div
+                            style={{
+                              width: 4,
+                              height: 24,
+                              borderRadius: 2,
+                              background:
+                                "linear-gradient(180deg,#1B1464,#D4849A)",
+                            }}
+                          />
+                          <h2
+                            style={{
+                              fontSize: ".95rem",
+                              fontWeight: 800,
+                              margin: 0,
+                              color: "#1B1464",
+                            }}
+                          >
+                            {anneeLabels[yearKey] || `Édition ${yearKey}`}
+                          </h2>
+                          <span
+                            style={{
+                              fontSize: ".75rem",
+                              color: "#6b7280",
+                              background: "#f2f3f6",
+                              borderRadius: 100,
+                              padding: "3px 12px",
+                              fontWeight: 700,
+                              marginLeft: "auto",
+                            }}
+                          >
+                            {items.length} communication
+                            {items.length !== 1 ? "s" : ""}
+                          </span>
+                        </div>
+                      )}
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns:
+                            "repeat(auto-fill, minmax(300px, 1fr))",
+                          gap: 16,
+                        }}
+                      >
+                        {items.map((pub) => (
+                          <PublicationCard
+                            key={pub.id}
+                            pub={pub}
+                            onView={() => setSelectedPub(pub)}
+                          />
+                        ))}
                       </div>
-                    )}
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                          "repeat(auto-fill, minmax(300px, 1fr))",
-                        gap: 16,
-                      }}
-                    >
-                      {items.map((pub) => (
-                        <PublicationCard
-                          key={pub.id}
-                          pub={pub}
-                          onView={() => setSelectedPub(pub)}
-                        />
-                      ))}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 

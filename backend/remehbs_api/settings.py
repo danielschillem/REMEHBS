@@ -123,6 +123,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "remehbs_api.backends.EmailBackend",       # connexion par email
+    "django.contrib.auth.backends.ModelBackend",  # fallback username (admin Django)
+]
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME":  timedelta(hours=8),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),

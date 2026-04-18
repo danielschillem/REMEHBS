@@ -183,6 +183,9 @@ class CommunicationScientifiqueViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.filter(theme=theme)
         if type_p:
             qs = qs.filter(type_presentation=type_p)
+        annee = self.request.query_params.get("annee")
+        if annee:
+            qs = qs.filter(annee_congres=annee)
         if search:
             from django.db.models import Q
             qs = qs.filter(Q(titre__icontains=search) | Q(auteur__icontains=search))

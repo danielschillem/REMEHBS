@@ -118,6 +118,17 @@ class CommunicationScientifique(models.Model):
         SOINS_OBSTETRICAUX_SONU    = "soins_obstetricaux_sonu",    "Soins obstétricaux et néonatals d'urgence (SONU)"
         VACCINATION                = "vaccination",                "Vaccination de l'enfant et de la femme enceinte"
 
+    class AnneeCongres(models.IntegerChoices):
+        JSP_2009 = 2009, "1ères JSP 2009"
+        JSP_2011 = 2011, "2èmes JSP 2011"
+        JSP_2013 = 2013, "3èmes JSP 2013"
+        JSP_2015 = 2015, "4èmes JSP 2015"
+        JSP_2017 = 2017, "5èmes JSP 2017"
+        JSP_2019 = 2019, "6èmes JSP 2019"
+        JSP_2021 = 2021, "Édition spéciale 2021"
+        JSP_2023 = 2023, "7èmes JSP 2023"
+        JSP_2025 = 2025, "8èmes JSP 2025"
+
     titre            = models.CharField(max_length=500, verbose_name="Titre")
     auteur           = models.CharField(max_length=300, verbose_name="Auteur(s)")
     type_presentation = models.CharField(max_length=20, choices=TypePresentation.choices,
@@ -131,13 +142,16 @@ class CommunicationScientifique(models.Model):
     congres          = models.CharField(max_length=200, blank=True,
                                          verbose_name="Congrès / Édition",
                                          default="7èmes JSP REMEHBS 2025")
+    annee_congres    = models.IntegerField(choices=AnneeCongres.choices,
+                                              default=2025,
+                                              verbose_name="Année du congrès")
     ordre            = models.PositiveSmallIntegerField(default=0, verbose_name="Ordre d'affichage")
     created_at       = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name        = "Communication scientifique"
         verbose_name_plural = "Communications scientifiques"
-        ordering            = ["theme", "ordre", "auteur"]
+        ordering            = ["-annee_congres", "theme", "ordre", "auteur"]
 
     def __str__(self):
         return f"[{self.get_theme_display()}] {self.titre}"

@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.throttling import ScopedRateThrottle
+from rest_framework.exceptions import NotFound
 from django.utils import timezone
 from django.http import HttpResponse
 import csv
@@ -38,7 +39,10 @@ class MonProfilView(generics.RetrieveUpdateAPIView):
     parser_classes     = [MultiPartParser, FormParser, JSONParser]
 
     def get_object(self):
-        return self.request.user.member_profile
+        try:
+            return self.request.user.member_profile
+        except Member.DoesNotExist:
+            raise NotFound("Aucun profil membre associé à ce compte.")
 
 
 class MemberViewSet(viewsets.ModelViewSet):

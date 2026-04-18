@@ -51,6 +51,22 @@ export default class ErrorBoundary extends Component<Props, State> {
             Nous sommes désolés, quelque chose s'est mal passé. Veuillez
             réessayer.
           </p>
+          {this.state.error && (
+            <pre
+              style={{
+                fontSize: ".7rem",
+                color: "#ef4444",
+                background: "#fef2f2",
+                padding: 12,
+                borderRadius: 8,
+                maxWidth: 500,
+                overflow: "auto",
+                textAlign: "left",
+              }}
+            >
+              {this.state.error.message}
+            </pre>
+          )}
           <button
             onClick={this.handleRetry}
             style={{
