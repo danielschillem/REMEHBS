@@ -1,18 +1,75 @@
 /* REMEHBS — App styles & Responsive */
 
+/* ── Hero Carousel animations ── */
+@keyframes kenBurnsBg {
+  0% {
+    transform: scale(1.06) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.16) translate3d(-1.5%, -1.2%, 0);
+  }
+}
+
+@keyframes captionFade {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE — Breakpoints
+   • Laptop      ≤ 1180 px
+   • Tablet      ≤  960 px
+   • Mobile      ≤  620 px
+   • Small mob.  ≤  480 px
+   ════════════════════════════════════════════════ */
+
+/* ── Laptop & tablette large (≤1180px) ── */
+@media (max-width: 1180px) {
+  .grid-events {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+}
+
 /* ── Tablet (≤960px) ── */
 @media (max-width: 960px) {
-  /* Hero : stack + hide right column */
+  /* Containers de section : compaction verticale */
+  section {
+    padding-top: 72px !important;
+    padding-bottom: 72px !important;
+  }
+
+  /* Hero : stack + masque la colonne droite résiduelle */
   .grid-hero {
     grid-template-columns: 1fr !important;
   }
   .hero-right {
     display: none !important;
   }
+  .hero-info-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .hero-carousel-controls {
+    right: 16px !important;
+    bottom: 16px !important;
+    padding: 8px 10px !important;
+    gap: 12px !important;
+  }
 
-  /* About, Events : 2-col → 1-col */
+  /* Grids 2-col → 1-col */
   .grid-about,
-  .grid-events {
+  .grid-events,
+  .grid-contact,
+  .grid-membre,
+  .grid-form,
+  .grid-categories {
     grid-template-columns: 1fr !important;
   }
 
@@ -21,29 +78,36 @@
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
-  /* Contact form grid */
-  .grid-contact {
-    grid-template-columns: 1fr !important;
-  }
-
   /* Footer 4-col → 2-col */
   .grid-footer {
     grid-template-columns: 1fr 1fr !important;
   }
 
-  /* Espace membre 2-col → 1-col */
-  .grid-membre {
+  /* Évidence scientifique : éditorial + métriques */
+  .grid-evidence {
     grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .grid-metrics {
+    grid-template-columns: 1fr 1fr !important;
   }
 
-  /* Adhésion form 2-col → 1-col */
-  .grid-form {
-    grid-template-columns: 1fr !important;
+  /* Galerie : 4-col → 2-col */
+  .grid-gallery {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-auto-rows: 180px !important;
+  }
+  .grid-gallery > figure {
+    grid-column: auto !important;
+    grid-row: auto !important;
   }
 
-  /* Catégorie cards 3-col → 1-col */
-  .grid-categories {
-    grid-template-columns: 1fr !important;
+  /* Publications : layout en 2-col */
+  .pub-card {
+    grid-template-columns: 90px 1fr !important;
+  }
+  .pub-actions {
+    display: none !important;
   }
 
   /* Hero stats row */
@@ -52,8 +116,14 @@
     gap: 20px !important;
   }
 
-  /* Nav links hide on tablet */
+  /* Navigation : masquer la nav desktop, afficher le burger */
   .nav-links {
+    display: none !important;
+  }
+  .nav-burger {
+    display: inline-flex !important;
+  }
+  .nav-cta-adherer {
     display: none !important;
   }
 }
@@ -64,19 +134,44 @@
     padding: 0 16px !important;
   }
 
-  /* Footer → single col */
-  .grid-footer {
+  /* Compaction verticale plus poussée */
+  section {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+
+  /* Hero : padding interne réduit */
+  section > .container[style*="120px"] {
+    padding-top: 100px !important;
+    padding-bottom: 28px !important;
+  }
+
+  /* Tous les grids compactés en 1 col */
+  .grid-footer,
+  .grid-timeline,
+  .grid-recap,
+  .grid-metrics {
     grid-template-columns: 1fr !important;
   }
 
-  /* Timeline → single col */
-  .grid-timeline {
+  /* Galerie → 1 col en mobile */
+  .grid-gallery {
     grid-template-columns: 1fr !important;
+    grid-auto-rows: 220px !important;
   }
 
-  /* Recap grid → single col */
-  .grid-recap {
+  /* Publications : empile année + corps */
+  .pub-card {
     grid-template-columns: 1fr !important;
+  }
+  .pub-card > div:first-child {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding-right: 0 !important;
+    border-right: none !important;
+    border-bottom: 1px solid #ece6da !important;
+    padding-bottom: 14px !important;
   }
 
   /* Step indicators smaller */
@@ -87,8 +182,59 @@
     padding: 10px 4px !important;
   }
 
-  /* Topbar hide on mobile */
+  /* Topbar masquée sur mobile */
   .topbar {
     display: none !important;
+  }
+
+  /* Hero : stats plus serrés */
+  .flex-stats {
+    gap: 14px !important;
+    margin-top: 32px !important;
+    padding-top: 24px !important;
+  }
+  .flex-stats .num {
+    font-size: 1.85rem !important;
+  }
+
+  /* Bandeau d'annonce : autorise wrap propre */
+  .annonce-bar p {
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+  }
+  .annonce-bar a {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* ── Small mobile (≤480px) ── */
+@media (max-width: 480px) {
+  section {
+    padding-top: 44px !important;
+    padding-bottom: 44px !important;
+  }
+
+  /* Hero : titre encore réduit */
+  .grid-hero h1 {
+    font-size: clamp(1.85rem, 8vw, 2.4rem) !important;
+    line-height: 1.15 !important;
+  }
+  .grid-hero p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* CTAs en pleine largeur */
+  .grid-hero a[href="/adhesion"],
+  .grid-hero a[href="#evenements"] {
+    flex: 1 1 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Galerie hauteur réduite */
+  .grid-gallery {
+    grid-auto-rows: 180px !important;
+    gap: 10px !important;
   }
 }

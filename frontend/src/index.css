@@ -1,4 +1,75 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap");
+/* ════════════════════════════════════════════════
+   REMEHBS — Système de design
+   Tonalité : humain & scientifique
+   Typographie : Inter (UI) + IBM Plex Serif (titres)
+   ──────────────────────────────────────────────── */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* ─── Encres de marque — navy académique ─── */
+  --ink-900: #0b1140;
+  --ink-700: #1b1464;
+  --ink-500: #4f4da6;
+  --ink-300: #b9b8d8;
+
+  /* ─── Sarcelle clinique — accent scientifique ─── */
+  --clinical-700: #0b6a6a;
+  --clinical-600: #0e7c7b;
+  --clinical-500: #1f9d9c;
+  --clinical-100: #e6f2f1;
+  --clinical-50: #f2f9f8;
+
+  /* ─── Corail chaleureux — accent humain ─── */
+  --coral-700: #b85339;
+  --coral-600: #d4694f;
+  --coral-500: #e8836b;
+  --coral-400: #f4a28c;
+  --coral-300: #f8c2b0;
+  --coral-100: #ffe7dd;
+  --coral-50: #fff4ee;
+
+  /* ─── Rose nuance (tertiaire) ─── */
+  --rose-300: #e8a5b8;
+  --rose-100: #ffedf1;
+
+  /* ─── Neutres chauds (papier ivoire éditorial) ─── */
+  --ivory: #fffcf7;
+  --cream: #faf7f2;
+  --sand: #f1ece3;
+  --line: #ece6da;
+  --line-soft: #f4eee2;
+
+  /* ─── Texte ─── */
+  --text: #1a1b25;
+  --text-soft: #3d3f52;
+  --muted: #5c5f73;
+  --muted-soft: #8a8da0;
+
+  /* ─── Statut ─── */
+  --success-600: #0e8e5c;
+  --success-100: #dcf3e7;
+  --warning-600: #c57f12;
+  --warning-100: #fcefd3;
+
+  /* ─── Ombres ─── */
+  --shadow-soft: 0 1px 2px rgba(11, 17, 64, 0.04),
+    0 6px 24px rgba(11, 17, 64, 0.06);
+  --shadow-card: 0 1px 3px rgba(11, 17, 64, 0.06),
+    0 12px 40px rgba(11, 17, 64, 0.08);
+
+  /* ─── Polices ─── */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    sans-serif;
+  --font-serif: "IBM Plex Serif", "Georgia", "Cambria", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas,
+    monospace;
+
+  /* ─── Échelle typographique ─── */
+  --display-xl: clamp(2.5rem, 5vw, 4rem);
+  --display-lg: clamp(2rem, 3.6vw, 2.85rem);
+  --display-md: clamp(1.6rem, 2.4vw, 2rem);
+}
 
 *,
 *::before,
@@ -6,18 +77,121 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  border-radius: 0 !important;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
-  font-family: "Poppins", sans-serif;
-  color: #1d1e20;
-  background: #fff;
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  color: var(--text);
+  background: #ffffff;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+
+/* Titres : IBM Plex Serif — sobriété académique
+   color: inherit pour s'adapter au parent (utile pour les cartes sombres) */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: inherit;
+}
+
+/* Citations & accents éditoriaux */
+.editorial,
+.editorial em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Code / DOI / identifiants */
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 28px;
+}
+
+/* Motif "papier millimétré" — désactivé (rendu plat sans dégradé) */
+.bg-dotgrid,
+.bg-dotgrid--ink {
+  background-image: none;
+}
+
+/* Eyebrow / sur-titre académique */
+.text-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Données / chiffres : tabulaires */
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Liens textuels */
+a {
+  color: var(--ink-700);
+}
+
+/* Sélection */
+::selection {
+  background: var(--coral-100);
+  color: var(--ink-900);
+}
+
+/* Focus accessible */
+:focus-visible {
+  outline: 2.5px solid var(--clinical-500);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Animation discrète */
+@keyframes evidence-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(var(--target, 1));
+  }
+}
+
+/* Scrollbar sobre */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink-300);
+  border-radius: 100px;
+  border: 2px solid #ffffff;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-500);
 }

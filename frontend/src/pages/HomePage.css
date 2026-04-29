@@ -3,7 +3,7 @@
 }
 
 .home-hero {
-  background: linear-gradient(145deg, #0f1538 0%, #1b1464 50%, #37277f 100%);
+  background: #1b1464;
   color: #fff;
   padding: 88px 0;
 }
@@ -73,7 +73,7 @@
 }
 
 .home-btn-primary {
-  background: linear-gradient(135deg, #f05f98 0%, #fc7db2 100%);
+  background: #d4694f;
   color: #fff;
 }
 

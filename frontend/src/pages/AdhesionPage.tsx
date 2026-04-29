@@ -177,7 +177,7 @@ export default function AdhesionPage() {
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <h1
             style={{
-              fontFamily: "'Playfair Display',serif",
+              fontFamily: "'IBM Plex Serif',serif",
               fontSize: "2rem",
               fontWeight: 800,
               marginBottom: 8,

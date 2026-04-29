@@ -164,7 +164,7 @@ export default function EvenementsPage() {
                       style={{
                         minWidth: 70,
                         textAlign: "center",
-                        background: "linear-gradient(135deg,#1B1464,#D4849A)",
+                        background: "#1B1464",
                         borderRadius: 14,
                         padding: "14px 10px",
                         color: "#fff",

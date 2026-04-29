@@ -140,7 +140,7 @@ export default function EvenementDetailPage() {
         {/* Header */}
         <div
           style={{
-            background: "linear-gradient(135deg,#1B1464 0%,#D4849A 100%)",
+            background: "#1B1464",
             borderRadius: 20,
             padding: "40px 36px",
             color: "#fff",
@@ -272,7 +272,7 @@ export default function EvenementDetailPage() {
                           width: 32,
                           height: 32,
                           borderRadius: "50%",
-                          background: "linear-gradient(135deg,#1B1464,#D4849A)",
+                          background: "#1B1464",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -356,7 +356,7 @@ export default function EvenementDetailPage() {
                     padding: "12px",
                     borderRadius: 100,
                     border: "none",
-                    background: "linear-gradient(135deg,#1B1464,#D4849A)",
+                    background: "#1B1464",
                     color: "#fff",
                     fontWeight: 700,
                     fontSize: ".9rem",
@@ -528,7 +528,7 @@ export default function EvenementDetailPage() {
                   padding: "12px",
                   borderRadius: 100,
                   border: "none",
-                  background: "linear-gradient(135deg,#1B1464,#D4849A)",
+                  background: "#1B1464",
                   color: "#fff",
                   fontWeight: 700,
                   fontSize: ".9rem",

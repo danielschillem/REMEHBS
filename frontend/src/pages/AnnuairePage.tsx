@@ -143,7 +143,7 @@ export default function AnnuairePage() {
                         width: 40,
                         height: 40,
                         borderRadius: "50%",
-                        background: "linear-gradient(135deg,#1B1464,#D4849A)",
+                        background: "#1B1464",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",

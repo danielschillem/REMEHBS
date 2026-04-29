@@ -341,7 +341,7 @@ export default function SoumissionAbstractPage() {
                 padding: "13px",
                 borderRadius: 100,
                 border: "none",
-                background: "linear-gradient(135deg,#1B1464,#D4849A)",
+                background: "#1B1464",
                 color: "#fff",
                 fontWeight: 700,
                 fontSize: ".9rem",

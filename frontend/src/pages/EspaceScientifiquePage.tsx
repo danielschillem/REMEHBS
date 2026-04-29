@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useMemo, useState } from "react";
 import {
   BookOpen,
   Search,
@@ -6,442 +6,535 @@ import {
   FileText,
   Presentation,
   GraduationCap,
-  Filter,
+  Mic,
   X,
-  Grid3x3,
-  List,
-  Eye,
+  ChevronDown,
+  ChevronUp,
+  Building2,
+  Users,
+  ExternalLink,
+  Layers,
+  ArrowDown,
 } from "lucide-react";
 import {
-  publicationsApi,
-  THEMES,
-  ANNEES_CONGRES,
-  type Publication,
-} from "../api/events";
+  programme,
+  plenarySessions,
+  allOralCommunications,
+  programmeStats,
+  formatFileSize,
+  type PlenaryItem,
+  type OralCommunication,
+  type Room,
+} from "../data/programmeJsp2025";
 
-const TYPE_LABELS: Record<
-  string,
+const INK = "#1B1464";
+const INK_DARK = "#0B1140";
+const TEAL = "#0E7C7B";
+const CORAL = "#D4694F";
+const SAND = "#FAF7F2";
+const LINE = "#ECE6DA";
+
+type TabId = "all" | "plenaries" | "oral";
+
+const KIND_META: Record<
+  PlenaryItem["kind"],
   { label: string; color: string; icon: React.ReactNode }
 > = {
-  communication: {
-    label: "Communication orale",
-    color: "#1B1464",
-    icon: <Presentation size={13} />,
-  },
-  poster: {
-    label: "Poster",
-    color: "#D4849A",
-    icon: <FileText size={13} />,
-  },
   conference: {
-    label: "Conférence / Panel",
-    color: "#00b96b",
+    label: "Conférence",
+    color: INK,
     icon: <GraduationCap size={13} />,
+  },
+  panel: {
+    label: "Panel",
+    color: CORAL,
+    icon: <Users size={13} />,
+  },
+  symposium: {
+    label: "Symposium",
+    color: TEAL,
+    icon: <Mic size={13} />,
   },
 };
 
-const SORT_OPTIONS = [
-  { value: "ordre", label: "Ordre de présentation" },
-  { value: "titre", label: "Titre (A-Z)" },
-  { value: "auteur", label: "Auteur (A-Z)" },
-  { value: "type", label: "Type" },
-];
-
-function TypeBadge({ type }: { type: string }) {
-  const info = TYPE_LABELS[type] ?? {
-    label: type,
-    color: "#6b7280",
-    icon: null,
-  };
-  return (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 5,
-        fontSize: ".70rem",
-        fontWeight: 700,
-        padding: "4px 10px",
-        borderRadius: 100,
-        background: info.color + "15",
-        color: info.color,
-        flexShrink: 0,
-      }}
-    >
-      {info.icon}
-      {info.label}
-    </span>
-  );
+function matchesQuery(haystack: string, needle: string): boolean {
+  if (!needle) return true;
+  return haystack.toLocaleLowerCase("fr").includes(needle.toLocaleLowerCase("fr"));
 }
 
-function PublicationModal({
-  pub,
-  onClose,
+function StatCard({
+  value,
+  label,
+  icon,
+  color,
 }: {
-  pub: Publication | null;
-  onClose: () => void;
+  value: number | string;
+  label: string;
+  icon: React.ReactNode;
+  color: string;
 }) {
-  if (!pub) return null;
   return (
     <div
       style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,.5)",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        zIndex: 50,
-        padding: 16,
+        gap: 12,
+        background: "rgba(255,255,255,.08)",
+        border: "1px solid rgba(255,255,255,.15)",
+        borderRadius: 12,
+        padding: "14px 18px",
+        minWidth: 0,
       }}
-      onClick={onClose}
     >
       <div
         style={{
-          background: "#fff",
-          borderRadius: 16,
-          padding: 32,
-          maxWidth: 500,
-          width: "100%",
-          maxHeight: "80vh",
-          overflow: "auto",
-          boxShadow: "0 20px 60px rgba(0,0,0,.3)",
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          background: color,
+          color: "#fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
         }}
-        onClick={(e) => e.stopPropagation()}
       >
+        {icon}
+      </div>
+      <div style={{ minWidth: 0 }}>
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "start",
-            marginBottom: 20,
+            fontFamily: "'IBM Plex Serif',serif",
+            fontSize: "1.5rem",
+            fontWeight: 700,
+            lineHeight: 1,
+            color: "#fff",
           }}
         >
-          <div style={{ flex: 1 }}>
-            <h2
-              style={{
-                fontSize: "1.1rem",
-                fontWeight: 800,
-                margin: "0 0 10px",
-                color: "#1d1e20",
-                lineHeight: 1.4,
-              }}
-            >
-              {pub.titre}
-            </h2>
-            <div
-              style={{ fontSize: ".85rem", color: "#6b7280", fontWeight: 600 }}
-            >
-              {pub.auteur}
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            style={{
-              background: "none",
-              border: "none",
-              fontSize: "1.5rem",
-              cursor: "pointer",
-              color: "#6b7280",
-              padding: 0,
-            }}
-          >
-            <X size={20} />
-          </button>
+          {value}
         </div>
-
         <div
           style={{
-            display: "flex",
-            gap: 8,
-            flexWrap: "wrap",
-            marginBottom: 20,
-            paddingBottom: 20,
-            borderBottom: "1px solid #e5e7eb",
+            fontSize: ".72rem",
+            letterSpacing: ".04em",
+            color: "rgba(255,255,255,.7)",
+            marginTop: 4,
           }}
         >
-          <TypeBadge type={pub.type_presentation} />
-          <div
-            style={{
-              fontSize: ".73rem",
-              fontWeight: 700,
-              padding: "4px 10px",
-              borderRadius: 100,
-              background: "#f0f2ff",
-              color: "#1B1464",
-            }}
-          >
-            {pub.theme_display}
-          </div>
+          {label}
         </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <div
-            style={{
-              fontSize: ".8rem",
-              fontWeight: 600,
-              color: "#6b7280",
-              marginBottom: 4,
-            }}
-          >
-            Congrès
-          </div>
-          <div style={{ fontSize: ".9rem", color: "#1d1e20" }}>
-            {pub.congres}
-          </div>
-        </div>
-
-        {pub.date_soumission && (
-          <div style={{ marginBottom: 20 }}>
-            <div
-              style={{
-                fontSize: ".8rem",
-                fontWeight: 600,
-                color: "#6b7280",
-                marginBottom: 4,
-              }}
-            >
-              Date de soumission
-            </div>
-            <div style={{ fontSize: ".9rem", color: "#1d1e20" }}>
-              {new Date(pub.date_soumission).toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </div>
-          </div>
-        )}
-
-        {pub.fichier_url && (
-          <a
-            href={pub.fichier_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            download
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "10px 20px",
-              borderRadius: 100,
-              background: "linear-gradient(135deg,#1B1464,#2d2080)",
-              color: "#fff",
-              fontSize: ".9rem",
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            <Download size={16} /> Télécharger le PDF
-          </a>
-        )}
       </div>
     </div>
   );
 }
 
-function PublicationCard({
-  pub,
-  onView,
+function PdfActions({
+  file,
+  fileName,
+  sizeBytes,
 }: {
-  pub: Publication;
-  onView: () => void;
+  file: string;
+  fileName: string;
+  sizeBytes: number;
 }) {
   return (
-    <div
+    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <a
+        href={file}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          fontSize: ".78rem",
+          fontWeight: 600,
+          color: TEAL,
+          background: "#E6F2F1",
+          border: "1px solid rgba(14,124,123,.22)",
+          padding: "6px 12px",
+          borderRadius: 100,
+          textDecoration: "none",
+        }}
+      >
+        <ExternalLink size={13} /> Lire en ligne
+      </a>
+      <a
+        href={file}
+        download={fileName}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          fontSize: ".78rem",
+          fontWeight: 600,
+          color: INK,
+          background: "#EEEDF7",
+          border: "1px solid rgba(27,20,100,.18)",
+          padding: "6px 12px",
+          borderRadius: 100,
+          textDecoration: "none",
+        }}
+      >
+        <Download size={13} /> PDF · {formatFileSize(sizeBytes)}
+      </a>
+    </div>
+  );
+}
+
+function PlenaryCard({ item }: { item: PlenaryItem }) {
+  const meta = KIND_META[item.kind];
+  return (
+    <article
       style={{
         background: "#fff",
-        borderRadius: 12,
-        padding: 16,
-        border: "1px solid #e5e7eb",
+        border: `1px solid ${LINE}`,
+        borderRadius: 14,
+        padding: "20px 22px",
         display: "flex",
         flexDirection: "column",
-        gap: 10,
-        height: "100%",
-        transition: "all 0.2s",
-        cursor: "pointer",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow =
-          "0 4px 12px rgba(0,0,0,.1)";
-        (e.currentTarget as HTMLElement).style.borderColor = "#d4849a";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = "none";
-        (e.currentTarget as HTMLElement).style.borderColor = "#e5e7eb";
+        gap: 12,
+        boxShadow: "0 1px 2px rgba(11,17,64,.04)",
       }}
     >
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        <TypeBadge type={pub.type_presentation} />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: ".68rem",
+            fontWeight: 700,
+            letterSpacing: ".1em",
+            textTransform: "uppercase",
+            color: meta.color,
+            background: meta.color + "15",
+            padding: "4px 10px",
+            borderRadius: 100,
+          }}
+        >
+          {meta.icon} {item.label}
+        </span>
+        <span style={{ fontSize: ".75rem", color: "#8A8DA0" }}>
+          {formatFileSize(item.sizeBytes)}
+        </span>
       </div>
-
       <h3
         style={{
-          fontSize: ".9rem",
-          fontWeight: 700,
-          margin: 0,
-          color: "#1d1e20",
+          fontFamily: "'IBM Plex Serif',serif",
+          fontSize: "1rem",
+          fontWeight: 600,
           lineHeight: 1.4,
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
+          color: "#1A1B25",
+          margin: 0,
         }}
       >
-        {pub.titre}
+        {item.displayTitle}
       </h3>
+      <PdfActions file={item.file} fileName={item.fileName} sizeBytes={item.sizeBytes} />
+    </article>
+  );
+}
 
+function CommunicationRow({ comm }: { comm: OralCommunication }) {
+  return (
+    <article
+      style={{
+        background: "#fff",
+        border: `1px solid ${LINE}`,
+        borderRadius: 12,
+        padding: "16px 20px",
+        display: "grid",
+        gridTemplateColumns: "minmax(70px,80px) minmax(0,1fr) auto",
+        gap: 18,
+        alignItems: "start",
+      }}
+    >
       <div
         style={{
-          fontSize: ".8rem",
-          color: "#6b7280",
-          fontWeight: 500,
-          display: "-webkit-box",
-          WebkitLineClamp: 1,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: ".82rem",
+          fontWeight: 700,
+          color: INK,
+          background: "#EEEDF7",
+          borderRadius: 8,
+          padding: "8px 6px",
+          textAlign: "center",
+          letterSpacing: ".02em",
+          alignSelf: "center",
         }}
       >
-        {pub.auteur}
+        {comm.code || "—"}
       </div>
-
-      <div
-        style={{
-          marginTop: "auto",
-          paddingTop: 12,
-          borderTop: "1px solid #f0f2ff",
-        }}
-      >
-        <button
-          onClick={onView}
+      <div style={{ minWidth: 0 }}>
+        <h4
           style={{
-            width: "100%",
-            padding: "8px 12px",
-            borderRadius: 8,
-            border: "1px solid #1B1464",
-            background: "transparent",
-            color: "#1B1464",
-            fontSize: ".8rem",
-            fontWeight: 700,
-            cursor: "pointer",
+            fontFamily: "'IBM Plex Serif',serif",
+            fontSize: ".95rem",
+            fontWeight: 600,
+            lineHeight: 1.45,
+            color: "#1A1B25",
+            margin: "0 0 8px",
+            wordBreak: "break-word",
+          }}
+        >
+          {comm.displayTitle}
+        </h4>
+        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", fontSize: ".72rem", color: "#5C5F73", marginBottom: 10 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+            <Building2 size={11} /> {comm.roomName}
+          </span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+            <Layers size={11} /> Session {comm.sessionNumber}
+          </span>
+        </div>
+        <PdfActions file={comm.file} fileName={comm.fileName} sizeBytes={comm.sizeBytes} />
+      </div>
+      <div style={{ alignSelf: "center" }}>
+        <a
+          href={comm.file}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Ouvrir ${comm.code} en PDF`}
+          title="Ouvrir le PDF"
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 10,
+            background: SAND,
+            border: `1px solid ${LINE}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: 5,
+            color: INK,
+            textDecoration: "none",
           }}
         >
-          <Eye size={14} /> Voir détails
-        </button>
+          <ExternalLink size={16} />
+        </a>
       </div>
-    </div>
+    </article>
+  );
+}
+
+function SessionGroup({
+  room,
+  searchQuery,
+  initiallyOpen,
+}: {
+  room: Room;
+  searchQuery: string;
+  initiallyOpen: boolean;
+}) {
+  const [openSessions, setOpenSessions] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(room.sessions.map((s) => [s.slug, initiallyOpen])),
+  );
+  const filteredSessions = room.sessions
+    .map((s) => ({
+      ...s,
+      communications: s.communications.filter((c) =>
+        matchesQuery(`${c.code} ${c.displayTitle}`, searchQuery),
+      ),
+    }))
+    .filter((s) => s.communications.length > 0);
+
+  if (filteredSessions.length === 0) return null;
+
+  const totalComm = filteredSessions.reduce(
+    (acc, s) => acc + s.communications.length,
+    0,
+  );
+
+  return (
+    <section
+      style={{
+        background: "#fff",
+        border: `1px solid ${LINE}`,
+        borderRadius: 16,
+        overflow: "hidden",
+        marginBottom: 20,
+      }}
+    >
+      <header
+        style={{
+          background: INK_DARK,
+          color: "#fff",
+          padding: "16px 22px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 14,
+          flexWrap: "wrap",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: 10,
+              background: TEAL,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Building2 size={18} />
+          </div>
+          <div>
+            <h2
+              style={{
+                fontFamily: "'IBM Plex Serif',serif",
+                fontSize: "1.15rem",
+                fontWeight: 700,
+                margin: 0,
+                lineHeight: 1.2,
+              }}
+            >
+              {room.name}
+            </h2>
+            <span
+              style={{
+                fontSize: ".74rem",
+                color: "rgba(255,255,255,.7)",
+                letterSpacing: ".02em",
+              }}
+            >
+              {filteredSessions.length} session
+              {filteredSessions.length > 1 ? "s" : ""} · {totalComm} communication
+              {totalComm > 1 ? "s" : ""}
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div style={{ padding: "8px 12px 12px" }}>
+        {filteredSessions.map((session) => {
+          const open = openSessions[session.slug];
+          return (
+            <div
+              key={session.slug}
+              style={{
+                borderBottom: `1px solid ${LINE}`,
+                paddingBottom: open ? 16 : 0,
+              }}
+            >
+              <button
+                type="button"
+                onClick={() =>
+                  setOpenSessions((m) => ({ ...m, [session.slug]: !m[session.slug] }))
+                }
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 12,
+                  padding: "14px 12px",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  color: INK_DARK,
+                  textAlign: "left",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'IBM Plex Serif',serif",
+                    fontSize: "1rem",
+                    fontWeight: 600,
+                  }}
+                >
+                  {session.name}
+                </span>
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: ".74rem",
+                    color: "#5C5F73",
+                  }}
+                >
+                  <span>
+                    {session.communications.length} comm.
+                  </span>
+                  {open ? (
+                    <ChevronUp size={16} />
+                  ) : (
+                    <ChevronDown size={16} />
+                  )}
+                </span>
+              </button>
+              {open && (
+                <div
+                  style={{
+                    display: "grid",
+                    gap: 10,
+                    padding: "0 4px",
+                  }}
+                >
+                  {session.communications.map((c) => (
+                    <CommunicationRow key={c.file} comm={c} />
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
 export default function EspaceScientifiquePage() {
-  const [publications, setPublications] = useState<Publication[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const stats = useMemo(programmeStats, []);
+  const [tab, setTab] = useState<TabId>("all");
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [theme, setTheme] = useState("");
-  const [typePresentation, setTypePresentation] = useState("");
-  const [annee, setAnnee] = useState("");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [sortBy, setSortBy] = useState("ordre");
-  const [selectedPub, setSelectedPub] = useState<Publication | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [kindFilter, setKindFilter] = useState<"" | PlenaryItem["kind"]>("");
+  const [roomFilter, setRoomFilter] = useState<string>("");
 
-  useEffect(() => {
-    const t = setTimeout(() => setDebouncedSearch(search), 350);
-    return () => clearTimeout(t);
-  }, [search]);
-
-  const fetchPublications = useCallback(() => {
-    setLoading(true);
-    setError("");
-    const params: Record<string, string> = {};
-    if (debouncedSearch) params.search = debouncedSearch;
-    if (theme) params.theme = theme;
-    if (typePresentation) params.type_presentation = typePresentation;
-    if (annee) params.annee = annee;
-
-    publicationsApi
-      .list(params)
-      .then((r) => setPublications(r.data))
-      .catch(() => setError("Impossible de charger les communications."))
-      .finally(() => setLoading(false));
-  }, [debouncedSearch, theme, typePresentation, annee]);
-
-  useEffect(() => {
-    fetchPublications();
-  }, [fetchPublications]);
-
-  // Compter par thème
-  const themeCounts = publications.reduce(
-    (acc, p) => {
-      acc[p.theme] = (acc[p.theme] ?? 0) + 1;
-      return acc;
-    },
-    {} as Record<string, number>,
+  const filteredPlenaries = useMemo(
+    () =>
+      plenarySessions.filter(
+        (p) =>
+          (!kindFilter || p.kind === kindFilter) &&
+          matchesQuery(`${p.label} ${p.displayTitle} ${p.rawTitle}`, search),
+      ),
+    [kindFilter, search],
   );
 
-  // Trier les publications
-  let sorted = [...publications];
-  switch (sortBy) {
-    case "titre":
-      sorted.sort((a, b) => a.titre.localeCompare(b.titre));
-      break;
-    case "auteur":
-      sorted.sort((a, b) => a.auteur.localeCompare(b.auteur));
-      break;
-    case "type":
-      sorted.sort((a, b) =>
-        a.type_presentation.localeCompare(b.type_presentation),
+  const filteredRooms = useMemo(() => {
+    return programme.rooms
+      .filter((r) => !roomFilter || r.slug === roomFilter)
+      .filter((r) =>
+        r.sessions.some((s) =>
+          s.communications.some((c) =>
+            matchesQuery(`${c.code} ${c.displayTitle}`, search),
+          ),
+        ),
       );
-      break;
-    default:
-      sorted.sort((a, b) => a.ordre - b.ordre);
-  }
+  }, [roomFilter, search]);
 
-  const grouped = annee
-    ? { [annee]: sorted }
-    : sorted.reduce<Record<string, Publication[]>>((acc, p) => {
-        const key = String(p.annee_congres);
-        if (!acc[key]) acc[key] = [];
-        acc[key].push(p);
-        return acc;
-      }, {});
-
-  // Trier les années décroissant
-  const sortedYearKeys = Object.keys(grouped).sort(
-    (a, b) => Number(b) - Number(a),
+  const totalOralFiltered = useMemo(
+    () =>
+      allOralCommunications.filter(
+        (c) =>
+          (!roomFilter || c.roomSlug === roomFilter) &&
+          matchesQuery(`${c.code} ${c.displayTitle}`, search),
+      ).length,
+    [roomFilter, search],
   );
 
-  const anneeLabels = Object.fromEntries(
-    ANNEES_CONGRES.map((a) => [a.value, a.label]),
-  );
-  const themeLabels = Object.fromEntries(THEMES.map((t) => [t.value, t.label]));
-  const activeFilters = [
-    annee ? ANNEES_CONGRES.find((a) => a.value === annee)?.label : null,
-    theme ? THEMES.find((t) => t.value === theme)?.label : null,
-    typePresentation ? TYPE_LABELS[typePresentation]?.label : null,
-  ].filter(Boolean);
+  const showPlenaries = tab === "all" || tab === "plenaries";
+  const showOral = tab === "all" || tab === "oral";
 
   return (
-    <div
-      style={{ background: "#f4f6fb", minHeight: "100vh", paddingBottom: 40 }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          background:
-            "linear-gradient(140deg,#0f1538 0%,#1B1464 55%,#2d2080 100%)",
-          padding: "52px 0 40px",
-          color: "#fff",
-        }}
-      >
+    <div style={{ background: SAND, minHeight: "100vh", paddingBottom: 60 }}>
+      {/* ── Hero ──────────────────────────────────────────────────────── */}
+      <div style={{ background: INK, color: "#fff", padding: "60px 0 48px" }}>
         <div className="container">
-          <div
+          <span
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -450,632 +543,368 @@ export default function EspaceScientifiquePage() {
               border: "1px solid rgba(255,255,255,.2)",
               borderRadius: 100,
               padding: "6px 14px",
-              fontSize: ".78rem",
+              fontSize: ".74rem",
               fontWeight: 700,
-              letterSpacing: ".05em",
+              letterSpacing: ".12em",
               textTransform: "uppercase",
-              marginBottom: 16,
+              marginBottom: 18,
             }}
           >
-            <BookOpen size={13} /> Bibliothèque Scientifique
-          </div>
+            <BookOpen size={13} /> Espace scientifique
+          </span>
           <h1
             style={{
-              fontFamily: "'Playfair Display',serif",
-              fontSize: "clamp(1.75rem,4vw,2.75rem)",
-              fontWeight: 800,
-              margin: "0 0 10px",
+              fontFamily: "'IBM Plex Serif',serif",
+              fontSize: "clamp(1.85rem,4.2vw,2.85rem)",
+              fontWeight: 700,
+              margin: "0 0 12px",
+              letterSpacing: "-0.005em",
             }}
           >
-            Espace Scientifique REMEHBS
+            {programme.edition}
           </h1>
           <p
-            style={{ color: "rgba(255,255,255,.78)", maxWidth: 600, margin: 0 }}
-          >
-            {publications.length} communications scientifiques approuvées •
-            7èmes JSP REMEHBS 2025
-          </p>
-        </div>
-      </div>
-
-      {/* Main Layout */}
-      <div style={{ display: "flex", minHeight: "calc(100vh - 300px)" }}>
-        {/* Sidebar */}
-        <aside
-          style={{
-            width: sidebarOpen ? 280 : 0,
-            background: "#fff",
-            borderRight: "1px solid #e5e7eb",
-            transition: "width 0.3s",
-            overflow: "hidden",
-            overflowY: "auto",
-          }}
-        >
-          <div style={{ padding: 20 }}>
-            {/* Search */}
-            <div style={{ marginBottom: 24 }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  background: "#f4f6fb",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: 10,
-                  padding: "10px 12px",
-                }}
-              >
-                <Search size={16} color="#6b7280" />
-                <input
-                  type="text"
-                  placeholder="Rechercher…"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  style={{
-                    flex: 1,
-                    border: "none",
-                    outline: "none",
-                    background: "transparent",
-                    fontSize: ".9rem",
-                  }}
-                />
-                {search && (
-                  <button
-                    onClick={() => setSearch("")}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "#6b7280",
-                    }}
-                  >
-                    <X size={16} />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Édition / Année */}
-            <div style={{ marginBottom: 24 }}>
-              <h3
-                style={{
-                  fontSize: ".8rem",
-                  fontWeight: 700,
-                  color: "#1d1e20",
-                  margin: "0 0 12px",
-                  textTransform: "uppercase",
-                  letterSpacing: ".05em",
-                }}
-              >
-                Édition du congrès
-              </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {ANNEES_CONGRES.filter((a) => a.value).map((a) => (
-                  <button
-                    key={a.value}
-                    onClick={() => setAnnee(annee === a.value ? "" : a.value)}
-                    style={{
-                      background: annee === a.value ? "#f0f2ff" : "transparent",
-                      border:
-                        annee === a.value
-                          ? "1px solid #1B1464"
-                          : "1px solid #e5e7eb",
-                      padding: "10px 12px",
-                      borderRadius: 8,
-                      textAlign: "left",
-                      cursor: "pointer",
-                      fontSize: ".85rem",
-                      fontWeight: annee === a.value ? 700 : 500,
-                      color: annee === a.value ? "#1B1464" : "#1d1e20",
-                      transition: "all 0.2s",
-                    }}
-                  >
-                    {a.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Type Filter */}
-            <div style={{ marginBottom: 24 }}>
-              <h3
-                style={{
-                  fontSize: ".8rem",
-                  fontWeight: 700,
-                  color: "#1d1e20",
-                  margin: "0 0 12px",
-                  textTransform: "uppercase",
-                  letterSpacing: ".05em",
-                }}
-              >
-                Type de présentation
-              </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {["communication", "poster", "conference"].map((type) => (
-                  <label
-                    key={type}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 10,
-                      cursor: "pointer",
-                      fontSize: ".9rem",
-                    }}
-                  >
-                    <input
-                      type="radio"
-                      name="type"
-                      value={type}
-                      checked={typePresentation === type}
-                      onChange={(e) => setTypePresentation(e.target.value)}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <span>
-                      {TYPE_LABELS[type as keyof typeof TYPE_LABELS].label}
-                    </span>
-                  </label>
-                ))}
-                {typePresentation && (
-                  <button
-                    onClick={() => setTypePresentation("")}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "#D4849A",
-                      fontSize: ".8rem",
-                      fontWeight: 600,
-                      cursor: "pointer",
-                      textAlign: "left",
-                      padding: "4px 0",
-                    }}
-                  >
-                    Réinitialiser
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Theme Categories */}
-            <div>
-              <h3
-                style={{
-                  fontSize: ".8rem",
-                  fontWeight: 700,
-                  color: "#1d1e20",
-                  margin: "0 0 12px",
-                  textTransform: "uppercase",
-                  letterSpacing: ".05em",
-                }}
-              >
-                Catégories ({Object.keys(themeCounts).length})
-              </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {THEMES.filter((t) => t.value).map((t) => {
-                  const count = themeCounts[t.value] ?? 0;
-                  return (
-                    <button
-                      key={t.value}
-                      onClick={() => setTheme(theme === t.value ? "" : t.value)}
-                      style={{
-                        background:
-                          theme === t.value ? "#f0f2ff" : "transparent",
-                        border:
-                          theme === t.value
-                            ? "1px solid #1B1464"
-                            : "1px solid #e5e7eb",
-                        padding: "10px 12px",
-                        borderRadius: 8,
-                        textAlign: "left",
-                        cursor: "pointer",
-                        fontSize: ".85rem",
-                        fontWeight: theme === t.value ? 700 : 500,
-                        color: theme === t.value ? "#1B1464" : "#1d1e20",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        transition: "all 0.2s",
-                      }}
-                    >
-                      <span>{t.label}</span>
-                      <span
-                        style={{
-                          fontSize: ".75rem",
-                          fontWeight: 600,
-                          background: theme === t.value ? "#1B1464" : "#e5e7eb",
-                          color: theme === t.value ? "#fff" : "#6b7280",
-                          borderRadius: 100,
-                          padding: "2px 8px",
-                        }}
-                      >
-                        {count}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        {/* Content */}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          {/* Controls Bar */}
-          <div
             style={{
-              background: "#fff",
-              borderBottom: "1px solid #e5e7eb",
-              padding: "16px 24px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 16,
-              flexWrap: "wrap",
+              color: "rgba(255,255,255,.78)",
+              maxWidth: 720,
+              margin: "0 0 28px",
+              fontSize: "1rem",
+              lineHeight: 1.6,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                style={{
-                  background: "#f4f6fb",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: 8,
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 5,
-                  fontSize: ".8rem",
-                  fontWeight: 600,
-                }}
-              >
-                <Filter size={14} /> Filtres {sidebarOpen ? "−" : "+"}
-              </button>
+            Programme officiel des {programme.abbreviation} ·{" "}
+            {programme.city}, {programme.country}. {programme.organizer}.
+          </p>
 
-              {/* Sort */}
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                style={{
-                  background: "#f4f6fb",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: 8,
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                  fontSize: ".85rem",
-                  fontWeight: 500,
-                }}
-              >
-                {SORT_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* View Toggle & Active Filters */}
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              {activeFilters.length > 0 && (
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                  {activeFilters.map((f) => (
-                    <span
-                      key={f}
-                      style={{
-                        fontSize: ".75rem",
-                        background: "#D4849A",
-                        color: "#fff",
-                        padding: "4px 12px",
-                        borderRadius: 100,
-                        fontWeight: 600,
-                      }}
-                    >
-                      {f}
-                    </span>
-                  ))}
-                  <button
-                    onClick={() => {
-                      setTheme("");
-                      setTypePresentation("");
-                    }}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "#D4849A",
-                      cursor: "pointer",
-                      fontSize: ".8rem",
-                      fontWeight: 600,
-                    }}
-                  >
-                    <>
-                      <X size={14} /> Réinitialiser
-                    </>
-                  </button>
-                </div>
-              )}
-
-              {/* View Mode Toggle */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: 4,
-                  background: "#f4f6fb",
-                  borderRadius: 8,
-                  padding: 4,
-                }}
-              >
-                <button
-                  onClick={() => setViewMode("grid")}
-                  style={{
-                    background: viewMode === "grid" ? "#1B1464" : "transparent",
-                    color: viewMode === "grid" ? "#fff" : "#6b7280",
-                    border: "none",
-                    borderRadius: 6,
-                    padding: "6px 10px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Grid3x3 size={16} />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  style={{
-                    background: viewMode === "list" ? "#1B1464" : "transparent",
-                    color: viewMode === "list" ? "#fff" : "#6b7280",
-                    border: "none",
-                    borderRadius: 6,
-                    padding: "6px 10px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <List size={16} />
-                </button>
-              </div>
-            </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))",
+              gap: 14,
+              maxWidth: 920,
+            }}
+          >
+            <StatCard
+              value={stats.plenaryTotal}
+              label="Conférences, panels & symposiums"
+              icon={<GraduationCap size={18} />}
+              color={CORAL}
+            />
+            <StatCard
+              value={stats.oralCount}
+              label="Communications orales"
+              icon={<Presentation size={18} />}
+              color={TEAL}
+            />
+            <StatCard
+              value={stats.sessionCount}
+              label={`Sessions · ${stats.roomCount} salles`}
+              icon={<Layers size={18} />}
+              color="#4F4DA6"
+            />
+            <StatCard
+              value={programme.year}
+              label="Édition"
+              icon={<FileText size={18} />}
+              color="#0E8E5C"
+            />
           </div>
 
-          {/* Results */}
-          <div style={{ flex: 1, overflow: "auto", padding: 24 }}>
-            {loading && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "60px 20px",
-                  color: "#6b7280",
-                }}
-              >
-                Chargement…
-              </div>
-            )}
-
-            {error && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "40px 20px",
-                  color: "#ef4444",
-                  background: "#fee2e2",
-                  borderRadius: 12,
-                }}
-              >
-                {error}
-              </div>
-            )}
-
-            {!loading && !error && sorted.length === 0 && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "60px 20px",
-                  color: "#6b7280",
-                }}
-              >
-                <BookOpen
-                  size={40}
-                  color="#e5e7eb"
-                  style={{ marginBottom: 12, display: "block" }}
-                />
-                <p style={{ fontWeight: 600, marginBottom: 8 }}>
-                  Aucune communication trouvée.
-                </p>
-                <p style={{ fontSize: ".9rem" }}>
-                  Essayez d'autres mots-clés ou réinitialisez les filtres.
-                </p>
-              </div>
-            )}
-
-            {!loading && !error && sorted.length > 0 && viewMode === "grid" && (
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 32 }}
-              >
-                {sortedYearKeys.map((yearKey) => {
-                  const items = grouped[yearKey];
-                  return (
-                    <div key={yearKey}>
-                      {!annee && (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 10,
-                            marginBottom: 16,
-                            paddingBottom: 12,
-                            borderBottom: "2px solid #e5e7eb",
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: 4,
-                              height: 24,
-                              borderRadius: 2,
-                              background:
-                                "linear-gradient(180deg,#1B1464,#D4849A)",
-                            }}
-                          />
-                          <h2
-                            style={{
-                              fontSize: ".95rem",
-                              fontWeight: 800,
-                              margin: 0,
-                              color: "#1B1464",
-                            }}
-                          >
-                            {anneeLabels[yearKey] || `Édition ${yearKey}`}
-                          </h2>
-                          <span
-                            style={{
-                              fontSize: ".75rem",
-                              color: "#6b7280",
-                              background: "#f2f3f6",
-                              borderRadius: 100,
-                              padding: "3px 12px",
-                              fontWeight: 700,
-                              marginLeft: "auto",
-                            }}
-                          >
-                            {items.length} communication
-                            {items.length !== 1 ? "s" : ""}
-                          </span>
-                        </div>
-                      )}
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns:
-                            "repeat(auto-fill, minmax(300px, 1fr))",
-                          gap: 16,
-                        }}
-                      >
-                        {items.map((pub) => (
-                          <PublicationCard
-                            key={pub.id}
-                            pub={pub}
-                            onView={() => setSelectedPub(pub)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {!loading && !error && sorted.length > 0 && viewMode === "list" && (
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 12 }}
-              >
-                {sorted.map((pub) => (
-                  <div
-                    key={pub.id}
-                    style={{
-                      background: "#fff",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: 10,
-                      padding: 16,
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: 16,
-                    }}
-                  >
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <h3
-                        style={{
-                          fontSize: ".9rem",
-                          fontWeight: 700,
-                          margin: "0 0 6px",
-                          color: "#1d1e20",
-                        }}
-                      >
-                        {pub.titre}
-                      </h3>
-                      <div
-                        style={{
-                          fontSize: ".8rem",
-                          color: "#6b7280",
-                          marginBottom: 8,
-                        }}
-                      >
-                        {pub.auteur}
-                      </div>
-                      <div
-                        style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
-                      >
-                        <TypeBadge type={pub.type_presentation} />
-                        <div
-                          style={{
-                            fontSize: ".73rem",
-                            fontWeight: 700,
-                            padding: "4px 10px",
-                            borderRadius: 100,
-                            background: "#f0f2ff",
-                            color: "#1B1464",
-                          }}
-                        >
-                          {pub.theme_display}
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: 8,
-                        alignItems: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <button
-                        onClick={() => setSelectedPub(pub)}
-                        style={{
-                          background: "none",
-                          border: "1px solid #1B1464",
-                          borderRadius: 8,
-                          padding: "6px 12px",
-                          cursor: "pointer",
-                          color: "#1B1464",
-                          fontSize: ".75rem",
-                          fontWeight: 600,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 5,
-                        }}
-                      >
-                        <Eye size={13} /> Voir
-                      </button>
-                      {pub.fichier_url && (
-                        <a
-                          href={pub.fichier_url}
-                          download
-                          style={{
-                            background: "#1B1464",
-                            borderRadius: 8,
-                            padding: "6px 12px",
-                            cursor: "pointer",
-                            color: "#fff",
-                            fontSize: ".75rem",
-                            fontWeight: 600,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 5,
-                            textDecoration: "none",
-                          }}
-                        >
-                          <Download size={13} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <a
+            href="#programme"
+            style={{
+              marginTop: 26,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "10px 18px",
+              borderRadius: 100,
+              background: "#fff",
+              color: INK,
+              fontSize: ".88rem",
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            <ArrowDown size={15} /> Parcourir le programme
+          </a>
         </div>
       </div>
 
-      {/* Detail Modal */}
-      <PublicationModal
-        pub={selectedPub}
-        onClose={() => setSelectedPub(null)}
-      />
+      {/* ── Toolbar ──────────────────────────────────────────────────── */}
+      <div
+        id="programme"
+        style={{
+          background: "#fff",
+          borderBottom: `1px solid ${LINE}`,
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          boxShadow: "0 1px 2px rgba(11,17,64,.04)",
+        }}
+      >
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            gap: 16,
+            padding: "16px 0",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          {/* Tabs */}
+          <div
+            role="tablist"
+            style={{
+              display: "inline-flex",
+              background: SAND,
+              borderRadius: 100,
+              padding: 4,
+              border: `1px solid ${LINE}`,
+            }}
+          >
+            {(
+              [
+                { id: "all", label: "Tout" },
+                { id: "plenaries", label: "Conférences & panels" },
+                { id: "oral", label: "Communications orales" },
+              ] as { id: TabId; label: string }[]
+            ).map((t) => {
+              const active = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={active ? "true" : "false"}
+                  onClick={() => setTab(t.id)}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: 100,
+                    fontSize: ".84rem",
+                    fontWeight: 600,
+                    border: "none",
+                    cursor: "pointer",
+                    background: active ? INK : "transparent",
+                    color: active ? "#fff" : "#3D3F52",
+                    transition: "background .15s",
+                  }}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Search */}
+          <div
+            style={{
+              flex: 1,
+              minWidth: 240,
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              background: SAND,
+              border: `1px solid ${LINE}`,
+              borderRadius: 100,
+              padding: "8px 14px",
+            }}
+          >
+            <Search size={15} color="#8A8DA0" />
+            <input
+              type="search"
+              placeholder="Rechercher un titre, un code (CO12)…"
+              aria-label="Rechercher dans le programme"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                flex: 1,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                fontSize: ".88rem",
+                color: "#1A1B25",
+              }}
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                aria-label="Effacer la recherche"
+                title="Effacer"
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#8A8DA0",
+                  padding: 0,
+                }}
+              >
+                <X size={15} />
+              </button>
+            )}
+          </div>
+
+          {/* Filters per tab */}
+          {showPlenaries && (
+            <select
+              aria-label="Filtrer par type"
+              title="Filtrer par type"
+              value={kindFilter}
+              onChange={(e) =>
+                setKindFilter(e.target.value as "" | PlenaryItem["kind"])
+              }
+              style={{
+                padding: "8px 12px",
+                border: `1px solid ${LINE}`,
+                borderRadius: 100,
+                background: "#fff",
+                fontSize: ".84rem",
+                color: "#1A1B25",
+                cursor: "pointer",
+              }}
+            >
+              <option value="">Tous types</option>
+              <option value="conference">Conférences</option>
+              <option value="symposium">Symposiums</option>
+              <option value="panel">Panels</option>
+            </select>
+          )}
+
+          {showOral && (
+            <select
+              aria-label="Filtrer par salle"
+              title="Filtrer par salle"
+              value={roomFilter}
+              onChange={(e) => setRoomFilter(e.target.value)}
+              style={{
+                padding: "8px 12px",
+                border: `1px solid ${LINE}`,
+                borderRadius: 100,
+                background: "#fff",
+                fontSize: ".84rem",
+                color: "#1A1B25",
+                cursor: "pointer",
+              }}
+            >
+              <option value="">Toutes les salles</option>
+              {programme.rooms.map((r) => (
+                <option key={r.slug} value={r.slug}>
+                  {r.name}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+      </div>
+
+      {/* ── Content ──────────────────────────────────────────────────── */}
+      <div className="container" style={{ paddingTop: 32 }}>
+        {showPlenaries && (
+          <section style={{ marginBottom: 48 }}>
+            <header
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: 14,
+                marginBottom: 18,
+                flexWrap: "wrap",
+              }}
+            >
+              <h2
+                style={{
+                  fontFamily: "'IBM Plex Serif',serif",
+                  fontSize: "1.4rem",
+                  fontWeight: 700,
+                  color: INK_DARK,
+                  margin: 0,
+                }}
+              >
+                Conférences plénières, symposiums & panels
+              </h2>
+              <span style={{ fontSize: ".82rem", color: "#5C5F73" }}>
+                {filteredPlenaries.length} sur {plenarySessions.length}
+              </span>
+            </header>
+            {filteredPlenaries.length === 0 ? (
+              <EmptyState message="Aucun résultat pour cette recherche." />
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gap: 16,
+                  gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))",
+                }}
+              >
+                {filteredPlenaries.map((p) => (
+                  <PlenaryCard key={p.file} item={p} />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        {showOral && (
+          <section>
+            <header
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: 14,
+                marginBottom: 18,
+                flexWrap: "wrap",
+              }}
+            >
+              <h2
+                style={{
+                  fontFamily: "'IBM Plex Serif',serif",
+                  fontSize: "1.4rem",
+                  fontWeight: 700,
+                  color: INK_DARK,
+                  margin: 0,
+                }}
+              >
+                Communications orales
+              </h2>
+              <span style={{ fontSize: ".82rem", color: "#5C5F73" }}>
+                {totalOralFiltered} sur {stats.oralCount}
+              </span>
+            </header>
+
+            {filteredRooms.length === 0 ? (
+              <EmptyState message="Aucune communication ne correspond à votre recherche." />
+            ) : (
+              filteredRooms.map((r) => (
+                <SessionGroup
+                  key={r.slug}
+                  room={r}
+                  searchQuery={search}
+                  initiallyOpen={Boolean(search)}
+                />
+              ))
+            )}
+          </section>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function EmptyState({ message }: { message: string }) {
+  return (
+    <div
+      style={{
+        background: "#fff",
+        border: `1px dashed ${LINE}`,
+        borderRadius: 16,
+        padding: "40px 24px",
+        textAlign: "center",
+        color: "#5C5F73",
+      }}
+    >
+      <BookOpen size={28} color="#B9B8D8" style={{ marginBottom: 10 }} />
+      <p style={{ margin: 0, fontSize: ".92rem" }}>{message}</p>
     </div>
   );
 }

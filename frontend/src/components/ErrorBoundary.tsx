@@ -38,7 +38,7 @@ export default class ErrorBoundary extends Component<Props, State> {
           <AlertTriangle size={48} color="#f59e0b" />
           <h2
             style={{
-              fontFamily: "'Playfair Display',serif",
+              fontFamily: "'IBM Plex Serif',serif",
               fontSize: "1.5rem",
               fontWeight: 700,
               margin: "20px 0 10px",
@@ -73,7 +73,7 @@ export default class ErrorBoundary extends Component<Props, State> {
               padding: "10px 28px",
               borderRadius: 100,
               border: "none",
-              background: "linear-gradient(135deg,#1B1464,#D4849A)",
+              background: "#1B1464",
               color: "#fff",
               fontWeight: 700,
               fontSize: ".9rem",

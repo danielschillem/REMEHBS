@@ -81,4 +81,6 @@ coverage.xml
 
 # ── Generated submissions exports ───────────
 *.pdf
+# Programme scientifique JSP (copies servies par le frontend)
+!frontend/public/programme-jsp-2025/**/*.pdf
 soumissions_approuvees_fichiers_*/

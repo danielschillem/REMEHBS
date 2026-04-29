@@ -1,0 +1,818 @@
+{
+    "edition":  "8èmes Journées Scientifiques de Périnatalité",
+    "abbreviation":  "8èmes JSP",
+    "year":  2025,
+    "city":  "Bobo-Dioulasso",
+    "country":  "Burkina Faso",
+    "organizer":  "REMEHBS - Réseau Mère Enfant des Hauts-Bassins",
+    "conferences":  [
+                        {
+                            "kind":  "conference",
+                            "code":  "Conférence 1",
+                            "rawTitle":  "Conférence 1_mortalite perinatale",
+                            "file":  "/programme-jsp-2025/conferences/conference-1-mortalite-perinatale.pdf",
+                            "fileName":  "Conférence 1_mortalite perinatale.pdf",
+                            "sizeBytes":  12167865
+                        },
+                        {
+                            "kind":  "conference",
+                            "code":  "Conférence 2",
+                            "rawTitle":  "Conférence 2_INITIATIVE EWENE",
+                            "file":  "/programme-jsp-2025/conferences/conference-2-initiative-ewene.pdf",
+                            "fileName":  "Conférence 2_INITIATIVE EWENE.pdf",
+                            "sizeBytes":  1972566
+                        },
+                        {
+                            "kind":  "conference",
+                            "code":  "Conférence 3",
+                            "rawTitle":  "Conférence 3_Intégration_Service_SRMNIA-Nut_REMEHB_2025_PR_TRAORE_Y VF",
+                            "file":  "/programme-jsp-2025/conferences/conference-3-integration-service-srmnia-nut-remehb-2025-pr-traore-y-vf.pdf",
+                            "fileName":  "Conférence 3_Intégration_Service_SRMNIA-Nut_REMEHB_2025_PR_TRAORE_Y VF.pdf",
+                            "sizeBytes":  7304539
+                        },
+                        {
+                            "kind":  "conference",
+                            "code":  "Conference",
+                            "rawTitle":  "Conference_5.1PrematuriteEnjeux, impacts et accompagnement pluridisciplinaire",
+                            "file":  "/programme-jsp-2025/conferences/conference-5-1prematuriteenjeux-impacts-et-accompagnement-pluridisciplinaire.pdf",
+                            "fileName":  "Conference_5.1PrematuriteEnjeux, impacts et accompagnement pluridisciplinaire.pdf",
+                            "sizeBytes":  794373
+                        },
+                        {
+                            "kind":  "conference",
+                            "code":  "Conference",
+                            "rawTitle":  "Conference_5.2-Anémie du prématuré congrès Bobo",
+                            "file":  "/programme-jsp-2025/conferences/conference-5-2-anemie-du-premature-congres-bobo.pdf",
+                            "fileName":  "Conference_5.2-Anémie du prématuré congrès Bobo.pdf",
+                            "sizeBytes":  2056496
+                        },
+                        {
+                            "kind":  "conference",
+                            "code":  "Conference",
+                            "rawTitle":  "Conference_6-Présentation INNB VFinale présentée Bobo dioulasso  Juillet 2025",
+                            "file":  "/programme-jsp-2025/conferences/conference-6-presentation-innb-vfinale-presentee-bobo-dioulasso-juillet-2025.pdf",
+                            "fileName":  "Conference_6-Présentation INNB VFinale présentée Bobo dioulasso  Juillet 2025.pdf",
+                            "sizeBytes":  1976999
+                        },
+                        {
+                            "kind":  "conference",
+                            "code":  "Conference",
+                            "rawTitle":  "Conference_7 Zamané_Anémie et grossesse_Remehbs 2025",
+                            "file":  "/programme-jsp-2025/conferences/conference-7-zamane-anemie-et-grossesse-remehbs-2025.pdf",
+                            "fileName":  "Conference_7 Zamané_Anémie et grossesse_Remehbs 2025.pdf",
+                            "sizeBytes":  1152160
+                        },
+                        {
+                            "kind":  "conference",
+                            "code":  "RÉSEAU PÉRINAT DE YAOUNDÉ (RPY) UNE APPROCHE POUR AMÉLIORER LA SANTÉ MATERNELLE ET NÉONATALE",
+                            "rawTitle":  "RÉSEAU PÉRINAT DE YAOUNDÉ (RPY) UNE APPROCHE POUR AMÉLIORER LA SANTÉ MATERNELLE ET NÉONATALE",
+                            "file":  "/programme-jsp-2025/conferences/reseau-perinat-de-yaounde-rpy-une-approche-pour-ameliorer-la-sante-maternelle-et-neonatale.pdf",
+                            "fileName":  "RÉSEAU PÉRINAT DE YAOUNDÉ (RPY) UNE APPROCHE POUR AMÉLIORER LA SANTÉ MATERNELLE ET NÉONATALE.pdf",
+                            "sizeBytes":  1801268
+                        }
+                    ],
+    "panels":  [
+                   {
+                       "kind":  "panel",
+                       "code":  "PANEL 3",
+                       "rawTitle":  "PANEL 3_Remehbs _ analyse de la situation dans la région des Hauts-Bassins",
+                       "file":  "/programme-jsp-2025/conferences/panel-3-remehbs-analyse-de-la-situation-dans-la-region-des-hauts-bassins.pdf",
+                       "fileName":  "PANEL 3_Remehbs _ analyse de la situation dans la région des Hauts-Bassins.pdf",
+                       "sizeBytes":  1503100
+                   },
+                   {
+                       "kind":  "panel",
+                       "code":  "PANEL 4",
+                       "rawTitle":  "PANEL 4_Qualité des soins et services de santé en santé maternelle et infantile",
+                       "file":  "/programme-jsp-2025/conferences/panel-4-qualite-des-soins-et-services-de-sante-en-sante-maternelle-et-infantile.pdf",
+                       "fileName":  "PANEL 4_Qualité des soins et services de santé en santé maternelle et infantile.pdf",
+                       "sizeBytes":  527816
+                   }
+               ],
+    "symposiums":  [
+                       {
+                           "kind":  "symposium",
+                           "code":  "Conférence 4.1",
+                           "rawTitle":  "Conférence 4.1_HPP symposium  - Copie",
+                           "file":  "/programme-jsp-2025/conferences/conference-4-1-hpp-symposium-copie.pdf",
+                           "fileName":  "Conférence 4.1_HPP symposium  - Copie.pdf",
+                           "sizeBytes":  6300157
+                       },
+                       {
+                           "kind":  "symposium",
+                           "code":  "Symposium Allergies  enfants",
+                           "rawTitle":  "Symposium Allergies  enfants",
+                           "file":  "/programme-jsp-2025/conferences/symposium-allergies-enfants.pdf",
+                           "fileName":  "Symposium Allergies  enfants.pdf",
+                           "sizeBytes":  1114498
+                       }
+                   ],
+    "rooms":  [
+                  {
+                      "name":  "Salle 1",
+                      "slug":  "salle-1",
+                      "sessions":  [
+                                       {
+                                           "name":  "Session 1",
+                                           "number":  1,
+                                           "slug":  "session-1",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO1",
+                                                                      "rawTitle":  "CO1 - Pathfinder - ASBC_AV_REMEHBS 230725",
+                                                                      "title":  "Pathfinder - ASBC_AV_REMEHBS 230725",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-1/co1-pathfinder-asbc-av-remehbs-230725.pdf",
+                                                                      "fileName":  "CO1 - Pathfinder - ASBC_AV_REMEHBS 230725.pdf",
+                                                                      "sizeBytes":  456021
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO2",
+                                                                      "rawTitle":  "CO2 - Coût direct des infections respiratoires aigües sévères des enfants de moins de cinq ans à la charge des ménages dans les CHU CDG et YO à Ouagadougou",
+                                                                      "title":  "Coût direct des infections respiratoires aigües sévères des enfants de moins de cinq ans à la charge des ménages dans les CHU CDG et YO à Ouagadougou",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-1/co2-cout-direct-des-infections-respiratoires-aigues-severes-des-enfants-de-moins-de-cinq-ans-a-la-charge-des-menages-dans-les-chu-cdg-et-yo-a-ouagadougou.pdf",
+                                                                      "fileName":  "CO2 - Coût direct des infections respiratoires aigües sévères des enfants de moins de cinq ans à la charge des ménages dans les CHU CDG et YO à Ouagadougou.pdf",
+                                                                      "sizeBytes":  563560
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO3",
+                                                                      "rawTitle":  "CO3 - Pathfinder - PSC_REMEHB 230725",
+                                                                      "title":  "Pathfinder - PSC_REMEHB 230725",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-1/co3-pathfinder-psc-remehb-230725.pdf",
+                                                                      "fileName":  "CO3 - Pathfinder - PSC_REMEHB 230725.pdf",
+                                                                      "sizeBytes":  1527145
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO4",
+                                                                      "rawTitle":  "CO4 -Disponibilité et capacité opérationnelle des formations sanitaires à offrir les services de soins postpartum de la mère et du nouveau-né recensement HHFA Burkina 2020",
+                                                                      "title":  "Disponibilité et capacité opérationnelle des formations sanitaires à offrir les services de soins postpartum de la mère et du nouveau-né recensement HHFA Burkina 2020",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-1/co4-disponibilite-et-capacite-operationnelle-des-formations-sanitaires-a-offrir-les-services-de-soins-postpartum-de-la-mere-et-du-nouveau-ne-recensement-hhfa-burkina-2020.pdf",
+                                                                      "fileName":  "CO4 -Disponibilité et capacité opérationnelle des formations sanitaires à offrir les services de soins postpartum de la mère et du nouveau-né recensement HHFA Burkina 2020.pdf",
+                                                                      "sizeBytes":  627722
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO5",
+                                                                      "rawTitle":  "CO5 - Etat des lieux de la pratique du sport prénatal dans quelques formations sanitaires de la ville de Bobo-Dioulasso",
+                                                                      "title":  "Etat des lieux de la pratique du sport prénatal dans quelques formations sanitaires de la ville de Bobo-Dioulasso",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-1/co5-etat-des-lieux-de-la-pratique-du-sport-prenatal-dans-quelques-formations-sanitaires-de-la-ville-de-bobo-dioulasso.pdf",
+                                                                      "fileName":  "CO5 - Etat des lieux de la pratique du sport prénatal dans quelques formations sanitaires de la ville de Bobo-Dioulasso.pdf",
+                                                                      "sizeBytes":  478981
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO6",
+                                                                      "rawTitle":  "CO6- Efficacité du pantalon anti-choc non pneumatique dans la prise en charge de l\u0027hémorragie du post-partum  Expérience du service de maternité du Centre médical avec antenne Chirurgicale de Dafra",
+                                                                      "title":  "Efficacité du pantalon anti-choc non pneumatique dans la prise en charge de l\u0027hémorragie du post-partum Expérience du service de maternité du Centre médical avec antenne Chirurgicale de Dafra",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-1/co6-efficacite-du-pantalon-anti-choc-non-pneumatique-dans-la-prise-en-charge-de-l-hemorragie-du-post-partum-experience-du-service-de-maternite-du-centre-medical-avec-antenne-chirurgicale-de-dafra.pdf",
+                                                                      "fileName":  "CO6- Efficacité du pantalon anti-choc non pneumatique dans la prise en charge de l\u0027hémorragie du post-partum  Expérience du service de maternité du Centre médical avec antenne Chirurgicale de Dafra.pdf",
+                                                                      "sizeBytes":  817485
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 4",
+                                           "number":  4,
+                                           "slug":  "session-4",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO10",
+                                                                      "rawTitle":  "CO10-La maladie de Marfan  A propos de 5 cas au CHU Sourô SANOU de Bobo-Dioulasso (Burkina Faso)",
+                                                                      "title":  "La maladie de Marfan A propos de 5 cas au CHU Sourô SANOU de Bobo-Dioulasso (Burkina Faso)",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-4/co10-la-maladie-de-marfan-a-propos-de-5-cas-au-chu-souro-sanou-de-bobo-dioulasso-burkina-faso.pdf",
+                                                                      "fileName":  "CO10-La maladie de Marfan  A propos de 5 cas au CHU Sourô SANOU de Bobo-Dioulasso (Burkina Faso).pdf",
+                                                                      "sizeBytes":  731908
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO11",
+                                                                      "rawTitle":  "CO11-Issue maternelle et fœtale chez les patientes atteintes d’insuffisance rénale aiguë au cours de la prééclampsie sévère A propos de 72 cas au centre Hospitalier universitaire de Bogodogo",
+                                                                      "title":  "Issue maternelle et fœtale chez les patientes atteintes d’insuffisance rénale aiguë au cours de la prééclampsie sévère A propos de 72 cas au centre Hospitalier universitaire de Bogodogo",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-4/co11-issue-maternelle-et-f-tale-chez-les-patientes-atteintes-d-insuffisance-renale-aigue-au-cours-de-la-preeclampsie-severe-a-propos-de-72-cas-au-centre-hospitalier-universitaire-de-bogodogo.pdf",
+                                                                      "fileName":  "CO11-Issue maternelle et fœtale chez les patientes atteintes d’insuffisance rénale aiguë au cours de la prééclampsie sévère A propos de 72 cas au centre Hospitalier universitaire de Bogodogo.pdf",
+                                                                      "sizeBytes":  564815
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO12",
+                                                                      "rawTitle":  "CO12-Profil clinique des nouveau-nés décédés au 2ème   semestre de l’année 2024 dans",
+                                                                      "title":  "Profil clinique des nouveau-nés décédés au 2ème semestre de l’année 2024 dans",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-4/co12-profil-clinique-des-nouveau-nes-decedes-au-2eme-semestre-de-l-annee-2024-dans.pdf",
+                                                                      "fileName":  "CO12-Profil clinique des nouveau-nés décédés au 2ème   semestre de l’année 2024 dans.pdf",
+                                                                      "sizeBytes":  380520
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO7",
+                                                                      "rawTitle":  "CO7-Facteurs associés à l’interruption volontaire de grossesse chez les usagers de la clinique de l’Association Béninoise pour la Promotion de la Famille (ABPF), Cotonou, 2024",
+                                                                      "title":  "Facteurs associés à l’interruption volontaire de grossesse chez les usagers de la clinique de l’Association Béninoise pour la Promotion de la Famille (ABPF), Cotonou, 2024",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-4/co7-facteurs-associes-a-l-interruption-volontaire-de-grossesse-chez-les-usagers-de-la-clinique-de-l-association-beninoise-pour-la-promotion-de-la-famille-abpf-cotonou-2024.pdf",
+                                                                      "fileName":  "CO7-Facteurs associés à l’interruption volontaire de grossesse chez les usagers de la clinique de l’Association Béninoise pour la Promotion de la Famille (ABPF), Cotonou, 2024.pdf",
+                                                                      "sizeBytes":  433555
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO8",
+                                                                      "rawTitle":  "CO8-Etude de l’utilisation des utérotoniques dans la prise en charge de l’hémorragie du post-partum immédiat au Centre Hospitalier Universitaire Sourô  Sanou de Bobo-Dioulasso, Burkina Faso",
+                                                                      "title":  "Etude de l’utilisation des utérotoniques dans la prise en charge de l’hémorragie du post-partum immédiat au Centre Hospitalier Universitaire Sourô Sanou de Bobo-Dioulasso, Burkina Faso",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-4/co8-etude-de-l-utilisation-des-uterotoniques-dans-la-prise-en-charge-de-l-hemorragie-du-post-partum-immediat-au-centre-hospitalier-universitaire-souro-sanou-de-bobo-dioulasso-burkina-faso.pdf",
+                                                                      "fileName":  "CO8-Etude de l’utilisation des utérotoniques dans la prise en charge de l’hémorragie du post-partum immédiat au Centre Hospitalier Universitaire Sourô  Sanou de Bobo-Dioulasso, Burkina Faso.pdf",
+                                                                      "sizeBytes":  461836
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO9",
+                                                                      "rawTitle":  "CO9-Facteurs associés au faible taux de dépistage du VIH chez les enfants souffrant de malnutrition aiguë reçus au centre hospitalier universitaire Sourô SANOU de Bobo-Dioulasso",
+                                                                      "title":  "Facteurs associés au faible taux de dépistage du VIH chez les enfants souffrant de malnutrition aiguë reçus au centre hospitalier universitaire Sourô SANOU de Bobo-Dioulasso",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-4/co9-facteurs-associes-au-faible-taux-de-depistage-du-vih-chez-les-enfants-souffrant-de-malnutrition-aigue-recus-au-centre-hospitalier-universitaire-souro-sanou-de-bobo-dioulasso.pdf",
+                                                                      "fileName":  "CO9-Facteurs associés au faible taux de dépistage du VIH chez les enfants souffrant de malnutrition aiguë reçus au centre hospitalier universitaire Sourô SANOU de Bobo-Dioulasso.pdf",
+                                                                      "sizeBytes":  502916
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 9",
+                                           "number":  9,
+                                           "slug":  "session-9",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO25",
+                                                                      "rawTitle":  "CO25-Délai de réalisation de la césarienne en urgence au Centre Hospitalier Universitaire Régional de Ouahigouya (CHUR-OHG)",
+                                                                      "title":  "Délai de réalisation de la césarienne en urgence au Centre Hospitalier Universitaire Régional de Ouahigouya (CHUR-OHG)",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-9/co25-delai-de-realisation-de-la-cesarienne-en-urgence-au-centre-hospitalier-universitaire-regional-de-ouahigouya-chur-ohg.pdf",
+                                                                      "fileName":  "CO25-Délai de réalisation de la césarienne en urgence au Centre Hospitalier Universitaire Régional de Ouahigouya (CHUR-OHG).pdf",
+                                                                      "sizeBytes":  515065
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO27",
+                                                                      "rawTitle":  "CO27_ETIOLOGIES ET FACTEURS PRONOSTIQUES DES DÉTRESSES RESPIRATOIRES NÉONATALES DANS LE SERVICE DE NÉONATALOGIE DU CHU SOURÔ SANOU DE BOBO-DIOULASSO (BURKINA FASO)",
+                                                                      "title":  "_ETIOLOGIES ET FACTEURS PRONOSTIQUES DES DÉTRESSES RESPIRATOIRES NÉONATALES DANS LE SERVICE DE NÉONATALOGIE DU CHU SOURÔ SANOU DE BOBO-DIOULASSO (BURKINA FASO)",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-9/co27-etiologies-et-facteurs-pronostiques-des-detresses-respiratoires-neonatales-dans-le-service-de-neonatalogie-du-chu-souro-sanou-de-bobo-dioulasso-burkina-faso.pdf",
+                                                                      "fileName":  "CO27_ETIOLOGIES ET FACTEURS PRONOSTIQUES DES DÉTRESSES RESPIRATOIRES NÉONATALES DANS LE SERVICE DE NÉONATALOGIE DU CHU SOURÔ SANOU DE BOBO-DIOULASSO (BURKINA FASO).pdf",
+                                                                      "sizeBytes":  608089
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO28",
+                                                                      "rawTitle":  "CO28Evaluation du remplissage du  (GGTA) dans le service de gynécologie-obstétrique du Centre Hospitalier Universitaire Régional de Ouahigouya (CHUR-OHG) du 1er Janvier au 31 Juin 2024",
+                                                                      "title":  "Evaluation du remplissage du (GGTA) dans le service de gynécologie-obstétrique du Centre Hospitalier Universitaire Régional de Ouahigouya (CHUR-OHG) du 1er Janvier au 31 Juin 2024",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-9/co28evaluation-du-remplissage-du-ggta-dans-le-service-de-gynecologie-obstetrique-du-centre-hospitalier-universitaire-regional-de-ouahigouya-chur-ohg-du-1er-janvier-au-31-juin-2024.pdf",
+                                                                      "fileName":  "CO28Evaluation du remplissage du  (GGTA) dans le service de gynécologie-obstétrique du Centre Hospitalier Universitaire Régional de Ouahigouya (CHUR-OHG) du 1er Janvier au 31 Juin 2024.pdf",
+                                                                      "sizeBytes":  511552
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 15",
+                                           "number":  15,
+                                           "slug":  "session-15",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO65",
+                                                                      "rawTitle":  "CO 65-APPRÉCIATIONS ET ATTENTES DES FEMMES REÇUES EN CONSULTATION GYNÉCOLOGIQUE AU  CHU DE BOGODOGO",
+                                                                      "title":  "APPRÉCIATIONS ET ATTENTES DES FEMMES REÇUES EN CONSULTATION GYNÉCOLOGIQUE AU CHU DE BOGODOGO",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-15/co-65-appreciations-et-attentes-des-femmes-recues-en-consultation-gynecologique-au-chu-de-bogodogo.pdf",
+                                                                      "fileName":  "CO 65-APPRÉCIATIONS ET ATTENTES DES FEMMES REÇUES EN CONSULTATION GYNÉCOLOGIQUE AU  CHU DE BOGODOGO.pdf",
+                                                                      "sizeBytes":  596150
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO66",
+                                                                      "rawTitle":  "CO 66-Perception et vécu des soins reçus en cas de césarienne d’urgence à la maternité du Centre hospitalier universitaire Sourô Sanou de Bobo-Dioulasso, Burkina Faso du 1er décembre 2023 au 30 mai 2024",
+                                                                      "title":  "Perception et vécu des soins reçus en cas de césarienne d’urgence à la maternité du Centre hospitalier universitaire Sourô Sanou de Bobo-Dioulasso, Burkina Faso du 1er décembre 2023 au 30 mai 2024",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-15/co-66-perception-et-vecu-des-soins-recus-en-cas-de-cesarienne-d-urgence-a-la-maternite-du-centre-hospitalier-universitaire-souro-sanou-de-bobo-dioulasso-burkina-faso-du-1er-decembre-2023-au-30-mai-2024.pdf",
+                                                                      "fileName":  "CO 66-Perception et vécu des soins reçus en cas de césarienne d’urgence à la maternité du Centre hospitalier universitaire Sourô Sanou de Bobo-Dioulasso, Burkina Faso du 1er décembre 2023 au 30 mai 2024.pdf",
+                                                                      "sizeBytes":  579316
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO69",
+                                                                      "rawTitle":  "CO 69-Étude de la proportion ET DES FACTEURS D’UTILISATION DE L’APPLICATION ALLIANCE PHARMA SELON LES USAGERS des Officines Pharmaceutiques DANS LA VILLE DE BOBO DIOULASSO, BURKINA FASO, EN 2025",
+                                                                      "title":  "Étude de la proportion ET DES FACTEURS D’UTILISATION DE L’APPLICATION ALLIANCE PHARMA SELON LES USAGERS des Officines Pharmaceutiques DANS LA VILLE DE BOBO DIOULASSO, BURKINA FASO, EN 2025",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-15/co-69-etude-de-la-proportion-et-des-facteurs-d-utilisation-de-l-application-alliance-pharma-selon-les-usagers-des-officines-pharmaceutiques-dans-la-ville-de-bobo-dioulasso-burkina-faso-en-2025.pdf",
+                                                                      "fileName":  "CO 69-Étude de la proportion ET DES FACTEURS D’UTILISATION DE L’APPLICATION ALLIANCE PHARMA SELON LES USAGERS des Officines Pharmaceutiques DANS LA VILLE DE BOBO DIOULASSO, BURKINA FASO, EN 2025.pdf",
+                                                                      "sizeBytes":  649074
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO64",
+                                                                      "rawTitle":  "CO64-Facteurs associés aux troubles psychiatriques du post-partum chez les accouchées, Clinique Universitaire de Gynécologie-Obstétrique, Cotonou, 2025",
+                                                                      "title":  "Facteurs associés aux troubles psychiatriques du post-partum chez les accouchées, Clinique Universitaire de Gynécologie-Obstétrique, Cotonou, 2025",
+                                                                      "file":  "/programme-jsp-2025/salle-1/session-15/co64-facteurs-associes-aux-troubles-psychiatriques-du-post-partum-chez-les-accouchees-clinique-universitaire-de-gynecologie-obstetrique-cotonou-2025.pdf",
+                                                                      "fileName":  "CO64-Facteurs associés aux troubles psychiatriques du post-partum chez les accouchées, Clinique Universitaire de Gynécologie-Obstétrique, Cotonou, 2025.pdf",
+                                                                      "sizeBytes":  586259
+                                                                  }
+                                                              ]
+                                       }
+                                   ]
+                  },
+                  {
+                      "name":  "Salle 2",
+                      "slug":  "salle-2",
+                      "sessions":  [
+                                       {
+                                           "name":  "Session 2",
+                                           "number":  2,
+                                           "slug":  "session-2",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "",
+                                                                      "rawTitle":  "C016-Prophylaxie antianémique et anémie chez les femmes enceintes atteintes de troubles hypertensifs au Burkina Faso Etude hospitalière transversale",
+                                                                      "title":  "C016-Prophylaxie antianémique et anémie chez les femmes enceintes atteintes de troubles hypertensifs au Burkina Faso Etude hospitalière transversale",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-2/c016-prophylaxie-antianemique-et-anemie-chez-les-femmes-enceintes-atteintes-de-troubles-hypertensifs-au-burkina-faso-etude-hospitaliere-transversale.pdf",
+                                                                      "fileName":  "C016-Prophylaxie antianémique et anémie chez les femmes enceintes atteintes de troubles hypertensifs au Burkina Faso Etude hospitalière transversale.pdf",
+                                                                      "sizeBytes":  608882
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO14",
+                                                                      "rawTitle":  "CO14-AUDIT CLINIQUE DES DÉCÈS DES ENFANTS ÂGÉS DE 6 À 59 MOIS SOUFFRANT DE DÉNUTRION AIGUE SÉVÈRE DANS LE DÉPARTEMENT DE PÉDIATRIE DU CENTRE HOSPITALIER UNIVERSITAIRE SOURÔ SANOU",
+                                                                      "title":  "AUDIT CLINIQUE DES DÉCÈS DES ENFANTS ÂGÉS DE 6 À 59 MOIS SOUFFRANT DE DÉNUTRION AIGUE SÉVÈRE DANS LE DÉPARTEMENT DE PÉDIATRIE DU CENTRE HOSPITALIER UNIVERSITAIRE SOURÔ SANOU",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-2/co14-audit-clinique-des-deces-des-enfants-ages-de-6-a-59-mois-souffrant-de-denutrion-aigue-severe-dans-le-departement-de-pediatrie-du-centre-hospitalier-universitaire-souro-sanou.pdf",
+                                                                      "fileName":  "CO14-AUDIT CLINIQUE DES DÉCÈS DES ENFANTS ÂGÉS DE 6 À 59 MOIS SOUFFRANT DE DÉNUTRION AIGUE SÉVÈRE DANS LE DÉPARTEMENT DE PÉDIATRIE DU CENTRE HOSPITALIER UNIVERSITAIRE SOURÔ SANOU.pdf",
+                                                                      "sizeBytes":  865412
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO14",
+                                                                      "rawTitle":  "CO14-FACTEURS ASSOCIES AU STATUT VACCINAL ZERODOSE DES ENFANTS DE 12 A 23 MOIS AU BURKINA EN 2010 ET EN 2021.",
+                                                                      "title":  "FACTEURS ASSOCIES AU STATUT VACCINAL ZERODOSE DES ENFANTS DE 12 A 23 MOIS AU BURKINA EN 2010 ET EN 2021.",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-2/co14-facteurs-associes-au-statut-vaccinal-zerodose-des-enfants-de-12-a-23-mois-au-burkina-en-2010-et-en-2021.pdf",
+                                                                      "fileName":  "CO14-FACTEURS ASSOCIES AU STATUT VACCINAL ZERODOSE DES ENFANTS DE 12 A 23 MOIS AU BURKINA EN 2010 ET EN 2021..pdf",
+                                                                      "sizeBytes":  733728
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO15",
+                                                                      "rawTitle":  "CO15-DETERMINANTS DE LA FAIBLE QUALITE DE LA SURVEILLANCE NUTRITIONNELLE CHEZ LES ENFANTS DE MOINS DE CINQ ANS DANS LES CSPS",
+                                                                      "title":  "DETERMINANTS DE LA FAIBLE QUALITE DE LA SURVEILLANCE NUTRITIONNELLE CHEZ LES ENFANTS DE MOINS DE CINQ ANS DANS LES CSPS",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-2/co15-determinants-de-la-faible-qualite-de-la-surveillance-nutritionnelle-chez-les-enfants-de-moins-de-cinq-ans-dans-les-csps.pdf",
+                                                                      "fileName":  "CO15-DETERMINANTS DE LA FAIBLE QUALITE DE LA SURVEILLANCE NUTRITIONNELLE CHEZ LES ENFANTS DE MOINS DE CINQ ANS DANS LES CSPS.pdf",
+                                                                      "sizeBytes":  476249
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO17",
+                                                                      "rawTitle":  "CO17-La prophylaxie anti-palustre  et l’anémie au cours de la grossesse chez femmes enceintes atteintes de troubles hypertensifs . Etude hospitalière transversale à Kaya et à Dori",
+                                                                      "title":  "La prophylaxie anti-palustre et l’anémie au cours de la grossesse chez femmes enceintes atteintes de troubles hypertensifs . Etude hospitalière transversale à Kaya et à Dori",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-2/co17-la-prophylaxie-anti-palustre-et-l-anemie-au-cours-de-la-grossesse-chez-femmes-enceintes-atteintes-de-troubles-hypertensifs-etude-hospitaliere-transversale-a-kaya-et-a-dori.pdf",
+                                                                      "fileName":  "CO17-La prophylaxie anti-palustre  et l’anémie au cours de la grossesse chez femmes enceintes atteintes de troubles hypertensifs . Etude hospitalière transversale à Kaya et à Dori.pdf",
+                                                                      "sizeBytes":  516520
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 5",
+                                           "number":  5,
+                                           "slug":  "session-5",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO19",
+                                                                      "rawTitle":  "CO19-Prévention de la transmission mère-enfant du virus de l’hépatite B  l’apport du Service d’hépato-Gastroentérologie du CHU Sourô Sanou",
+                                                                      "title":  "Prévention de la transmission mère-enfant du virus de l’hépatite B l’apport du Service d’hépato-Gastroentérologie du CHU Sourô Sanou",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-5/co19-prevention-de-la-transmission-mere-enfant-du-virus-de-l-hepatite-b-l-apport-du-service-d-hepato-gastroenterologie-du-chu-souro-sanou.pdf",
+                                                                      "fileName":  "CO19-Prévention de la transmission mère-enfant du virus de l’hépatite B  l’apport du Service d’hépato-Gastroentérologie du CHU Sourô Sanou.pdf",
+                                                                      "sizeBytes":  648690
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO21",
+                                                                      "rawTitle":  "CO21-Aspects épidémiologiques, cliniques, thérapeutiques et pronostiques des hémorragies du post-partum immédiat dans le service de gynécologie-obstétrique",
+                                                                      "title":  "Aspects épidémiologiques, cliniques, thérapeutiques et pronostiques des hémorragies du post-partum immédiat dans le service de gynécologie-obstétrique",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-5/co21-aspects-epidemiologiques-cliniques-therapeutiques-et-pronostiques-des-hemorragies-du-post-partum-immediat-dans-le-service-de-gynecologie-obstetrique.pdf",
+                                                                      "fileName":  "CO21-Aspects épidémiologiques, cliniques, thérapeutiques et pronostiques des hémorragies du post-partum immédiat dans le service de gynécologie-obstétrique.pdf",
+                                                                      "sizeBytes":  541586
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO22",
+                                                                      "rawTitle":  "CO22-facteurs de risques de l’asphyxie périnatale du nouveau-né à terme dans le service de néonatologie du Centre Hospitalier Universitaire Bogodogo",
+                                                                      "title":  "facteurs de risques de l’asphyxie périnatale du nouveau-né à terme dans le service de néonatologie du Centre Hospitalier Universitaire Bogodogo",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-5/co22-facteurs-de-risques-de-l-asphyxie-perinatale-du-nouveau-ne-a-terme-dans-le-service-de-neonatologie-du-centre-hospitalier-universitaire-bogodogo.pdf",
+                                                                      "fileName":  "CO22-facteurs de risques de l’asphyxie périnatale du nouveau-né à terme dans le service de néonatologie du Centre Hospitalier Universitaire Bogodogo.pdf",
+                                                                      "sizeBytes":  613580
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO23",
+                                                                      "rawTitle":  "CO23-Césarienne prophylactique dans le service de gynécologie obstétrique du CHUR de Ouahigouya du 1er janvier 2022 au 31 décembre 2023  fréquence, indication, pronostic",
+                                                                      "title":  "Césarienne prophylactique dans le service de gynécologie obstétrique du CHUR de Ouahigouya du 1er janvier 2022 au 31 décembre 2023 fréquence, indication, pronostic",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-5/co23-cesarienne-prophylactique-dans-le-service-de-gynecologie-obstetrique-du-chur-de-ouahigouya-du-1er-janvier-2022-au-31-decembre-2023-frequence-indication-pronostic.pdf",
+                                                                      "fileName":  "CO23-Césarienne prophylactique dans le service de gynécologie obstétrique du CHUR de Ouahigouya du 1er janvier 2022 au 31 décembre 2023  fréquence, indication, pronostic.pdf",
+                                                                      "sizeBytes":  552462
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO24",
+                                                                      "rawTitle":  "CO24-Connaissances des Sages-Femmes et Maïeuticiens (SFM) sur les Hémorragies du Post-Partum Immédiat (HPPI)cas de la maternité du Centre Médical avec Antenne chirurgicale",
+                                                                      "title":  "Connaissances des Sages-Femmes et Maïeuticiens (SFM) sur les Hémorragies du Post-Partum Immédiat (HPPI)cas de la maternité du Centre Médical avec Antenne chirurgicale",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-5/co24-connaissances-des-sages-femmes-et-maieuticiens-sfm-sur-les-hemorragies-du-post-partum-immediat-hppi-cas-de-la-maternite-du-centre-medical-avec-antenne-chirurgicale.pdf",
+                                                                      "fileName":  "CO24-Connaissances des Sages-Femmes et Maïeuticiens (SFM) sur les Hémorragies du Post-Partum Immédiat (HPPI)cas de la maternité du Centre Médical avec Antenne chirurgicale.pdf",
+                                                                      "sizeBytes":  564565
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 7",
+                                           "number":  7,
+                                           "slug":  "session-7",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO36",
+                                                                      "rawTitle":  "CO 36-Connaissances et attitudes du personnel sur les risques cliniques en néonatologie au",
+                                                                      "title":  "Connaissances et attitudes du personnel sur les risques cliniques en néonatologie au",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-7/co-36-connaissances-et-attitudes-du-personnel-sur-les-risques-cliniques-en-neonatologie-au.pdf",
+                                                                      "fileName":  "CO 36-Connaissances et attitudes du personnel sur les risques cliniques en néonatologie au.pdf",
+                                                                      "sizeBytes":  543970
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO38",
+                                                                      "rawTitle":  "CO 38-Les soins du développement du nouveau-né prématuré  Effet de l’intervention motrice orale (PIOMI)  sur la progression de l’alimentation et la durée du séjour dans le service de néonatologie du CHU-YO",
+                                                                      "title":  "Les soins du développement du nouveau-né prématuré Effet de l’intervention motrice orale (PIOMI) sur la progression de l’alimentation et la durée du séjour dans le service de néonatologie du CHU-YO",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-7/co-38-les-soins-du-developpement-du-nouveau-ne-premature-effet-de-l-intervention-motrice-orale-piomi-sur-la-progression-de-l-alimentation-et-la-duree-du-sejour-dans-le-service-de-neonatologie-du-chu-yo.pdf",
+                                                                      "fileName":  "CO 38-Les soins du développement du nouveau-né prématuré  Effet de l’intervention motrice orale (PIOMI)  sur la progression de l’alimentation et la durée du séjour dans le service de néonatologie du CHU-YO.pdf",
+                                                                      "sizeBytes":  565357
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO40",
+                                                                      "rawTitle":  "CO 40 -ETAT DES LIEUX DE LA MISE EN ŒUVRE DES SOINS MATERNELS KANGOUROU DANS LE SERVICE DE PÉDIATRIE DU CENTRE HOSPITALIER UNIVERSITAIRE DE BOGODOGO (CHU-B) DE JANVIER À AOÛT 2022.",
+                                                                      "title":  "ETAT DES LIEUX DE LA MISE EN ŒUVRE DES SOINS MATERNELS KANGOUROU DANS LE SERVICE DE PÉDIATRIE DU CENTRE HOSPITALIER UNIVERSITAIRE DE BOGODOGO (CHU-B) DE JANVIER À AOÛT 2022.",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-7/co-40-etat-des-lieux-de-la-mise-en-uvre-des-soins-maternels-kangourou-dans-le-service-de-pediatrie-du-centre-hospitalier-universitaire-de-bogodogo-chu-b-de-janvier-a-aout-2022.pdf",
+                                                                      "fileName":  "CO 40 -ETAT DES LIEUX DE LA MISE EN ŒUVRE DES SOINS MATERNELS KANGOUROU DANS LE SERVICE DE PÉDIATRIE DU CENTRE HOSPITALIER UNIVERSITAIRE DE BOGODOGO (CHU-B) DE JANVIER À AOÛT 2022..pdf",
+                                                                      "sizeBytes":  1441057
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO37",
+                                                                      "rawTitle":  "CO37 -Devenir des nouveau-nés prématurés au Centre Hospitalier Universitaire Régional de Ouahigouya",
+                                                                      "title":  "Devenir des nouveau-nés prématurés au Centre Hospitalier Universitaire Régional de Ouahigouya",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-7/co37-devenir-des-nouveau-nes-prematures-au-centre-hospitalier-universitaire-regional-de-ouahigouya.pdf",
+                                                                      "fileName":  "CO37 -Devenir des nouveau-nés prématurés au Centre Hospitalier Universitaire Régional de Ouahigouya.pdf",
+                                                                      "sizeBytes":  613399
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO39",
+                                                                      "rawTitle":  "CO39 -ÉLIMINATION DU TÉTANOS MATERNEL ET NÉONATAL À PROPOS D’UN ÉTAT DES LIEUX CHEZ LES PATIENTES AU CENTRE HOSPITALIER UNIVERSITAIRE-BOGODOGO  À OUAGADOUGOU",
+                                                                      "title":  "ÉLIMINATION DU TÉTANOS MATERNEL ET NÉONATAL À PROPOS D’UN ÉTAT DES LIEUX CHEZ LES PATIENTES AU CENTRE HOSPITALIER UNIVERSITAIRE-BOGODOGO À OUAGADOUGOU",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-7/co39-elimination-du-tetanos-maternel-et-neonatal-a-propos-d-un-etat-des-lieux-chez-les-patientes-au-centre-hospitalier-universitaire-bogodogo-a-ouagadougou.pdf",
+                                                                      "fileName":  "CO39 -ÉLIMINATION DU TÉTANOS MATERNEL ET NÉONATAL À PROPOS D’UN ÉTAT DES LIEUX CHEZ LES PATIENTES AU CENTRE HOSPITALIER UNIVERSITAIRE-BOGODOGO  À OUAGADOUGOU.pdf",
+                                                                      "sizeBytes":  764636
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 10",
+                                           "number":  10,
+                                           "slug":  "session-10",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO42",
+                                                                      "rawTitle":  "CO 42",
+                                                                      "title":  "CO42",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-10/co-42.pdf",
+                                                                      "fileName":  "CO 42.pdf",
+                                                                      "sizeBytes":  426093
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO43",
+                                                                      "rawTitle":  "CO 43",
+                                                                      "title":  "CO43",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-10/co-43.pdf",
+                                                                      "fileName":  "CO 43.pdf",
+                                                                      "sizeBytes":  572130
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO44",
+                                                                      "rawTitle":  "CO 44",
+                                                                      "title":  "CO44",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-10/co-44.pdf",
+                                                                      "fileName":  "CO 44.pdf",
+                                                                      "sizeBytes":  468250
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO45",
+                                                                      "rawTitle":  "CO 45",
+                                                                      "title":  "CO45",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-10/co-45.pdf",
+                                                                      "fileName":  "CO 45.pdf",
+                                                                      "sizeBytes":  844265
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO46",
+                                                                      "rawTitle":  "CO 46",
+                                                                      "title":  "CO46",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-10/co-46.pdf",
+                                                                      "fileName":  "CO 46.pdf",
+                                                                      "sizeBytes":  1840927
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO47",
+                                                                      "rawTitle":  "CO 47",
+                                                                      "title":  "CO47",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-10/co-47.pdf",
+                                                                      "fileName":  "CO 47.pdf",
+                                                                      "sizeBytes":  396377
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 13",
+                                           "number":  13,
+                                           "slug":  "session-13",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO48",
+                                                                      "rawTitle":  "CO 48",
+                                                                      "title":  "CO48",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-13/co-48.pdf",
+                                                                      "fileName":  "CO 48.pdf",
+                                                                      "sizeBytes":  581297
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO52",
+                                                                      "rawTitle":  "CO 52 ",
+                                                                      "title":  "CO52",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-13/co-52.pdf",
+                                                                      "fileName":  "CO 52 .pdf",
+                                                                      "sizeBytes":  689652
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO53",
+                                                                      "rawTitle":  "CO 53",
+                                                                      "title":  "CO53",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-13/co-53.pdf",
+                                                                      "fileName":  "CO 53.pdf",
+                                                                      "sizeBytes":  593228
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 16",
+                                           "number":  16,
+                                           "slug":  "session-16",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO58",
+                                                                      "rawTitle":  "CO 58",
+                                                                      "title":  "CO58",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-16/co-58.pdf",
+                                                                      "fileName":  "CO 58.pdf",
+                                                                      "sizeBytes":  529982
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO55",
+                                                                      "rawTitle":  "CO55",
+                                                                      "title":  "CO55",
+                                                                      "file":  "/programme-jsp-2025/salle-2/session-16/co55.pdf",
+                                                                      "fileName":  "CO55.pdf",
+                                                                      "sizeBytes":  646037
+                                                                  }
+                                                              ]
+                                       }
+                                   ]
+                  },
+                  {
+                      "name":  "Salle 3",
+                      "slug":  "salle-3",
+                      "sessions":  [
+                                       {
+                                           "name":  "Session 3",
+                                           "number":  3,
+                                           "slug":  "session-3",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO72",
+                                                                      "rawTitle":  "CO72",
+                                                                      "title":  "CO72",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-3/co72.pdf",
+                                                                      "fileName":  "CO72.pdf",
+                                                                      "sizeBytes":  602485
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO73",
+                                                                      "rawTitle":  "CO73",
+                                                                      "title":  "CO73",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-3/co73.pdf",
+                                                                      "fileName":  "CO73.pdf",
+                                                                      "sizeBytes":  1000105
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO74",
+                                                                      "rawTitle":  "CO74",
+                                                                      "title":  "CO74",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-3/co74.pdf",
+                                                                      "fileName":  "CO74.pdf",
+                                                                      "sizeBytes":  404968
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO75",
+                                                                      "rawTitle":  "CO75",
+                                                                      "title":  "CO75",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-3/co75.pdf",
+                                                                      "fileName":  "CO75.pdf",
+                                                                      "sizeBytes":  444450
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 6",
+                                           "number":  6,
+                                           "slug":  "session-6",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO76",
+                                                                      "rawTitle":  "CO76",
+                                                                      "title":  "CO76",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-6/co76.pdf",
+                                                                      "fileName":  "CO76.pdf",
+                                                                      "sizeBytes":  647200
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO77",
+                                                                      "rawTitle":  "CO77",
+                                                                      "title":  "CO77",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-6/co77.pdf",
+                                                                      "fileName":  "CO77.pdf",
+                                                                      "sizeBytes":  351024
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO78",
+                                                                      "rawTitle":  "CO78",
+                                                                      "title":  "CO78",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-6/co78.pdf",
+                                                                      "fileName":  "CO78.pdf",
+                                                                      "sizeBytes":  574270
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO79",
+                                                                      "rawTitle":  "CO79",
+                                                                      "title":  "CO79",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-6/co79.pdf",
+                                                                      "fileName":  "CO79.pdf",
+                                                                      "sizeBytes":  634453
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO80",
+                                                                      "rawTitle":  "CO80",
+                                                                      "title":  "CO80",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-6/co80.pdf",
+                                                                      "fileName":  "CO80.pdf",
+                                                                      "sizeBytes":  421797
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 8",
+                                           "number":  8,
+                                           "slug":  "session-8",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO59",
+                                                                      "rawTitle":  "CO59",
+                                                                      "title":  "CO59",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-8/co59.pdf",
+                                                                      "fileName":  "CO59.pdf",
+                                                                      "sizeBytes":  754376
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO60",
+                                                                      "rawTitle":  "CO60",
+                                                                      "title":  "CO60",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-8/co60.pdf",
+                                                                      "fileName":  "CO60.pdf",
+                                                                      "sizeBytes":  449836
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO61",
+                                                                      "rawTitle":  "CO61",
+                                                                      "title":  "CO61",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-8/co61.pdf",
+                                                                      "fileName":  "CO61.pdf",
+                                                                      "sizeBytes":  411706
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO63",
+                                                                      "rawTitle":  "CO63",
+                                                                      "title":  "CO63",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-8/co63.pdf",
+                                                                      "fileName":  "CO63.pdf",
+                                                                      "sizeBytes":  506929
+                                                                  },
+                                                                  {
+                                                                      "code":  "",
+                                                                      "rawTitle":  "etude de l\u0027organisation de la prise en charge des cancers",
+                                                                      "title":  "etude de l\u0027organisation de la prise en charge des cancers",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-8/etude-de-l-organisation-de-la-prise-en-charge-des-cancers.pdf",
+                                                                      "fileName":  "etude de l\u0027organisation de la prise en charge des cancers.pdf",
+                                                                      "sizeBytes":  787577
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 11",
+                                           "number":  11,
+                                           "slug":  "session-11",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO81",
+                                                                      "rawTitle":  "CO 81",
+                                                                      "title":  "CO81",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-11/co-81.pdf",
+                                                                      "fileName":  "CO 81.pdf",
+                                                                      "sizeBytes":  734347
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO82",
+                                                                      "rawTitle":  "CO82",
+                                                                      "title":  "CO82",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-11/co82.pdf",
+                                                                      "fileName":  "CO82.pdf",
+                                                                      "sizeBytes":  175877
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO83",
+                                                                      "rawTitle":  "CO83",
+                                                                      "title":  "CO83",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-11/co83.pdf",
+                                                                      "fileName":  "CO83.pdf",
+                                                                      "sizeBytes":  721253
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO84",
+                                                                      "rawTitle":  "CO84",
+                                                                      "title":  "CO84",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-11/co84.pdf",
+                                                                      "fileName":  "CO84.pdf",
+                                                                      "sizeBytes":  674650
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 14",
+                                           "number":  14,
+                                           "slug":  "session-14",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO71",
+                                                                      "rawTitle":  "CO71",
+                                                                      "title":  "CO71",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-14/co71.pdf",
+                                                                      "fileName":  "CO71.pdf",
+                                                                      "sizeBytes":  805214
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO87",
+                                                                      "rawTitle":  "CO87",
+                                                                      "title":  "CO87",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-14/co87.pdf",
+                                                                      "fileName":  "CO87.pdf",
+                                                                      "sizeBytes":  671587
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO88",
+                                                                      "rawTitle":  "CO88",
+                                                                      "title":  "CO88",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-14/co88.pdf",
+                                                                      "fileName":  "CO88.pdf",
+                                                                      "sizeBytes":  891022
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO89",
+                                                                      "rawTitle":  "CO89",
+                                                                      "title":  "CO89",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-14/co89.pdf",
+                                                                      "fileName":  "CO89.pdf",
+                                                                      "sizeBytes":  643364
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO90",
+                                                                      "rawTitle":  "CO90",
+                                                                      "title":  "CO90",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-14/co90.pdf",
+                                                                      "fileName":  "CO90.pdf",
+                                                                      "sizeBytes":  1026349
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO91",
+                                                                      "rawTitle":  "CO91",
+                                                                      "title":  "CO91",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-14/co91.pdf",
+                                                                      "fileName":  "CO91.pdf",
+                                                                      "sizeBytes":  657361
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO95",
+                                                                      "rawTitle":  "CO95",
+                                                                      "title":  "CO95",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-14/co95.pdf",
+                                                                      "fileName":  "CO95.pdf",
+                                                                      "sizeBytes":  633322
+                                                                  }
+                                                              ]
+                                       },
+                                       {
+                                           "name":  "Session 17",
+                                           "number":  17,
+                                           "slug":  "session-17",
+                                           "communications":  [
+                                                                  {
+                                                                      "code":  "CO92",
+                                                                      "rawTitle":  "CO92",
+                                                                      "title":  "CO92",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-17/co92.pdf",
+                                                                      "fileName":  "CO92.pdf",
+                                                                      "sizeBytes":  768869
+                                                                  },
+                                                                  {
+                                                                      "code":  "CO93",
+                                                                      "rawTitle":  "CO93",
+                                                                      "title":  "CO93",
+                                                                      "file":  "/programme-jsp-2025/salle-3/session-17/co93.pdf",
+                                                                      "fileName":  "CO93.pdf",
+                                                                      "sizeBytes":  722553
+                                                                  }
+                                                              ]
+                                       }
+                                   ]
+                  }
+              ]
+}
